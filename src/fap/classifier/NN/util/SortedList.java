@@ -6,7 +6,7 @@ package fap.classifier.NN.util;
  * {@link LinkedDistanceNode#distance distance} in ascending order.
  * 
  * @author Zoltan Geller
- * @version 2024.08.20
+ * @version 2024.10.01
  * @see LinkedDistanceNode
  * @see DistanceNode
  */
@@ -161,8 +161,64 @@ public class SortedList<T> {
 
                 if (first == node)
                     first = newNode;
+                
             }
+            
         }
+        
+    }
+    
+    /**
+     * Removes the first element from this list and returns it.
+     * 
+     * @return the first element of the list
+     */
+    public DistanceNode<T> remove() {
+        
+        DistanceNode<T> node = null;
+        
+        if (first != null) {
+            
+            LinkedDistanceNode<T> tmp = first;
+            node = new DistanceNode<T>(first.obj, first.distance);
+            
+            first = first.next;
+            if (last == tmp)
+                last = first;
+            
+        }
+        
+        return node;
+        
+    }
+    
+    /**
+     * Removes the first {@code k} elements of the this list and returns them as a
+     * new list.
+     * 
+     * @param k the number of elements to be removed from the beginning of the list
+     * @return a {@code SortedList} containing the first {@code k} elements of this
+     *         list
+     */
+    public SortedList<T> remove(int k) {
+        
+        SortedList<T> list = new SortedList<>(k);
+        
+        if (k > 0) {
+            
+            DistanceNode<T> node = remove();
+            while (node != null && k > 0) {
+                count--;
+                list.add(node);
+                k--;
+                if (k > 0)
+                    node = remove();
+            }
+            
+        }
+        
+        return list;
+        
     }
 
 }

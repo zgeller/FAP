@@ -41,7 +41,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltan Geller
- * @version 2024.09.17.
+ * @version 2024.10.01.
  * @see AbstractNNClassifier
  */
 public class KNNClassifier extends AbstractNNClassifier {
@@ -52,6 +52,12 @@ public class KNNClassifier extends AbstractNNClassifier {
      * The number of nearest neighbours to consider. Default value is {@code 10}.
      */
     protected int k = 10;
+    
+    /**
+     * Indicates how many of the nearest neighbors should be excluded from
+     * consideration. Must be {@code >= 0} and {@code < k}.
+     */
+    protected int exclude = 0;
 
     /**
      * Constructs a new single-threaded majority-voting kNN classifier, with the
@@ -139,10 +145,38 @@ public class KNNClassifier extends AbstractNNClassifier {
      */
     public void setK(int k) {
         if (k < 1)
-            throw new IllegalArgumentException("k must be > 0");
+            throw new IllegalArgumentException("k must be > 0.");
+        if (k <= exclude)
+            exclude = 0;
         this.k = k;
     }
 
+    /**
+     * Returns the number of nearest neighbors that are excluded from consideration.
+     * 
+     * @return the number of nearest neighbors that are excluded from consideration
+     */
+    public int getExclude() {
+        return exclude;
+    }
+
+    /**
+     * Sets the number of nearest neighbors to be excluded from consideration. Must
+     * be {@code >= 0} and {@code < k}.
+     * 
+     * @param exclude the number of nearest neighbors to be excluded from
+     *                consideration, must be {@code >= 0} and {@code < k}
+     * @throws IllegalArgumentException if {@code exclude < 0} or
+     *                                  {@code exclude >= k}
+     */
+    public void setExclude(int exclude) throws IllegalArgumentException {
+        if (exclude < 0)
+            throw new IllegalArgumentException("Exclude must be >= 0.");
+        if (exclude >= k)
+            throw new IllegalArgumentException("Exclude must be < k.");
+        this.exclude = exclude;
+    }
+    
     /**
      * Finds the best label among the nearest neighbors without weighting (with
      * voting).
@@ -291,8 +325,11 @@ public class KNNClassifier extends AbstractNNClassifier {
 
         if (Thread.interrupted())
             throw new InterruptedException();
+        
+        int len = k - exclude;
+        list.remove(exclude);
 
-        if (k > 1)
+        if (len > 1)
             label = getBestLabel(list);
         else
             label = list.getFirst().obj.getLabel();

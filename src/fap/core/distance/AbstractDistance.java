@@ -36,7 +36,7 @@ import fap.core.data.TimeSeries;
  * </ul>
  * 
  * @author Zoltán Gellér
- * @version 2024.09.22.
+ * @version 2025.02.26.
  * @see Distance
  */
 public abstract class AbstractDistance implements Distance {
@@ -71,7 +71,7 @@ public abstract class AbstractDistance implements Distance {
     /**
      * Clears the storage of distances.
      */
-    public synchronized void clearStorage() {
+    public void clearStorage() {
         storage.clear();
     }
 
@@ -105,10 +105,13 @@ public abstract class AbstractDistance implements Distance {
      */
     public void store(TimeSeries series1, TimeSeries series2, double distance) {
         
+        if (!this.isStoring())
+            return;
+        
         int index1 = series1.getIndex();
         int index2 = series2.getIndex();
 
-        if (!this.isStoring() || index1 < 0 || index2 < 0)
+        if (index1 < 0 || index2 < 0)
             return;
 
         if (index2 < index1) {
@@ -170,10 +173,13 @@ public abstract class AbstractDistance implements Distance {
      */
     public double recall(TimeSeries series1, TimeSeries series2) {
 
+        if (!this.isStoring())
+            return Double.NaN;
+        
         int index1 = series1.getIndex();
         int index2 = series2.getIndex();
         
-        if (!this.isStoring() || index1 < 0 || index2 < 0)
+        if (index1 < 0 || index2 < 0)
             return Double.NaN;
 
         double distance = Double.NaN;

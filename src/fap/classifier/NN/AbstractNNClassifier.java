@@ -34,7 +34,7 @@ import fap.util.ThreadUtils;
  * Defines common methods and fields for (multithreaded) NN classifiers.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.22.
+ * @version 2025.02.27.
  * @see AbstractDistanceBasedClassifier
  * @see Multithreaded
  * @see Copyable
@@ -90,7 +90,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
     /**
      * The executor service used for implementing multithreaded classification.
      */
-    protected ThreadPoolExecutor executor;
+    protected transient ThreadPoolExecutor executor;
 
     /**
      * Empty constructor.

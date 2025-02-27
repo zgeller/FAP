@@ -47,7 +47,7 @@ import fap.util.ThreadUtils;
  *            the {@link Comparable} interface
  * 
  * @author Zoltán Gellér
- * @version 2024.09.24.
+ * @version 2025.02.27.
  * @see AbstractTrainer
  * @see ParameterTrainer
  * @see Callbackable
@@ -63,7 +63,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
     /**
      * The executor service used for implementing multithreaded classification.
      */
-    protected ThreadPoolExecutor executor;
+    protected transient ThreadPoolExecutor executor;
     
     /**
      * The parameter modifier to set the value of to the parameter tuned by this

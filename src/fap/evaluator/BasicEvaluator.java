@@ -40,7 +40,7 @@ import fap.util.ThreadUtils;
  * It evaluates a classifier based on the specified test and train sets.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.19.
+ * @version 2025.02.27.
  * @see Serializable
  * @see Callbackable
  * @see Resumable
@@ -63,7 +63,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
     /**
      * The executor service used for implementing multithreaded evaluation.
      */
-    private ThreadPoolExecutor executor;
+    private transient ThreadPoolExecutor executor;
 
     /**
      * The expected error rate (the lowest error rate on the training set). Default

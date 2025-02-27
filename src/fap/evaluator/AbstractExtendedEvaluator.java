@@ -30,7 +30,7 @@ import fap.util.ThreadUtils;
  * classifier evaluators.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.19.
+ * @version 2025.02.27.
  * @see AbstractEvaluator
  * @see Evaluator
  * @see Callbackable
@@ -44,7 +44,7 @@ public abstract class AbstractExtendedEvaluator extends AbstractEvaluator implem
     /**
      * The executor service used for implementing multithreaded classification.
      */
-    protected ThreadPoolExecutor executor;
+    protected transient ThreadPoolExecutor executor;
 
     /**
      * The Callback object.

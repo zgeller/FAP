@@ -30,7 +30,7 @@ import java.io.ObjectOutputStream;
  * File utilities.
  * 
  * @author Zoltán Gellér
- * @version 2024.08.26.
+ * @version 2025.02.27.
  */
 public final class FileUtils {
 
@@ -111,13 +111,16 @@ public final class FileUtils {
      * @throws SecurityException
      */
     public static boolean deleteFolder(File folder) {
-        if (folder.exists() && folder.isDirectory())
-            for (File file : folder.listFiles()) {
-                if (file.isDirectory())
-                    deleteFolder(file);
-                else
-                    file.delete();
-            }
+        if (folder.exists() && folder.isDirectory()) {
+            File[] files = folder.listFiles();
+            if (files != null)
+                for (File file : files) {
+                    if (file.isDirectory())
+                        deleteFolder(file);
+                    else
+                        file.delete();
+                }
+        }
         return folder.delete();
     }
 

@@ -53,7 +53,7 @@ import fap.util.Copyable;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2024.09.21.
+ * @version 2025.03.03.
  * @see AbstractExtendedEvaluator
  */
 public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable {
@@ -424,10 +424,12 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
     @Override
     protected List<Dataset> splitDataset(Dataset dataset, int iteration) {
         
-        Dataset ds = new Dataset(dataset);
+        Dataset ds = dataset;
         
-        if (seeds != null)
+        if (seeds != null) {
+            ds = new Dataset(dataset);
             Collections.shuffle(ds, new Random(seeds[iteration]));
+        }
         
         // dividing the dataset into test and train subsets
         List<Dataset> list = ds.divide(percentage, stratified);

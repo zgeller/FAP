@@ -59,7 +59,7 @@ import fap.util.Copyable;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2024.09.21.
+ * @version 2025.03.03.
  * @see AbstractExtendedEvaluator
  */
 public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements Copyable {
@@ -359,12 +359,13 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
         
         int fnumber = this.getNumberOfFolds();
         
-        Dataset ds = new Dataset(dataset);
+        Dataset ds = dataset;
 
         int fold = iteration % fnumber;
 
         // shuffling the dataset if needed
         if (seeds != null) {
+            ds = new Dataset(dataset);
             int run = iteration / fnumber;
             Collections.shuffle(ds, new Random(seeds[run]));
         }

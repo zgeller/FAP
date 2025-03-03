@@ -57,7 +57,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2024.10.01.
+ * @version 2025.03.03.
  * @see AbstractNNClassifier
  */
 public class KNNClassifier extends AbstractNNClassifier {
@@ -329,19 +329,13 @@ public class KNNClassifier extends AbstractNNClassifier {
             int tnumber = ThreadUtils.getThreadLimit(this.getNumberOfThreads());
 
             // if the number of threads is 1 or the matrix of distances exists
-            if (tnumber < 2 || distances != null) {
-                list = new SortedList<TimeSeries>(k);
-                for (DistanceNode<TimeSeries> node : findDistances(series, trainset))
-                    list.add(node);
-            }
+            if (tnumber < 2 || distances != null)
+                list = findSortedDistances(series, trainset, k);
             else
                 list = findSortedDistancesMultithreaded(series, trainset, k, tnumber);
 
         }
 
-        if (Thread.interrupted())
-            throw new InterruptedException();
-        
         int len = k - exclude;
         list.remove(exclude);
 
@@ -352,17 +346,55 @@ public class KNNClassifier extends AbstractNNClassifier {
         
         return label;
     }
+
+    /**
+     * Finds the sorted list of {@code k} nearest neighbours (and their distances)
+     * of the specified time series ({@code series}) in the training set
+     * ({@link AbstractNNClassifier#trainset trainset}).
+     * 
+     * @param series   the time series to be classified
+     * @param trainset the training set
+     * @param k        number of nearest neighbours
+     * @return the sorted list of {@code k} nearest neighbours (and their distances)
+     *         of the specified time series ({@code series}) in the training set
+     *         ({@code trainset})
+     * @throws InterruptedException if the thread has been interrupted
+     * @throws Exception            if an error occurs
+     */
+    protected SortedList<TimeSeries> findSortedDistances(TimeSeries series, Dataset trainset, int k) throws Exception {
+        
+        ArrayList<DistanceNode<TimeSeries>> distNodes = findDistances(series, trainset);
+        
+        SortedList<TimeSeries> list = new SortedList<>(k);
+        
+        if (k > 1)
+            for (DistanceNode<TimeSeries> node : distNodes)
+                list.add(node);
+        
+        else {
+            DistanceNode<TimeSeries> bestNode = distNodes.get(0);
+            for (int i = 1; i < distNodes.size(); i++) {
+                DistanceNode<TimeSeries> node = distNodes.get(i);
+                if (node.distance < bestNode.distance)
+                    bestNode = node;
+            }
+            list.add(bestNode);
+        }
+            
+        return list;
+            
+    }
     
     /**
-     * Finds the soerted list of {@code k} nearest neighbours (and their distances)
+     * Finds the sorted list of {@code k} nearest neighbours (and their distances)
      * of the specified time series ({@code series}) in the training set
      * ({@link AbstractNNClassifier#trainset trainset}) relying on {@code tnumber}
      * of threads.
      * 
-     * @param series  the time series to be classified
+     * @param series   the time series to be classified
      * @param trainset the training set
-     * @param k       number of nearest neighbours
-     * @param tnumber number of threads
+     * @param k        number of nearest neighbours
+     * @param tnumber  number of threads
      * @return the sorted list of {@code k} nearest neighbours (and their distances)
      *         of the specified time series ({@code series}) in the training set
      *         ({@code trainset})
@@ -371,12 +403,26 @@ public class KNNClassifier extends AbstractNNClassifier {
      */
     protected SortedList<TimeSeries> findSortedDistancesMultithreaded(TimeSeries series, Dataset trainset, int k, int tnumber) throws Exception {
 
-        List<Double> results = this.findDistances(series, trainset, tnumber);
+        List<Double> distances = this.findDistances(series, trainset, tnumber);
 
         SortedList<TimeSeries> list = new SortedList<>(k);
-
-        for (int i = 0; i < results.size(); i++)
-            list.add(new DistanceNode<TimeSeries>(trainset.get(i), results.get(i)));
+        
+        if (k > 1)
+            for (int i = 0; i < distances.size(); i++)
+                list.add(new DistanceNode<TimeSeries>(trainset.get(i), distances.get(i)));
+        
+        else {
+            int bestIndex = 0;
+            double bestDistance = distances.get(0);
+            for (int i = 1; i < distances.size(); i++) {
+                double dist = distances.get(i);
+                if (dist < bestDistance) {
+                    bestDistance = dist;
+                    bestIndex = i;
+                }
+            }
+            list.add(new DistanceNode<TimeSeries>(trainset.get(bestIndex), bestDistance));
+        }
 
         return list;
     }

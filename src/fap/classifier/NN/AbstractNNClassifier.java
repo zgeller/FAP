@@ -34,7 +34,7 @@ import fap.util.ThreadUtils;
  * Defines common methods and fields for (multithreaded) NN classifiers.
  * 
  * @author Zoltán Gellér
- * @version 2025.02.27.
+ * @version 2025.03.03.
  * @see AbstractDistanceBasedClassifier
  * @see Multithreaded
  * @see Copyable
@@ -352,8 +352,6 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
         // if the trainset contains more than one time series
         else {
 
-            this.initExecutor(tnumber);
-            
             // if storing distances is enabled, we need to calculate only the not yet calculated distances
             if (distance instanceof AbstractDistance dist && dist.isStoring()) {
 

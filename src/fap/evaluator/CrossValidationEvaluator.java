@@ -59,7 +59,7 @@ import fap.util.Copyable;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.03.03.
+ * @version 2025.03.04.
  * @see AbstractExtendedEvaluator
  */
 public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements Copyable {
@@ -70,6 +70,11 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * Number of folds. Default value is {@code 10}.
      */
     private int fnumber = 10;
+    
+    /**
+     * List containing folds for every seed.
+     */
+    private transient List<List<Dataset>> listOfFolds;
 
     /**
      * Constructs a new single-threaded stratified 10-fold CrossValidation
@@ -349,8 +354,28 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
         int iterations = runs * fnumber;
         
         int cbCount = runs * dataset.size();
+        
+        // creating folds
+        listOfFolds = new ArrayList<List<Dataset>>(runs);
+        if (seeds == null) {
+            List<Dataset> folds = dataset.split(fnumber, stratified);
+            for (int run = 0; run < runs; run++)
+                listOfFolds.add(folds);
+        }
+        else
+            for (int run = 0; run < runs; run++) {
+                Dataset ds = new Dataset(dataset);
+                Collections.shuffle(ds, new Random(seeds[run]));
+                listOfFolds.add(ds.split(fnumber, stratified));
+            }
 
-        return super.evaluate(trainer, classifier, dataset, iterations, cbCount);
+        try {
+            return super.evaluate(trainer, classifier, dataset, iterations, cbCount);
+        }
+        catch (Exception e) {
+            listOfFolds = null;
+            throw e;
+        }
 
     }
 
@@ -359,25 +384,16 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
         
         int fnumber = this.getNumberOfFolds();
         
-        Dataset ds = dataset;
+        int run = iteration / fnumber;
 
         int fold = iteration % fnumber;
-
-        // shuffling the dataset if needed
-        if (seeds != null) {
-            ds = new Dataset(dataset);
-            int run = iteration / fnumber;
-            Collections.shuffle(ds, new Random(seeds[run]));
-        }
-        
-        // dividing the dataset into {@code fnumber} folds
-        List<Dataset> foldsets = ds.split(fnumber, stratified);
         
         List<Dataset> list = new ArrayList<>();
         
         // preparing the test and training sets
-        list.add(new Dataset(foldsets, fold));      // training set
-        list.add(foldsets.get(fold));               // test set
+        List<Dataset> folds = listOfFolds.get(run);
+        list.add(new Dataset(folds, fold));      // training set
+        list.add(folds.get(fold));               // test set
         
         return list;
         

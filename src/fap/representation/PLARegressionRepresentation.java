@@ -47,7 +47,7 @@ import fap.util.MathUtils;
  * </ol>
  * 
  * @author Miklós Kálózi, Zoltán Gellér, Brankica Bratić
- * @version 2024.09.14.
+ * @version 2025.03.05.
  * @see Representation
  */
 public class PLARegressionRepresentation extends AbstractPLARepresentation<PLARegressionRepresentation.PLASegment> {
@@ -59,7 +59,7 @@ public class PLARegressionRepresentation extends AbstractPLARepresentation<PLARe
      * created with linear regression. Each element of this list represents one
      * line. Default value of this array is null.
      */
-    private ArrayList<PLASegment> pla;
+    private List<PLASegment> pla;
 
     /**
      * Creates a new {@code PLA} representation.

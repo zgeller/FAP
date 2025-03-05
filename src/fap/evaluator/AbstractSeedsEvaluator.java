@@ -48,7 +48,7 @@ import fap.util.ThreadUtils.RunnableWrapper;
  * individual test subsets.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.24.
+ * @version 2025.03.05.
  * @see AbstractExtendedEvaluator
  * @see Evaluator
  */
@@ -683,7 +683,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
             if (tnumber > 1) {
 
                 // initializing 
-                ArrayList<ClassifyTask> tasks = new ArrayList<>(tsize);
+                List<ClassifyTask> tasks = new ArrayList<>(tsize);
 
                 for (int i = 0; i < tsize; i++)
                     if (!classified[iteration][i])

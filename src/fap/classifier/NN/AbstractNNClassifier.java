@@ -34,7 +34,7 @@ import fap.util.ThreadUtils;
  * Defines common methods and fields for (multithreaded) NN classifiers.
  * 
  * @author Zoltán Gellér
- * @version 2025.03.03.
+ * @version 2025.03.05.
  * @see AbstractDistanceBasedClassifier
  * @see Multithreaded
  * @see Copyable
@@ -80,7 +80,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
      * </ul>
      * <p>
      */
-    protected transient ArrayList<SortedList<TimeSeries>> kNeighbours;
+    protected transient List<SortedList<TimeSeries>> kNeighbours;
 
     /**
      * The number of threads. Default value is {@code 1}.

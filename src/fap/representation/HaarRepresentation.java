@@ -18,6 +18,7 @@ package fap.representation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import fap.core.data.TimeSeries;
@@ -55,7 +56,7 @@ import fap.util.MathUtils;
  * </ol>
  * 
  * @author Zoltán Gellér, Brankica Bratić
- * @version 2024.09.14.
+ * @version 2025.03.05.
  * @see Representation
  */
 public class HaarRepresentation implements Representation {
@@ -206,7 +207,7 @@ public class HaarRepresentation implements Representation {
         if (x < 0 || x >= originalTimeSeriesLength)
             return OUTBOUND_VALUE;
     
-        ArrayList<Double> values = new ArrayList<Double>(originalTimeSeriesLength);
+        List<Double> values = new ArrayList<Double>(originalTimeSeriesLength);
         double[] haarCoeffsWithZeros = getHaarCoefficientsInOriginalDimensionality();
         values.add(haarCoeffsWithZeros[0]);
     
@@ -215,7 +216,7 @@ public class HaarRepresentation implements Representation {
         
         while (values.size() < originalTimeSeriesLength) {
             
-            ArrayList<Double> tempValues = new ArrayList<Double>();
+            List<Double> tempValues = new ArrayList<Double>();
             
             for (double value : values) {
                 
@@ -268,8 +269,8 @@ public class HaarRepresentation implements Representation {
             throw new IllegalArgumentException(
                     "Representation dimensionality must be between 1 and " + values.length + ".");
 
-        ArrayList<Double> coefficients = new ArrayList<Double>(originalTimeSeriesLength);
-        ArrayList<Double> currentValues = new ArrayList<Double>(originalTimeSeriesLength);
+        List<Double> coefficients = new ArrayList<Double>(originalTimeSeriesLength);
+        List<Double> currentValues = new ArrayList<Double>(originalTimeSeriesLength);
 
         for (int i = 0; i < MathUtils.integralPowerOfTwoCeil(originalTimeSeriesLength); i++)
             
@@ -281,7 +282,7 @@ public class HaarRepresentation implements Representation {
 
         while (currentValues.size() > 1) {
 
-            ArrayList<Double> tempValues = new ArrayList<Double>();
+            List<Double> tempValues = new ArrayList<Double>();
             
             for (int i = currentValues.size() - 1; i > 0; i -= 2) {
                 

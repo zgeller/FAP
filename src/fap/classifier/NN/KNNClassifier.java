@@ -57,7 +57,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.03.03.
+ * @version 2025.03.05.
  * @see AbstractNNClassifier
  */
 public class KNNClassifier extends AbstractNNClassifier {
@@ -250,11 +250,10 @@ public class KNNClassifier extends AbstractNNClassifier {
      *         {@code trainset} and their distances from {@code series}
      * @throws InterruptedException if the thread has been interrupted
      */
-    protected ArrayList<DistanceNode<TimeSeries>> findDistances(TimeSeries series, 
-                                                                Dataset trainset) 
-                                                  throws InterruptedException {
+    protected List<DistanceNode<TimeSeries>> findDistances(TimeSeries series, Dataset trainset)
+                                             throws InterruptedException {
 
-        ArrayList<DistanceNode<TimeSeries>> list = new ArrayList<>(trainset.size());
+        List<DistanceNode<TimeSeries>> list = new ArrayList<>(trainset.size());
 
         // if the matrix of distances doesn't exists, we must use the distance measure
         if (distances == null)
@@ -363,7 +362,7 @@ public class KNNClassifier extends AbstractNNClassifier {
      */
     protected SortedList<TimeSeries> findSortedDistances(TimeSeries series, Dataset trainset, int k) throws Exception {
         
-        ArrayList<DistanceNode<TimeSeries>> distNodes = findDistances(series, trainset);
+        List<DistanceNode<TimeSeries>> distNodes = findDistances(series, trainset);
         
         SortedList<TimeSeries> list = new SortedList<>(k);
         

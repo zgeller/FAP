@@ -31,7 +31,7 @@ import fap.io.TimeSeriesTextFileWriter;
  * Dataset utilities.
  * 
  * @author Zoltán Gellér
- * @version 2024.08.27.
+ * @version 2025.03.05.
  */
 public final class DatasetUtils {
 
@@ -344,8 +344,8 @@ public final class DatasetUtils {
      * @return list of the labels
      * @throws IOException
      */
-    public static ArrayList<Double> loadLabelsList(String fname) throws IOException {
-        ArrayList<Double> labels = new ArrayList<Double>();
+    public static List<Double> loadLabelsList(String fname) throws IOException {
+        List<Double> labels = new ArrayList<Double>();
         BufferedReader reader = new BufferedReader(new FileReader(fname));
         String line = reader.readLine();
         while (line != null && line.length() > 0) {
@@ -366,7 +366,7 @@ public final class DatasetUtils {
      * @throws IOException
      */
     public static double[] loadLabelsArray(String fname) throws IOException {
-        ArrayList<Double> labelsList = loadLabelsList(fname);
+        List<Double> labelsList = loadLabelsList(fname);
         int size = labelsList.size();
         double[] labels = new double[size];
         for (int i = 0; i < size; i++)
@@ -452,8 +452,8 @@ public final class DatasetUtils {
      * @return list of dataset names
      * @throws IOException
      */
-    public static ArrayList<String> loadDatasetNames(String fname) throws IOException {
-        ArrayList<String> dsNames = new ArrayList<String>();
+    public static List<String> loadDatasetNames(String fname) throws IOException {
+        List<String> dsNames = new ArrayList<String>();
         int lineno = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader("Datasets.csv"))) {
             lineno++;
@@ -478,7 +478,7 @@ public final class DatasetUtils {
      * @return
      * @throws IOException
      */
-    public static ArrayList<String> loadDatasetNames() throws IOException {
+    public static List<String> loadDatasetNames() throws IOException {
         return loadDatasetNames("Datasets.csv");
     }
 

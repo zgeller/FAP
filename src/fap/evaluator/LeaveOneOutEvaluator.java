@@ -18,6 +18,7 @@ package fap.evaluator;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import fap.core.classifier.Classifier;
 import fap.core.data.Dataset;
@@ -52,7 +53,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2024.09.22.
+ * @version 2025.03.05.
  * @see AbstractExtendedEvaluator
  */
 public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements Copyable {
@@ -374,7 +375,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
 
         EvaluatorTask.dataset = dataset;
 
-        ArrayList<EvaluatorTask> tasks = new ArrayList<>();
+        List<EvaluatorTask> tasks = new ArrayList<>();
         
         for (int i = 0; i < dsize; i++ )
             if (labels[i] == null)

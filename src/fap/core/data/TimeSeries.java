@@ -33,7 +33,7 @@ import java.util.Map;
  * time series is determined at instantiation.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.30.
+ * @version 2025.03.05.
  * @see DataPoint
  * @see List
  * @see Serializable
@@ -596,7 +596,7 @@ public class TimeSeries implements List<DataPoint>, Serializable  {
         
         double median = Double.NaN;
         
-        ArrayList<Double> values = new ArrayList<>(size());
+        List<Double> values = new ArrayList<>(size());
         for (DataPoint dp: this)
             values.add(dp.getY());
         

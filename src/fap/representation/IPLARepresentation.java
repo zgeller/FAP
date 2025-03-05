@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import fap.core.data.TimeSeries;
@@ -43,7 +44,7 @@ import fap.util.ExplicitLine;
  * </ol>
  * 
  * @author Brankica Bratić, Zoltán Gellér
- * @version 2024.09.14.
+ * @version 2025.03.05.
  * @see Representation
  */
 public class IPLARepresentation implements Representation {
@@ -53,7 +54,7 @@ public class IPLARepresentation implements Representation {
     /**
 	 * IPLA representation.
 	 */
-	private ArrayList<ExplicitLine> ipla;
+	private List<ExplicitLine> ipla;
 	
 	/**
 	 * Original size of data.

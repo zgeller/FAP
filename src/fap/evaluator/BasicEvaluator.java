@@ -18,6 +18,7 @@ package fap.evaluator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import fap.callback.Callback;
@@ -40,7 +41,7 @@ import fap.util.ThreadUtils;
  * It evaluates a classifier based on the specified test and train sets.
  * 
  * @author Zoltán Gellér
- * @version 2025.02.27.
+ * @version 2025.03.05.
  * @see Serializable
  * @see Callbackable
  * @see Resumable
@@ -348,7 +349,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
         EvaluatorTask.testset = testset;
         EvaluatorTask.classifier = classifier;
         
-        ArrayList<EvaluatorTask> tasks = new ArrayList<>();
+        List<EvaluatorTask> tasks = new ArrayList<>();
         
         for (int i = 0; i < tsize; i++ )
             if (labels[i] == null)

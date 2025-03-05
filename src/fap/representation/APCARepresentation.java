@@ -39,7 +39,7 @@ import fap.core.data.Representation;
  * </ol>
  * 
  * @author Miklós Kálózi, Zoltán Gellér, Brankica Bratić
- * @version 2024.09.14.
+ * @version 2025.03.05.
  * @see Representation
  */
 public class APCARepresentation implements Representation {
@@ -50,7 +50,7 @@ public class APCARepresentation implements Representation {
      * The Adaptive Piecewise Constant Approximation (APCA) representation. Default
      * value is an empty list.
      */
-    private ArrayList<APCASegment> apca = new ArrayList<APCASegment>();
+    private List<APCASegment> apca = new ArrayList<APCASegment>();
 
     /**
      * Creates a new {@code APCA} representation of given dimensionality.

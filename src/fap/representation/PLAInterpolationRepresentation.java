@@ -30,7 +30,7 @@ import fap.util.ExplicitLine;
  * </ol>
  * 
  * @author 	Miklos Kalozi, Zoltan Geller, Brankica Bratic
- * @version 2024.09.14.
+ * @version 2025.03.05.
  * @see 	Representation
  */
 public class PLAInterpolationRepresentation extends AbstractPLARepresentation<DataPoint> {
@@ -42,7 +42,7 @@ public class PLAInterpolationRepresentation extends AbstractPLARepresentation<Da
      * created with linear interpolation. Each line is defined with two successive
      * points of this list. Default value of this list is null.
      */
-	private ArrayList<DataPoint> pla;
+	private List<DataPoint> pla;
 	
     /**
      * Creates a new {@code PLA} representation.

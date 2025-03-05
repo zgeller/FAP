@@ -50,7 +50,7 @@ import fap.util.ExplicitLine;
  * </ol>
  * 
  * @author Miklós Kálózi, Zoltán Gellér, Brankica Bratić
- * @version 2024.09.14.
+ * @version 2025.03.05.
  * @see Representation
  */
 public abstract class AbstractPLARepresentation<SegmentType> implements Representation {
@@ -225,8 +225,8 @@ public abstract class AbstractPLARepresentation<SegmentType> implements Represen
             break;
             
         case TOP_DOWN:
-            ArrayList<Double> xValues = new ArrayList<Double>(values.length);
-            ArrayList<Double> yValues = new ArrayList<Double>(values.length);
+            List<Double> xValues = new ArrayList<Double>(values.length);
+            List<Double> yValues = new ArrayList<Double>(values.length);
             for (int i = 0; i < values.length; i++) {
                 xValues.add((double) i);
                 yValues.add(values[i]);
@@ -259,8 +259,8 @@ public abstract class AbstractPLARepresentation<SegmentType> implements Represen
 
         List<AbstractSegment> pla = new ArrayList<AbstractSegment>();
 
-        ArrayList<Double> xValues = new ArrayList<Double>(values.length);
-        ArrayList<Double> yValues = new ArrayList<Double>(values.length);
+        List<Double> xValues = new ArrayList<Double>(values.length);
+        List<Double> yValues = new ArrayList<Double>(values.length);
 
         for (int i = 0; i < values.length; i++) {
             xValues.add((double) i);
@@ -323,15 +323,15 @@ public abstract class AbstractPLARepresentation<SegmentType> implements Represen
      * @param maxError upper bound of the segment error
      * @return {@code PLA} representation
      */
-    private List<AbstractSegment> topDown(ArrayList<Double> xValues, ArrayList<Double> yValues, double maxError) {
+    private List<AbstractSegment> topDown(List<Double> xValues, List<Double> yValues, double maxError) {
 
         List<AbstractSegment> pla = new ArrayList<AbstractSegment>();
 
         double[] yValuesArray = new double[yValues.size()];
-        ArrayList<Double> leftXValues = new ArrayList<Double>(xValues.size());
-        ArrayList<Double> leftYValues = new ArrayList<Double>(xValues.size());
-        ArrayList<Double> rightXValues = new ArrayList<Double>(xValues.size());
-        ArrayList<Double> rightYValues = new ArrayList<Double>(xValues.size());
+        List<Double> leftXValues = new ArrayList<Double>(xValues.size());
+        List<Double> leftYValues = new ArrayList<Double>(xValues.size());
+        List<Double> rightXValues = new ArrayList<Double>(xValues.size());
+        List<Double> rightYValues = new ArrayList<Double>(xValues.size());
 
         for (int i = 0; i < xValues.size(); i++) {
             rightXValues.add(xValues.get(i));
@@ -342,10 +342,10 @@ public abstract class AbstractPLARepresentation<SegmentType> implements Represen
         double bestError = Double.MAX_VALUE;
         double bestLeftError = Double.MAX_VALUE;
         double bestRightError = Double.MAX_VALUE;
-        ArrayList<Double> bestLeftXValues = new ArrayList<Double>(xValues.size());
-        ArrayList<Double> bestLeftYValues = new ArrayList<Double>(xValues.size());
-        ArrayList<Double> bestRightXValues = new ArrayList<Double>(xValues.size());
-        ArrayList<Double> bestRightYValues = new ArrayList<Double>(xValues.size());
+        List<Double> bestLeftXValues = new ArrayList<Double>(xValues.size());
+        List<Double> bestLeftYValues = new ArrayList<Double>(xValues.size());
+        List<Double> bestRightXValues = new ArrayList<Double>(xValues.size());
+        List<Double> bestRightYValues = new ArrayList<Double>(xValues.size());
 
         for (int i = 0; i < xValues.size() - 1; i++) {
             
@@ -415,9 +415,9 @@ public abstract class AbstractPLARepresentation<SegmentType> implements Represen
 
         List<AbstractSegment> pla = new ArrayList<AbstractSegment>();
 
-        ArrayList<Double> errors = new ArrayList<Double>(values.length / 2 - 1);
-        ArrayList<Double> xValues = new ArrayList<Double>();
-        ArrayList<Double> yValues = new ArrayList<Double>();
+        List<Double> errors = new ArrayList<Double>(values.length / 2 - 1);
+        List<Double> xValues = new ArrayList<Double>();
+        List<Double> yValues = new ArrayList<Double>();
         for (int i = 0; i < values.length; i++) {
             xValues.add((double) i);
             yValues.add(values[i]);

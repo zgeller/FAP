@@ -60,7 +60,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.03.05.
+ * @version 2025.03.05.2
  * @see KNNClassifier
  */
 public class MacleodKNNClassifier extends KNNClassifier {
@@ -312,7 +312,7 @@ public class MacleodKNNClassifier extends KNNClassifier {
             diff *= (1 + alpha);
 
             bestLabel = firstNode.obj.getLabel();
-            double bestWeight = ((sDist - node.distance) + alfaDiff) / diff;
+            double bestWeight = (sDist - node.distance + alfaDiff) / diff;
 
             neighbours.put(bestLabel, bestWeight);
             node = node.next;
@@ -320,7 +320,7 @@ public class MacleodKNNClassifier extends KNNClassifier {
             while (node != null && index < k) {
 
                 double label = node.obj.getLabel();
-                double weight = ((sDist - node.distance) + alfaDiff) / diff;
+                double weight = (sDist - node.distance + alfaDiff) / diff;
 
                 if (neighbours.containsKey(label))
                     weight += neighbours.get(label);

@@ -31,7 +31,7 @@ import fap.util.ThreadUtils;
  * Generates distance matrices in form of {@code Double [][]} objects.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.10.
+ * @version 2025.03.05.
  * @see AbstractDistanceGenerator
  */
 public class MatrixDistanceGenerator extends AbstractDistanceGenerator<Double[][]> {
@@ -274,7 +274,7 @@ public class MatrixDistanceGenerator extends AbstractDistanceGenerator<Double[][
         // initializing callback
         boolean callbackNotNull = callback != null;
         if (callbackNotNull) {
-            stepSize = (double) (callback.getDesiredCallbackNumber()) / cnt;
+            stepSize = (double) callback.getDesiredCallbackNumber() / cnt;
             if (stepSize >= 1 || stepSize == 0) {
                 callback.setPossibleCallbackNumber(cnt + 1);
                 stepSize = 1;

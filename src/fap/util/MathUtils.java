@@ -22,7 +22,7 @@ import java.util.List;
  * Math utilities.
  * 
  * @author Zoltán Gellér, Brankica Bratić
- * @version 2025.02.27.
+ * @version 2025.03.05.
  */
 public final class MathUtils {
 
@@ -71,7 +71,7 @@ public final class MathUtils {
      *         bigger than the given number)
      */
     public static int integralPowerOfTwoCeil(int number) {
-        return (int) Math.pow(2, Math.ceil((Math.log10(number) / Math.log10(2))));
+        return (int) Math.pow(2, Math.ceil(Math.log10(number) / Math.log10(2)));
     }
 
     /**

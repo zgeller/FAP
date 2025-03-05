@@ -57,7 +57,7 @@ import fap.core.data.Representation;
  * </ol>
  * 
  * @author Brankica Bratić, Zoltán Gellér
- * @version 2024.09.14.
+ * @version 2025.03.05.
  * @see Representation
  */
 public class DFTRepresentation implements Representation {
@@ -272,7 +272,7 @@ public class DFTRepresentation implements Representation {
             }
         }
 
-        return (1 / Math.sqrt(originalSize)) * value;
+        return value / Math.sqrt(originalSize);
         
     }
 

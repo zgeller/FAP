@@ -50,7 +50,7 @@ import fap.util.ExplicitLine;
  * </ol>
  * 
  * @author Miklós Kálózi, Zoltán Gellér, Brankica Bratić
- * @version 2025.03.05.
+ * @version 2025.03.05.2
  * @see Representation
  */
 public abstract class AbstractPLARepresentation<SegmentType> implements Representation {
@@ -307,7 +307,7 @@ public abstract class AbstractPLARepresentation<SegmentType> implements Represen
 
             int prevRIndex = pla.size() <= 1 ? -1 : (int) pla.get(pla.size() - 2).rightPoint.getX();
             int rIndex = (int) pla.get(pla.size() - 1).rightPoint.getX();
-            mean = (mean * (pla.size() - 1) + (rIndex - prevRIndex)) / pla.size(); // update mean
+            mean = (mean * (pla.size() - 1) + rIndex - prevRIndex) / pla.size(); // update mean
         }
 
         return pla;

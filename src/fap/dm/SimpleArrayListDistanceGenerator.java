@@ -34,7 +34,7 @@ import fap.util.ThreadUtils;
  * element of the matrix to be calculated.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.10.
+ * @version 2025.03.05.
  * @see AbstractDistanceGenerator
  */
 public class SimpleArrayListDistanceGenerator extends AbstractDistanceGenerator<ArrayList<Double>> {
@@ -195,7 +195,7 @@ public class SimpleArrayListDistanceGenerator extends AbstractDistanceGenerator<
         // initializing callback
         boolean callbackNotNull = callback != null;
         if (callbackNotNull) {
-            stepSize = (double) (callback.getDesiredCallbackNumber()) / cnt;
+            stepSize = (double) callback.getDesiredCallbackNumber() / cnt;
             if (stepSize >= 1 || stepSize == 0) {
                 callback.setPossibleCallbackNumber(cnt + 1);
                 stepSize = 1;
@@ -285,7 +285,7 @@ public class SimpleArrayListDistanceGenerator extends AbstractDistanceGenerator<
         // initializing callback
         boolean callbackNotNull = callback != null;
         if (callbackNotNull) {
-            stepSize = (double) (callback.getDesiredCallbackNumber()) / cnt;
+            stepSize = (double) callback.getDesiredCallbackNumber() / cnt;
             if (stepSize >= 1 || stepSize == 0) {
                 callback.setPossibleCallbackNumber(cnt + 1);
                 stepSize = 1;

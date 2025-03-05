@@ -19,6 +19,7 @@ package fap.representation;
 import java.security.InvalidParameterException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import fap.core.data.TimeSeries;
@@ -47,7 +48,7 @@ import fap.core.data.Representation;
  * </ol>
  * 
  * @author Miklós Kálózi, Zoltán Gellér, Brankica Bratić
- * @version 2024.09.14.
+ * @version 2025.03.05.
  * @see Representation
  */
 public class SAXRepresentation implements Representation {
@@ -68,10 +69,10 @@ public class SAXRepresentation implements Representation {
 	private char alphabet[];
 	
 	/**
-     * HashMap of the symbols of the alphabet. The values are the indexes of the
+     * Map of the symbols of the alphabet. The values are the indexes of the
      * symbols inside the alphabet.
      */
-	private HashMap<Character,Integer> symbolIndex;
+	private Map<Character,Integer> symbolIndex;
 	
 	/**
 	 * Values of normal distribution for symbol mapping.

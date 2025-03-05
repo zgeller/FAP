@@ -17,6 +17,7 @@
 package fap.classifier.NN;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import fap.classifier.NN.util.LinkedDistanceNode;
 import fap.classifier.NN.util.SortedList;
@@ -49,7 +50,7 @@ import fap.core.distance.Distance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2024.09.17.
+ * @version 2025.03.05.
  * @see KNNClassifier
  */
 public class RankKNNClassifier extends KNNClassifier {
@@ -134,7 +135,7 @@ public class RankKNNClassifier extends KNNClassifier {
 
         LinkedDistanceNode<TimeSeries> node = list.getFirst();
 
-        HashMap<Double, Integer> neighbours = new HashMap<Double, Integer>();
+        Map<Double, Integer> neighbours = new HashMap<Double, Integer>();
 
         double bestLabel = node.obj.getLabel();
         int rank = list.getCount();

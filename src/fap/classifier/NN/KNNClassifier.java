@@ -19,6 +19,7 @@ package fap.classifier.NN;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import fap.classifier.NN.util.DistanceNode;
 import fap.classifier.NN.util.LinkedDistanceNode;
@@ -57,7 +58,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.03.05.
+ * @version 2025.03.05.2
  * @see AbstractNNClassifier
  */
 public class KNNClassifier extends AbstractNNClassifier {
@@ -204,7 +205,7 @@ public class KNNClassifier extends AbstractNNClassifier {
 
         LinkedDistanceNode<TimeSeries> node = list.getFirst();
 
-        HashMap<Double, Integer> neighbours = new HashMap<Double, Integer>();
+        Map<Double, Integer> neighbours = new HashMap<Double, Integer>();
 
         double bestLabel = node.obj.getLabel();
         int bestWeight = 1;

@@ -17,6 +17,7 @@
 package fap.classifier.NN;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import fap.classifier.NN.util.LinkedDistanceNode;
 import fap.classifier.NN.util.SortedList;
@@ -43,7 +44,7 @@ import fap.core.distance.Distance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2024.09.17.
+ * @version 2025.03.05.
  * @see KNNClassifier
  */
 public class FibonacciKNNClassifier extends KNNClassifier {
@@ -156,7 +157,7 @@ public class FibonacciKNNClassifier extends KNNClassifier {
     protected double getBestLabel(SortedList<TimeSeries> list) {
 
         LinkedDistanceNode<TimeSeries> node = list.getFirst();
-        HashMap<Double, Integer> neighbours = new HashMap<Double, Integer>();
+        Map<Double, Integer> neighbours = new HashMap<Double, Integer>();
 
         int len = list.getCount();
         if (len != fibonacci.length)

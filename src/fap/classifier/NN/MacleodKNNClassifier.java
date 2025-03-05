@@ -17,6 +17,7 @@
 package fap.classifier.NN;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import fap.classifier.NN.util.DistanceNode;
 import fap.classifier.NN.util.LinkedDistanceNode;
@@ -59,7 +60,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2024.10.01.
+ * @version 2025.03.05.
  * @see KNNClassifier
  */
 public class MacleodKNNClassifier extends KNNClassifier {
@@ -271,7 +272,7 @@ public class MacleodKNNClassifier extends KNNClassifier {
 
             LinkedDistanceNode<TimeSeries> node = firstNode;
 
-            HashMap<Double, Integer> neighbours = new HashMap<Double, Integer>();
+            Map<Double, Integer> neighbours = new HashMap<Double, Integer>();
 
             bestLabel = node.obj.getLabel();
             int bestWeight = 1;
@@ -303,7 +304,7 @@ public class MacleodKNNClassifier extends KNNClassifier {
 
             LinkedDistanceNode<TimeSeries> node = firstNode;
 
-            HashMap<Double, Double> neighbours = new HashMap<Double, Double>();
+            Map<Double, Double> neighbours = new HashMap<Double, Double>();
 
             double alpha = this.getAlpha();
 

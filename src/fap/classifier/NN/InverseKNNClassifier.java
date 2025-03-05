@@ -17,6 +17,7 @@
 package fap.classifier.NN;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import fap.classifier.NN.util.LinkedDistanceNode;
 import fap.classifier.NN.util.SortedList;
@@ -85,7 +86,7 @@ import fap.core.distance.Distance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2024.09.17.
+ * @version 2025.03.05.
  * @see AbstractInverseKNNClassifier
  */
 public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
@@ -236,7 +237,7 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
 
         LinkedDistanceNode<TimeSeries> node = list.getFirst();
 
-        HashMap<Double, Double> neighbours = new HashMap<Double, Double>();
+        Map<Double, Double> neighbours = new HashMap<Double, Double>();
         
         double epsilon = this.getEpsilon();
 

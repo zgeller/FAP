@@ -31,7 +31,7 @@ import fap.io.TimeSeriesTextFileWriter;
  * Dataset utilities.
  * 
  * @author Zoltán Gellér
- * @version 2025.03.05.
+ * @version 2025.03.05.2
  */
 public final class DatasetUtils {
 
@@ -466,7 +466,7 @@ public final class DatasetUtils {
                 line = reader.readLine();
             }
         } catch (IOException e) {
-            throw new IOException("Error at line " + lineno + ".");
+            throw new IOException("Error at line " + lineno + ".", e);
         }
 
         return dsNames;

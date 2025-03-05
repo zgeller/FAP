@@ -18,12 +18,14 @@ package fap.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -32,20 +34,43 @@ import java.util.concurrent.TimeUnit;
  * Thread utilities.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.24.
+ * @version 2025.03.05.
  */
 public final class ThreadUtils {
 
     private ThreadUtils() {
     }
+    
+    
+    /**
+     * The number of processors available to the Java virtual machine
+     * ({@link Runtime#availableProcessors()
+     * Runtime.getRuntime().availableProcessors()}).
+     */
+    private static int processorCount = Runtime.getRuntime().availableProcessors();
 
     /**
      * The allowed number of threads. Default value is the number of processors
-     * available to the Java virtual machine ({@link Runtime#availableProcessors()
-     * Runtime.getRuntime().availableProcessors()})
+     * available to the Java virtual machine ({@link #availableProcessors}).
      */
-    static int globalThreadLimit = Runtime.getRuntime().availableProcessors();
+    private static int globalThreadLimit = processorCount;
 
+    /**
+     * Updates the current number of processors available to the Java virtual machine.
+     */
+    public static void updateProcessorCount() {
+        processorCount = Runtime.getRuntime().availableProcessors();
+    }
+    
+    /**
+     * Returns the current number of processors available to the Java virtual machine.
+     * 
+     * @return the current number of processors available to the Java virtual machine
+     */
+    public static int getProcessorCount() {
+        return processorCount;
+    }
+    
     /**
      * Sets the allowed number of threads.
      * 
@@ -85,7 +110,9 @@ public final class ThreadUtils {
     }
 
     /**
-     * Limits the given number of threads according to the allowed number.
+     * Limits the given number of threads according to the number of processors
+     * available to the Java virtual machine ({@link #getProcessorCount()}) and the
+     * global thread limit ({@link #getGlobalThreadLimit()}).
      *
      * <p>
      * Zero denotes the total number of processors available to the Java virtual
@@ -109,10 +136,8 @@ public final class ThreadUtils {
 
         int limit;
 
-        int pnumber = Runtime.getRuntime().availableProcessors();
-
         if (tnumber <= 0) {
-            limit = pnumber + tnumber;
+            limit = getProcessorCount() + tnumber;
             if (limit < 1)
                 limit = 1;
         } else
@@ -121,6 +146,7 @@ public final class ThreadUtils {
         int globalThreadLimit = getGlobalThreadLimit();
 
         return limit > globalThreadLimit ? globalThreadLimit : limit;
+        
     }
 
     /**
@@ -141,7 +167,7 @@ public final class ThreadUtils {
      */
     public static ThreadPoolExecutor init(ThreadPoolExecutor executor, int tnumber) {
         
-        tnumber = ThreadUtils.getThreadLimit(tnumber);
+        tnumber = getThreadLimit(tnumber);
 
         if (executor == null || executor.isShutdown())
             executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(tnumber);
@@ -150,6 +176,42 @@ public final class ThreadUtils {
 
         return executor;
         
+    }
+    
+    /**
+     * Creates a new work stealing pool with {@code tnumber} threads if any of the
+     * following conditions are met:
+     * <ul>
+     *  <li> {@code executor} is {@code null}
+     *  <li> {@code executor} is shut down
+     *  <li> the parallelism level of {@code executor} is not equal to {@code tnumber}
+     * (limited by {@link ThreadUtils#getThreadLimit(int)}).
+     * </ul>
+     *
+     * <p>
+     * The parallelism level of the new thread pool will be limited by
+     * {@code ThreadUtils#getThreadLimit(int)}.
+     * 
+     * @param executor the {@link ForkJoinPool} whose level of parallelism is to be
+     *                 set
+     * @param tnumber  number of threads
+     * @return the executor service
+     */
+    public static ForkJoinPool init(ForkJoinPool executor, int tnumber) {
+
+        tnumber = getThreadLimit(tnumber);
+
+        int parallelism = -1;
+        if (executor instanceof ForkJoinPool pool)
+            parallelism = pool.getParallelism();
+        
+        if (executor == null || executor.isShutdown() || parallelism != tnumber) {
+            if (executor != null)
+                executor.shutdown();
+            executor = (ForkJoinPool) Executors.newWorkStealingPool(tnumber);
+        }
+        
+        return executor;
     }
 
     /**
@@ -389,7 +451,6 @@ public final class ThreadUtils {
      * 
      * @param executor the executor service
      * @param futures  list of futures whose results should be awaited
-     * @throws InterruptedException if the thread has been interrupted
      * @throws Exception            if an error occurs
      */
     public static void waitForFutures(ExecutorService executor, Collection<Future<?>> futures) throws Exception {
@@ -402,18 +463,10 @@ public final class ThreadUtils {
             for (Future<?> future : futures)
                 future.get();
             
-        } catch (CancellationException | InterruptedException e) {
+        } catch (ExecutionException | CancellationException | InterruptedException e) {
             
-            ThreadUtils.shutdown(executor);
-            throw new InterruptedException();
-            
-        } catch (ExecutionException e) {
-            
-            ThreadUtils.shutdown(executor);
-            if (e.getCause() instanceof InterruptedException)
-                throw new InterruptedException();
-            else
-                throw e;
+            shutdown(executor);
+            throw e;
             
         }
         
@@ -425,13 +478,12 @@ public final class ThreadUtils {
      * @param executor the executor service
      * @param futures  list of futures whose results should be awaited
      * @return the list of the results
-     * @throws InterruptedException if the thread has been interrupted
-     * @throws Exception            if an error occurs
+     * @throws Exception if an error occurs
      */
     public static <T> List<T> waitForResults(ExecutorService executor, Collection<Future<T>> futures) throws Exception {
 
         if (futures == null)
-            return null;
+            return Collections.<T>emptyList();
         
         List<T> results = new ArrayList<>(futures.size());
         
@@ -440,18 +492,10 @@ public final class ThreadUtils {
             for (Future<T> future : futures)
                 results.add(future.get());
             
-        } catch (CancellationException | InterruptedException e) {
+        } catch (ExecutionException | CancellationException | InterruptedException e) {
             
-            ThreadUtils.shutdown(executor);
-            throw new InterruptedException();
-            
-        } catch (ExecutionException e) {
-            
-            ThreadUtils.shutdown(executor);
-            if (e.getCause() instanceof InterruptedException)
-                throw new InterruptedException();
-            else
-                throw e;
+            shutdown(executor);
+            throw e;
             
         }
         

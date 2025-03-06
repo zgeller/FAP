@@ -48,7 +48,7 @@ import fap.util.ThreadUtils.RunnableWrapper;
  * individual test subsets.
  * 
  * @author Zoltán Gellér
- * @version 2025.03.05.
+ * @version 2025.03.06.
  * @see AbstractExtendedEvaluator
  * @see Evaluator
  */
@@ -174,7 +174,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      *                     ({@code true})
      */
     public AbstractSeedsEvaluator(boolean stratified, int tnumber, boolean fullParallel) {
-        this(null, tnumber, fullParallel);
+        this(stratified, null, tnumber, fullParallel);
     }
     
     /**
@@ -733,7 +733,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
                         if (progress >= steps) {
                             steps++;
                             try {
-                                callback.callback(AbstractSeedsEvaluator.this);
+                                callback.callback(this);
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }

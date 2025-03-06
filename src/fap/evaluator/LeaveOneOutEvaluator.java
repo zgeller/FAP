@@ -53,7 +53,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.03.05.
+ * @version 2025.03.06.
  * @see AbstractExtendedEvaluator
  */
 public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements Copyable {
@@ -408,8 +408,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
     
     @Override
     public Object makeACopy(boolean deep) {
-        LeaveOneOutEvaluator copy = new LeaveOneOutEvaluator();
-        return copy;
+        return new LeaveOneOutEvaluator();
     }
     
 }

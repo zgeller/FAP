@@ -31,7 +31,7 @@ import fap.core.input.CSVParser;
  * Reads time series from a text file.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.11.
+ * @version 2025.03.06.
  * @see TimeSeriesTextIOHelper
  */
 public class TimeSeriesTextFileReader extends TimeSeriesTextIOHelper {
@@ -104,7 +104,7 @@ public class TimeSeriesTextFileReader extends TimeSeriesTextIOHelper {
                     try {
                         label = Double.parseDouble(labelStr);
                     } catch (NumberFormatException e) {
-                        throw new IllegalArgumentException("Invalid number format: " + labelStr);
+                        throw new IllegalArgumentException("Invalid number format: " + labelStr, e);
                     }
 
                     // data

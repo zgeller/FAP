@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Vladimir Kurbalija, Aleksa Todorović
+ * Copyright 2024 Vladimir Kurbalija, Aleksa Todorović, Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ package fap.util;
 /**
  * Polynomial with coefficients which are doubles.
  * 
- * @author Vladimir Kurbalija, Aleksa Todorović
- * @version 1.0
+ * @author Vladimir Kurbalija, Aleksa Todorović, Zoltán Gellér
+ * @version 2025.03.06.
  */
 public class Polynomial {
 
@@ -53,6 +53,7 @@ public class Polynomial {
     /**
      * Textual representation of polynomial;
      */
+    @Override
     public String toString() {
         String str = Double.toString(coefficients[0]);
         for (int i = 1; i < coefficients.length; i++) {
@@ -230,8 +231,8 @@ public class Polynomial {
     public double value(double x) {
         double temp = 1;
         double res = 0;
-        for (int i = 0; i < coefficients.length; i++) {
-            res += coefficients[i] * temp;
+        for (double coef: coefficients) {
+            res += coef * temp;
             temp = temp * x;
         }
         return res;

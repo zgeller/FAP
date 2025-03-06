@@ -32,7 +32,7 @@ import java.util.Random;
  * used to store the time series is determined at instantiation.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.20.
+ * @version 2025.03.06.
  * @see TimeSeries
  * @see List
  * @see Serializable
@@ -541,7 +541,7 @@ public class Dataset implements List<TimeSeries>, Serializable {
 
         }
 
-        if (first.size() > 0 && first.size() + 1 > foldSize) {
+        if (!first.isEmpty() && first.size() + 1 > foldSize) {
 
             int nk = first.size() - foldSize;
 

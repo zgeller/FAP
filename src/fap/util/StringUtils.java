@@ -20,22 +20,20 @@ package fap.util;
  * String utilities.
  * 
  * @author Zoltán Gellér
- * @version 2024.08.26.
+ * @version 2025.03.06.
  */
 public final class StringUtils {
 
     private StringUtils() {
-
     }
 
     /**
-     * Tests if the string {@code str} ends with the specified suffix ignoring the
-     * case.
+     * Checks if {@code str} ends with the given {@code suffix}, ignores case.
      * 
-     * @param str    - the string
-     * @param suffix - the suffix
-     * @return {@code true} if the string {@code str} ends with the given
-     *         {@code suffix} ignoring the case.
+     * @param str    the string
+     * @param suffix the suffix
+     * @return {@code true} if {@code str} ends with the given {@code suffix},
+     *         ignores case.
      */
     public static boolean endsWithIgnoreCase(String str, String suffix) {
 
@@ -44,25 +42,25 @@ public final class StringUtils {
 
         int beginIndex = str.length() - suffix.length();
         return beginIndex < 0 ? false : str.substring(beginIndex).equalsIgnoreCase(suffix);
+        
     }
 
     /**
-     * Tries to converts the given {@code String} to an {@code int} number. In case
-     * of success, it will return the absolute value of the number. In case of
-     * failure, it will return the given default value.
+     * Attempts to convert the given {@code String} to an {@code int}. If
+     * successful, it returns the absolute value of the number. If unsuccessful, it
+     * returns the absolute value of the provided default value, {@code def}.
      * 
-     * @param str the string to be converted into an integer number
-     * @param def the default value to be returned in case of failure
-     * @return the absolute value of the converted integer or the default value in
-     *         case of failure
+     * @param str the string to be converted into a non-negative integer
+     * @param def the number whose absolute value is returned on failure
+     * @return the absolute value of the number contained in the string or the
+     *         absolute value of the parameter {@code def}
      */
     public static int parseAbs(String str, int def) {
-        int tmp = def;
         try {
-            tmp = Integer.parseInt(str);
+            return Math.abs(Integer.parseInt(str));
         } catch (NumberFormatException e) {
+            return Math.abs(def);
         }
-        return Math.abs(tmp);
     }
 
 }

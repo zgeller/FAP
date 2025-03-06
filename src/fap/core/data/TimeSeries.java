@@ -33,7 +33,7 @@ import java.util.Map;
  * time series is determined at instantiation.
  * 
  * @author Zoltán Gellér
- * @version 2025.03.05.
+ * @version 2025.03.06.
  * @see DataPoint
  * @see List
  * @see Serializable
@@ -60,7 +60,7 @@ public class TimeSeries implements List<DataPoint>, Serializable  {
     /**
      * The collection of representations of this time series.
      */
-    private Map<Class<? extends Representation>, Representation> representations = new HashMap<Class<? extends Representation>, Representation>();;
+    private Map<Class<? extends Representation>, Representation> representations = new HashMap<Class<? extends Representation>, Representation>();
 
     /**
      * Constructs a new time series utilizing an {@code ArrayList} for storing data

@@ -23,10 +23,13 @@ import fap.exception.IncomparableTimeSeriesException;
  * Utility class for global constraints.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.01.
+ * @version 2025.03.06.
  */
 public class ConstraintUtils {
 
+    private ConstraintUtils() {
+    }
+    
     /**
      * Calculates the width of the warping (editing) window:
      * 

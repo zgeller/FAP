@@ -47,7 +47,7 @@ import fap.util.ThreadUtils;
  *            the {@link Comparable} interface
  * 
  * @author Zoltán Gellér
- * @version 2025.02.27.
+ * @version 2025.03.06.
  * @see AbstractTrainer
  * @see ParameterTrainer
  * @see Callbackable
@@ -213,7 +213,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * @param tnumber number of threads.
      */
     public AbstractParameterTrainer(T first, T last, int tnumber) {
-        this(null, first, last, null, 1);
+        this(null, first, last, null, tnumber);
     }
 
     /**
@@ -636,16 +636,6 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
         static Dataset trainset;
 
         /**
-         * A copy of this trainer.
-         */
-        private AbstractParameterTrainer<T> trainerCopy;
-        
-        /**
-         * A copy of the classifier.
-         */
-        private Classifier classifierCopy;
-        
-        /**
          * The value of the parameter.
          */
         private T value;
@@ -671,8 +661,8 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
         public Double call() throws Exception {
             
             // getting a trainer and a classifier
-            trainerCopy = (AbstractParameterTrainer<T>) trainers.poll();
-            classifierCopy = classifiers.poll();
+            AbstractParameterTrainer<T> trainerCopy = (AbstractParameterTrainer<T>) trainers.poll();
+            Classifier classifierCopy = classifiers.poll();
             
             ParameterTrainer<?> subTrainer = trainerCopy.getTrainer();
             Evaluator evaluator = trainerCopy.getEvaluator();

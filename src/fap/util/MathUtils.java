@@ -22,7 +22,7 @@ import java.util.List;
  * Math utilities.
  * 
  * @author Zoltán Gellér, Brankica Bratić
- * @version 2025.03.05.
+ * @version 2025.03.06.
  */
 public final class MathUtils {
 
@@ -84,13 +84,13 @@ public final class MathUtils {
      */
     public static double mean(List<Double> values) throws IllegalArgumentException {
 
-        if (values == null || values.size() == 0)
+        if (values == null || values.isEmpty())
             throw new IllegalArgumentException("The list must not be null, and must have at least one element.");
 
         double sum = 0;
         for (double value : values)
             sum += value;
-
+        
         return sum / values.size();
         
     }

@@ -27,10 +27,13 @@ import fap.core.trainer.Trainer;
  * Evaluator utilities.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.22.
+ * @version 2025.03.06.
  */
 public final class Copier {
 
+    private Copier() {
+    }
+    
     /**
      * Makes {@code n} copies of the specified {@code trainer} and
      * {@code classifier} and adds them to the {@code trainers} and

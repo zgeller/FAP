@@ -31,7 +31,7 @@ import fap.io.TimeSeriesTextFileWriter;
  * Dataset utilities.
  * 
  * @author Zoltán Gellér
- * @version 2025.03.05.2
+ * @version 2025.03.06
  */
 public final class DatasetUtils {
 
@@ -346,14 +346,14 @@ public final class DatasetUtils {
      */
     public static List<Double> loadLabelsList(String fname) throws IOException {
         List<Double> labels = new ArrayList<Double>();
-        BufferedReader reader = new BufferedReader(new FileReader(fname));
-        String line = reader.readLine();
-        while (line != null && line.length() > 0) {
-            double label = Double.parseDouble(line);
-            labels.add(label);
-            line = reader.readLine();
+        try (BufferedReader reader = new BufferedReader(new FileReader(fname))) {
+            String line = reader.readLine();
+            while (line != null && line.length() > 0) {
+                double label = Double.parseDouble(line);
+                labels.add(label);
+                line = reader.readLine();
+            }
         }
-        reader.close();
         return labels;
     }
 

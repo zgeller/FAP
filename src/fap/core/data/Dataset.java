@@ -21,10 +21,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * A time-series dataset implemented in the form of an {@link ArrayList} or a
@@ -32,7 +36,7 @@ import java.util.Random;
  * used to store the time series is determined at instantiation.
  * 
  * @author Zoltán Gellér
- * @version 2025.03.06.
+ * @version 2025.03.07.
  * @see TimeSeries
  * @see List
  * @see Serializable
@@ -40,7 +44,7 @@ import java.util.Random;
 public class Dataset implements List<TimeSeries>, Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * The list that stores the time series of this dataset.
      */
@@ -218,21 +222,19 @@ public class Dataset implements List<TimeSeries>, Serializable {
      *         given list of labels
      */
     public List<Integer> getDistribution(List<Double> labels) {
-
-        List<Integer> list = new ArrayList<Integer>();
-        for (int i = 0; i < labels.size(); i++)
-            list.add(0);
-
+        
+        Map<Double, Integer> map = new LinkedHashMap<>();
+        
+        for (Double d : labels)
+            map.put(d, 0);
+        
         for (TimeSeries ts : this) {
-
-            int index = labels.indexOf(ts.getLabel());
-            int elem = list.get(index);
-            elem++;
-            list.set(index, elem);
-
+            double label = ts.getLabel();
+            if (map.containsKey(label))
+                map.put(label, map.get(label) + 1);
         }
 
-        return list;
+        return new ArrayList<Integer>(map.values());
 
     }
 
@@ -254,18 +256,12 @@ public class Dataset implements List<TimeSeries>, Serializable {
      */
     public List<Double> getDistinctLabels() {
 
-        List<Double> list = new ArrayList<Double>();
-
-        for (TimeSeries ts : this) {
-
-            double label = ts.getLabel();
-
-            if (list.indexOf(label) == -1)
-                list.add(label);
-
-        }
-
-        return list;
+        Set<Double> set = new LinkedHashSet<>(); // consider using HashSet if the order is not important
+        
+        for (TimeSeries ts : this)
+            set.add(ts.getLabel());
+        
+        return new ArrayList<Double>(set);
 
     }
 
@@ -278,7 +274,7 @@ public class Dataset implements List<TimeSeries>, Serializable {
      */
     public double[] getLabels() {
 
-        int len = this.size();
+        final int len = this.size();
 
         double[] labels = new double[len];
 
@@ -316,22 +312,23 @@ public class Dataset implements List<TimeSeries>, Serializable {
 
         List<Double> labels = this.getDistinctLabels();
 
-        List<Dataset> list = new ArrayList<>(labels.size());
+        // maps the labels to datasets
+        Map<Double, Dataset> map = new LinkedHashMap<>(); 
 
-        for (int i = 0; i < labels.size(); i++)
-            list.add(getDataset(-1));
+        // assigns an empty dataset to every label
+        for (Double label : labels)
+            map.put(label, getDataset(-1));
 
-        for (TimeSeries ts : this) {
-            int index = labels.indexOf(ts.getLabel());
-            Dataset dataset = list.get(index);
-            dataset.add(ts);
-        }
+        // finds all the time series with the given label
+        for (TimeSeries ts : this)
+            map.get(ts.getLabel()).add(ts);
 
+        // if needed, shuffles the datasets
         if (rnd != null)
-            for (Dataset ds : list)
+            for (Dataset ds : map.values())
                 Collections.shuffle(ds, rnd);
 
-        return list;
+        return new ArrayList<>(map.values());
 
     }
 
@@ -454,7 +451,7 @@ public class Dataset implements List<TimeSeries>, Serializable {
      */
     private List<Dataset> getSimpleSplit(int k) throws IllegalArgumentException {
         
-        int dsize = this.size();
+        final int dsize = this.size();
         
         if (k < 1 || k > dsize)
             throw new IllegalArgumentException("k must be in the range [1..size()]");
@@ -510,7 +507,7 @@ public class Dataset implements List<TimeSeries>, Serializable {
      */
     private List<Dataset> getRandomSplit(int k, Random rnd) throws IllegalArgumentException {
 
-        int dsize = this.size();
+        final int dsize = this.size();
 
         if (k < 1 || k > dsize)
             throw new IllegalArgumentException("k must be in the range [1..size()]");
@@ -519,7 +516,7 @@ public class Dataset implements List<TimeSeries>, Serializable {
 
         int foldSize = dsize / k;
 
-        list.add(getDataset(this.size()));
+        list.add(getDataset(dsize));
         for (int i = 1; i < k; i++)
             list.add(getDataset(foldSize));
 
@@ -574,9 +571,7 @@ public class Dataset implements List<TimeSeries>, Serializable {
      */
     private List<Dataset> getStratifiedSplit(int k, Random rnd) throws IllegalArgumentException {
 
-        int listSize = this.size();
-
-        if (k < 2 || k > listSize)
+        if (k < 2 || k > this.size())
             throw new IllegalArgumentException("k must be in the range [2..size()].");
 
         List<Dataset> list = new ArrayList<Dataset>(k);
@@ -690,13 +685,15 @@ public class Dataset implements List<TimeSeries>, Serializable {
 
         List<Dataset> list = new ArrayList<Dataset>(2);
 
+        final int dsize = this.size();
+        
         Dataset first = getDataset(-1);
-        Dataset second = getDataset(this.size());
+        Dataset second = getDataset(dsize);
         second.addAll(this);
         list.add(first);
         list.add(second);
 
-        long count = Math.round(this.size() * percentage / 100d);
+        long count = Math.round(dsize * percentage / 100d);
 
         for (long i = 0; i < count; i++) {
 
@@ -838,6 +835,7 @@ public class Dataset implements List<TimeSeries>, Serializable {
         list.add(maxLen);
 
         return list;
+        
     }
 
     @Override
@@ -964,4 +962,5 @@ public class Dataset implements List<TimeSeries>, Serializable {
         }
         return sb.toString();
     }
+    
 }

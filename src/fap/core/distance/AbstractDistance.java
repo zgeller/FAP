@@ -18,6 +18,7 @@ package fap.core.distance;
 
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import fap.core.data.TimeSeries;
 
@@ -36,7 +37,7 @@ import fap.core.data.TimeSeries;
  * </ul>
  * 
  * @author Zoltán Gellér
- * @version 2025.02.26.
+ * @version 2025.03.14.
  * @see Distance
  */
 public abstract class AbstractDistance implements Distance {
@@ -46,7 +47,7 @@ public abstract class AbstractDistance implements Distance {
     /**
      * A {@link ConcurrentHashMap} for storing distances between time series.
      */
-    private ConcurrentHashMap<Integer, ConcurrentHashMap<Integer, Double>> storage = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, ConcurrentMap<Integer, Double>> storage = new ConcurrentHashMap<>();
 
     /**
      * Indicates whether storing distances is enabled.
@@ -120,9 +121,9 @@ public abstract class AbstractDistance implements Distance {
             index2 = tmp;
         }
         
-        ConcurrentHashMap<Integer, Double> newData = new ConcurrentHashMap<Integer, Double>();
+        ConcurrentMap<Integer, Double> newData = new ConcurrentHashMap<Integer, Double>();
         
-        ConcurrentHashMap<Integer, Double> oldData = storage.putIfAbsent(index1, newData);
+        ConcurrentMap<Integer, Double> oldData = storage.putIfAbsent(index1, newData);
         
         if (oldData != null)
             oldData.put(index2, distance);
@@ -132,24 +133,23 @@ public abstract class AbstractDistance implements Distance {
     }
 
     /**
-     * Returns the stored distance between the two time series where the index of
-     * {@code series1} is used as the primery and the index of {@code series2} as
-     * the secondary key.
+     * Returns the stored distance between the time series with the given indices.
+     * {@code index1} is used as the primary and {@code index2} as the secondary
+     * key.
      * 
-     * @param series1 the first time series whose index is used as the primary key
-     * @param series2 the second time series wjpse omdex is used as the secondary
-     *                key
+     * @param index1 the index of the first time series used as the primary key
+     * @param index2 the index of the second time series used as the secondary key
      * @return the stored distance between {@code series1} and {@code series2}
      */
-    private double getDistance(TimeSeries series1, TimeSeries series2) {
+    private double getDistance(int index1, int index2) {
 
         double distance = Double.NaN;
             
-        ConcurrentHashMap<Integer, Double> data = storage.get(series1.getIndex());
+        ConcurrentMap<Integer, Double> data = storage.get(index1);
 
         if (data != null) {
 
-            Double dist = data.get(series2.getIndex());
+            Double dist = data.get(index2);
 
             if (dist != null)
                 distance = dist;
@@ -159,6 +159,7 @@ public abstract class AbstractDistance implements Distance {
         return distance;
 
     }
+    
 
     /**
      * Returns the stored distance between the specified time series or
@@ -185,9 +186,9 @@ public abstract class AbstractDistance implements Distance {
         double distance = Double.NaN;
         
         if (index1 < index2)
-            distance = getDistance(series1, series2);
+            distance = getDistance(index1, index2);
         else
-            distance = getDistance(series2, series1);
+            distance = getDistance(index2, index1);
         
         return distance;
 

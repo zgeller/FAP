@@ -50,8 +50,8 @@ public final class Copier {
      * {@code null}.
      * 
      * <p>
-     * If the trainer implements the DistanceBasedTrainer interface and does not
-     * affect the distance measure, the copies of the classifier will not be deep.
+     * If the trainer does not affect the distance measure, the copies of the
+     * classifier will not be deep.
      * 
      * @param trainer     the trainer whose copies should be made
      * @param classifier  the classifier whose copies should be made

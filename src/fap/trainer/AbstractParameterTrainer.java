@@ -721,7 +721,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
     }
 
     /**
-     * Parallely trains the classifier using the specified trainset.
+     * Trains the classifier in parallel using the specified trainset.
      * 
      * @param classifier the classifier to be trained
      * @param trainset   the training dataset
@@ -900,7 +900,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
         copy.setTrainer(subTrainerCopy);
         copy.setEvaluator(evaluatorCopy);
         copy.setModifier(this.getModifier()); // consider making a deep copy
-        copy.setValues(this.getValues()); // considr making a deep copy
+        copy.setValues(this.getValues()); // consider making a deep copy
         
     }
     

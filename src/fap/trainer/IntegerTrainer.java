@@ -32,13 +32,13 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructs a new single-threaded uninitialized Integer parameter trainer.
+     * Constructs a new single-threaded uninitialized {@code Integer} parameter trainer.
      */
     public IntegerTrainer() {
     }
 
     /**
-     * Constructs a new single-threaded Integer parameter trainer with the specified
+     * Constructs a new single-threaded {@code Integer} parameter trainer with the specified
      * parameter modifier.
      * 
      * @param modifier the parameter modifier, which is to be used to set the value
@@ -49,7 +49,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new Integer parameter trainer with the specified number of
+     * Constructs a new {@code Integer} parameter trainer with the specified number of
      * threads.
      * 
      * @param tnumber number of threads.
@@ -59,7 +59,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new Integer parameter trainer with the specified number of
+     * Constructs a new {@code Integer} parameter trainer with the specified number of
      * threads and the parameter modifier.
      * 
      * @param modifier the parameter modifier, which is to be used to set the value
@@ -71,7 +71,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new single-threaded Integer parameter trainer with parameter
+     * Constructs a new single-threaded {@code Integer} parameter trainer with parameter
      * values between {@code first} and {@code last}, in increments of 1.
      * 
      * @param first the first value to be evaluated, must be {@code first <= last}
@@ -82,7 +82,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new single-threaded Integer parameter trainer with the specified
+     * Constructs a new single-threaded {@code Integer} parameter trainer with the specified
      * parameter modifier, and parameter values between {@code first} and
      * {@code last}, in increments of 1.
      * 
@@ -99,7 +99,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new Integer parameter trainer with the specified number of
+     * Constructs a new {@code Integer} parameter trainer with the specified number of
      * threads and parameter values between {@code first} and {@code last}, in
      * increments of 1.
      * 
@@ -113,7 +113,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new Integer parameter trainer with the specified number of
+     * Constructs a new {@code Integer} parameter trainer with the specified number of
      * threads, the parameter modifier, and parameter values between {@code first}
      * and {@code last}, in increments of 1.
      * 
@@ -131,7 +131,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new single-threaded Integer parameter trainer with parameter
+     * Constructs a new single-threaded {@code Integer} parameter trainer with parameter
      * values between {@code first} and {@code last}, in increments of
      * {@code increment}.
      * 
@@ -146,7 +146,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new single-threaded Integer parameter trainer with the specified
+     * Constructs a new single-threaded {@code Integer} parameter trainer with the specified
      * parameter modifier, and parameter values between {@code first} and
      * {@code last}, in increments of {@code increment}.
      * 
@@ -164,7 +164,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new Integer parameter trainer with the specified number of
+     * Constructs a new {@code Integer} parameter trainer with the specified number of
      * threads and parameter values between {@code first} and {@code last}, in
      * increments of {@code increment}.
      * 
@@ -181,7 +181,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new Integer parameter trainer with the specified number of
+     * Constructs a new {@code Integer} parameter trainer with the specified number of
      * threads, the parameter modifier, and parameter values between {@code first}
      * and {@code last}, in increments of {@code increment}.
      * 
@@ -200,7 +200,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new single-threaded Integer parameter trainer with the specified
+     * Constructs a new single-threaded {@code Integer} parameter trainer with the specified
      * parameter values.
      * 
      * @param values the list of values to be evaluated
@@ -210,7 +210,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new single-threaded Integer parameter trainer with the specified
+     * Constructs a new single-threaded {@code Integer} parameter trainer with the specified
      * parameter modifier.
      * 
      * @param modifier the parameter modifier, which is to be used to set the value
@@ -222,7 +222,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new Integer parameter trainer with the specified number of
+     * Constructs a new {@code Integer} parameter trainer with the specified number of
      * threads, and the parameter values.
      * 
      * @param values  the list of values to be evaluated
@@ -233,7 +233,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new Integer parameter trainer with the specified number of
+     * Constructs a new {@code Integer} parameter trainer with the specified number of
      * threads, the parameter modifier, and the parameter values.
      * 
      * @param modifier the parameter modifier, which is to be used to set the value
@@ -246,7 +246,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new single-threaded Integer parameter trainer with the specified
+     * Constructs a new single-threaded {@code Integer} parameter trainer with the specified
      * parameter values.
      * 
      * @param values the array of values to be evaluated
@@ -256,7 +256,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new single-threaded Integer parameter trainer with the specified
+     * Constructs a new single-threaded {@code Integer} parameter trainer with the specified
      * parameter modifier, and the parameter values.
      * 
      * @param modifier the parameter modifier, which is to be used to set the value
@@ -268,7 +268,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new Integer parameter trainer with the specified number of
+     * Constructs a new {@code Integer} parameter trainer with the specified number of
      * threads, and the parameter values.
      * 
      * @param values  the array of values to be evaluated
@@ -279,7 +279,7 @@ public class IntegerTrainer extends AbstractParameterTrainer<Integer> {
     }
 
     /**
-     * Constructs a new Integer parameter trainer with the specified number of
+     * Constructs a new {@code Integer} parameter trainer with the specified number of
      * threads, the parameter modifier, and the parameter values.
      * 
      * @param modifier the parameter modifier, which is to be used to set the value

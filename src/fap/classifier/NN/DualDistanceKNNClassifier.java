@@ -27,7 +27,7 @@ import fap.core.distance.Distance;
 /**
  * Weighted kNN classifier utilizing the dual distance-weighted function. The
  * class of a time series is determined by weighted voting of its k-nearest
- * neighbours in the training set. Weights are calculated using the dual
+ * neighbors in the training set. Weights are calculated using the dual
  * distance-weighted function:
  * 
  * <blockquote> <img src="doc-files/DualDistanceKNNClassifier-1.png">
@@ -50,7 +50,7 @@ public class DualDistanceKNNClassifier extends KNNClassifier {
 
 	/**
      * Constructs a new single-threaded weighted kNN classifier utilizing the dual
-     * distance-weighted function, with the default number of nearest neighbours
+     * distance-weighted function, with the default number of nearest neighbors
      * ({@link KNNClassifier#k k}).
      */
 	public DualDistanceKNNClassifier() {
@@ -58,10 +58,10 @@ public class DualDistanceKNNClassifier extends KNNClassifier {
 	
 	/**
      * Constructs a new single-threaded weighted kNN classifier utilizing the dual
-     * distance-weighted function, with the given number of nearest neighbours
+     * distance-weighted function, with the given number of nearest neighbors
      * ({@code k}).
      * 
-     * @param k number of nearest neighbours, must be {@code >= 1}
+     * @param k number of nearest neighbors, must be {@code >= 1}
      */
 	public DualDistanceKNNClassifier(int k) {
 		super(k);
@@ -69,10 +69,10 @@ public class DualDistanceKNNClassifier extends KNNClassifier {
 	
 	/**
      * Constructs a new weighted kNN classifier utilizing the dual distance-weighted
-     * function, with the given number of nearest neighbours ({@code k}), and number
+     * function, with the given number of nearest neighbors ({@code k}), and number
      * of threads ({@code tnumber}).
      * 
-     * @param k       number of nearest neighbours, must be {@code >= 1}
+     * @param k       number of nearest neighbors, must be {@code >= 1}
      * @param tnumber number of threads
      */
 	public DualDistanceKNNClassifier(int k, int tnumber) {
@@ -82,7 +82,7 @@ public class DualDistanceKNNClassifier extends KNNClassifier {
 	/**
      * Constructs a new single-threaded weighted kNN classifier utilizing the dual
      * distance-weighted function, with the given distance measure
-     * ({@code distance}) and with the default number of nearest neighbours
+     * ({@code distance}) and with the default number of nearest neighbors
      * ({@link KNNClassifier#k k}).
      * 
      * @param distance distance measure
@@ -94,10 +94,10 @@ public class DualDistanceKNNClassifier extends KNNClassifier {
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing the dual
      * distance-weighted function, with the given distance measure
-     * ({@code distance}) and number of nearest neighbours ({@code k}).
+     * ({@code distance}) and number of nearest neighbors ({@code k}).
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      */
 	public DualDistanceKNNClassifier(Distance distance, int k) {
 		super(distance, k);
@@ -106,10 +106,10 @@ public class DualDistanceKNNClassifier extends KNNClassifier {
 	/**
      * Constructs a new weighted kNN classifier utilizing the dual distance-weighted
      * function, with the given distance measure ({@code distance}), number of
-     * nearest neighbours ({@code k}), and number of threads ({@code tnumber}).
+     * nearest neighbors ({@code k}), and number of threads ({@code tnumber}).
 	 * 
 	 * @param distance distance measure
-	 * @param k        number of nearest neighbours, must be {@code >= 1}
+	 * @param k        number of nearest neighbors, must be {@code >= 1}
 	 * @param tnumber  number of threads
 	 */
 	public DualDistanceKNNClassifier(Distance distance, int k, int tnumber) {
@@ -117,10 +117,10 @@ public class DualDistanceKNNClassifier extends KNNClassifier {
 	}
 
 	/**
-	 * Finds the best label among the nearest neighbours. Weights are calculated
+	 * Finds the best label among the nearest neighbors. Weights are calculated
 	 * using the dual distance-weighted function.
 	 * 
-	 * @param list sorted list of the nearest neighbours
+	 * @param list sorted list of the nearest neighbors
 	 * @return the best label
 	 */
 	@Override

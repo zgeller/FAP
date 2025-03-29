@@ -26,7 +26,7 @@ import fap.core.distance.Distance;
 
 /**
  * Weighted kNN classifier utilizing inverse distances. The class of a time
- * series is determined by weighted voting of its k-nearest neighbours in the
+ * series is determined by weighted voting of its k-nearest neighbors in the
  * training set. Weights are calculated using inverse distances:
  * 
  * <blockquote> <img src="doc-files/InverseKNNClassifier-1.png"> </blockquote>
@@ -95,7 +95,7 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
 
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing inverse
-     * distances, with the default number of nearest neighbours
+     * distances, with the default number of nearest neighbors
      * ({@link KNNClassifier#k k}) and the default
      * {@link AbstractInverseKNNClassifier#epsilon epsilon} value.
      */
@@ -104,10 +104,10 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
 
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing inverse
-     * distances, with the given number of nearest neighbours ({@code k}) and the
+     * distances, with the given number of nearest neighbors ({@code k}) and the
      * default {@link AbstractInverseKNNClassifier#epsilon epsilon} value.
      * 
-     * @param k number of nearest neighbours, must be {@code >= 1}
+     * @param k number of nearest neighbors, must be {@code >= 1}
      */
     public InverseKNNClassifier(int k) {
         super(k);
@@ -115,11 +115,11 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
     
     /**
      * Constructs a new weighted kNN classifier utilizing inverse distances, with
-     * the given number of nearest neighbours ({@code k}) and number of threads
+     * the given number of nearest neighbors ({@code k}) and number of threads
      * ({@code tnumber}), and the default
      * {@link AbstractInverseKNNClassifier#epsilon epsilon} value.
      * 
-     * @param k       number of nearest neighbours, must be {@code >= 1}
+     * @param k       number of nearest neighbors, must be {@code >= 1}
      * @param tnumber number of threads
      */
     public InverseKNNClassifier(int k, int tnumber) {
@@ -129,7 +129,7 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
     /**
      * Constructs a new single-threaded weighted kNN classifier inverse distances,
      * with the given distance measure ({@code distance}) and with the default
-     * number of nearest neighbours ({@link KNNClassifier#k k}).
+     * number of nearest neighbors ({@link KNNClassifier#k k}).
      * 
      * @param distance distance measure
      */
@@ -140,11 +140,11 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing inverse
      * distances, with the given distance measure ({@code distance}), number of
-     * nearest neighbours ({@code k}), and the default
+     * nearest neighbors ({@code k}), and the default
      * {@link AbstractInverseKNNClassifier#epsilon epsilon} value.
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      */
     public InverseKNNClassifier(Distance distance, int k) {
         super(distance, k);
@@ -152,12 +152,12 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
     
     /**
      * Constructs a new weighted kNN classifier utilizing inverse distances, with
-     * the given distance measure ({@code distance}), number of nearest neighbours
+     * the given distance measure ({@code distance}), number of nearest neighbors
      * ({@code k}), and number of threads ({@code tnumber}), and the default
      * {@link AbstractInverseKNNClassifier#epsilon epsilon} value.
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      * @param tnumber  number of threads
      */
     public InverseKNNClassifier(Distance distance, int k, int tnumber) {
@@ -166,11 +166,11 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
 
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing inverse
-     * distances, with the given number of nearest neighbours ({@code k}) and a
+     * distances, with the given number of nearest neighbors ({@code k}) and a
      * small constant ({@code epsilon}) that is to be added to the denominator to
      * avoid division by zero.
      * 
-     * @param k       number of nearest neighbours, must be {@code >= 1}
+     * @param k       number of nearest neighbors, must be {@code >= 1}
      * @param epsilon a small constant that is to be added to the denominator to
      *                avoid division by zero, must be {@code > 0}
      */
@@ -180,11 +180,11 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
     
     /**
      * Constructs a new weighted kNN classifier utilizing inverse distances, with
-     * the given number of nearest neighbours ({@code k}), a small constant
+     * the given number of nearest neighbors ({@code k}), a small constant
      * ({@code epsilon}) that is to be added to the denominator to avoid division
      * by zero, and number of threads ({@code tnumber}).
      * 
-     * @param k       number of nearest neighbours, must be {@code >= 1}
+     * @param k       number of nearest neighbors, must be {@code >= 1}
      * @param epsilon a small constant that is to be added to the denominator to
      *                avoid division by zero, must be {@code > 0}
      * @param tnumber number of threads
@@ -196,11 +196,11 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing inverse
      * distances, with the given distance measure ({@code distance}), number of
-     * nearest neighbours ({@code k}), and a small constant ({@code epsilon}) that
+     * nearest neighbors ({@code k}), and a small constant ({@code epsilon}) that
      * is to be added to the denominator to avoid division by zero.
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      * @param epsilon  a small constant that is to be added to the denominator to
      *                 avoid division by zero, must be {@code > 0}
      */
@@ -210,13 +210,13 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
     
     /**
      * Constructs a new weighted kNN classifier utilizing inverse distances, with
-     * the given distance measure ({@code distance}), number of nearest neighbours
+     * the given distance measure ({@code distance}), number of nearest neighbors
      * ({@code k}), a small constant ({@code epsilon}) that is to be added to the
      * denominator to avoid division by zero, and number of threads
      * ({@code tnumber}).
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      * @param epsilon  a small constant that is to be added to the denominator to
      *                 avoid division by zero, must be {@code > 0}
      * @param tnumber  number of threads
@@ -226,10 +226,10 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
     }
 
     /**
-     * Finds the best label among the nearest neighbours. Weights are calculated
+     * Finds the best label among the nearest neighbors. Weights are calculated
      * using inverse distances.
      * 
-     * @param list sorted list of the nearest neighbours
+     * @param list sorted list of the nearest neighbors
      * @return the best label
      */
     @Override

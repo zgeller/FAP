@@ -33,7 +33,7 @@ import fap.util.ThreadUtils;
 
 /**
  * Majority-voting kNN classifier. The class of a time series {@code Q} is determined by a
- * majority vote of its k-nearest neighbours in the training set:
+ * majority vote of its k-nearest neighbors in the training set:
  *
  * <blockquote> <img src="doc-files/KNNClassifier-1.png"> </blockquote>
  * 
@@ -66,7 +66,7 @@ public class KNNClassifier extends AbstractNNClassifier {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The number of nearest neighbours to consider. Default value is {@code 10}.
+     * The number of nearest neighbors to consider. Default value is {@code 10}.
      */
     protected int k = 10;
     
@@ -78,17 +78,17 @@ public class KNNClassifier extends AbstractNNClassifier {
 
     /**
      * Constructs a new single-threaded majority-voting kNN classifier, with the
-     * default number of nearest neighbours ({@link #k}) and without a distance
-     * measuer.
+     * default number of nearest neighbors ({@link #k}) and without a distance
+     * measure.
      */
     public KNNClassifier() {
     }
 
     /**
      * Constructs a new single-threaded majority-voting kNN classifier utilizing,
-     * with the given number of nearest neighbours ({@code k}).
+     * with the given number of nearest neighbors ({@code k}).
      * 
-     * @param k number of nearest neighbours, must be {@code >= 1}
+     * @param k number of nearest neighbors, must be {@code >= 1}
      */
     public KNNClassifier(int k) {
         this.setK(k);
@@ -96,9 +96,9 @@ public class KNNClassifier extends AbstractNNClassifier {
     
     /**
      * Constructs a new majority-voting kNN classifier, with the specified number of
-     * nearest neighbours ({@code k}), and number of threads ({@code tnumber}).
+     * nearest neighbors ({@code k}), and number of threads ({@code tnumber}).
      * 
-     * @param k       number of nearest neighbours, must be {@code >= 1}
+     * @param k       number of nearest neighbors, must be {@code >= 1}
      * @param tnumber number of threads
      */
     public KNNClassifier(int k, int tnumber) {
@@ -109,7 +109,7 @@ public class KNNClassifier extends AbstractNNClassifier {
     /**
      * Constructs a new single-threaded majority-voting kNN classifier, with the
      * specified distance measure ({@code distance}), and the default number of
-     * nearest neighbours ({@link #k}).
+     * nearest neighbors ({@link #k}).
      * 
      * @param distance distance measure
      */
@@ -120,10 +120,10 @@ public class KNNClassifier extends AbstractNNClassifier {
     /**
      * Constructs a new single-threaded majority-voting kNN classifier, with the
      * specified distance measure ({@code distance}) and number of nearest
-     * neighbours ({@code k}).
+     * neighbors ({@code k}).
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      */
     public KNNClassifier(Distance distance, int k) {
         super(distance);
@@ -132,11 +132,11 @@ public class KNNClassifier extends AbstractNNClassifier {
     
     /**
      * Constructs a new majority-voting kNN classifier, with the specified distance
-     * measure ({@code distance}), number of nearest neighbours ({@code k}), and
+     * measure ({@code distance}), number of nearest neighbors ({@code k}), and
      * number of threads ({@code tnumber}).
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      * @param tnumber  number of threads
      */
     public KNNClassifier(Distance distance, int k, int tnumber) {
@@ -198,7 +198,7 @@ public class KNNClassifier extends AbstractNNClassifier {
      * Finds the best label among the nearest neighbors without weighting (with
      * voting).
      * 
-     * @param list sorted list of the nearest neighbours
+     * @param list sorted list of the nearest neighbors
      * @return the best label
      */
     protected double getBestLabel(SortedList<TimeSeries> list) {
@@ -348,14 +348,14 @@ public class KNNClassifier extends AbstractNNClassifier {
     }
 
     /**
-     * Finds the sorted list of {@code k} nearest neighbours (and their distances)
+     * Finds the sorted list of {@code k} nearest neighbors (and their distances)
      * of the specified time series ({@code series}) in the training set
      * ({@link AbstractNNClassifier#trainset trainset}).
      * 
      * @param series   the time series to be classified
      * @param trainset the training set
-     * @param k        number of nearest neighbours
-     * @return the sorted list of {@code k} nearest neighbours (and their distances)
+     * @param k        number of nearest neighbors
+     * @return the sorted list of {@code k} nearest neighbors (and their distances)
      *         of the specified time series ({@code series}) in the training set
      *         ({@code trainset})
      * @throws InterruptedException if the thread has been interrupted
@@ -386,16 +386,16 @@ public class KNNClassifier extends AbstractNNClassifier {
     }
     
     /**
-     * Finds the sorted list of {@code k} nearest neighbours (and their distances)
+     * Finds the sorted list of {@code k} nearest neighbors (and their distances)
      * of the specified time series ({@code series}) in the training set
      * ({@link AbstractNNClassifier#trainset trainset}) relying on {@code tnumber}
      * of threads.
      * 
      * @param series   the time series to be classified
      * @param trainset the training set
-     * @param k        number of nearest neighbours
+     * @param k        number of nearest neighbors
      * @param tnumber  number of threads
-     * @return the sorted list of {@code k} nearest neighbours (and their distances)
+     * @return the sorted list of {@code k} nearest neighbors (and their distances)
      *         of the specified time series ({@code series}) in the training set
      *         ({@code trainset})
      * @throws InterruptedException if the thread has been interrupted
@@ -428,10 +428,10 @@ public class KNNClassifier extends AbstractNNClassifier {
     }
 
     /**
-     * Sets the number of neighbours of the specified classifier to be equal to the
-     * number of neighbours of this classifier.
+     * Sets the number of neighbors of the specified classifier to be equal to the
+     * number of neighbors of this classifier.
      * 
-     * @param copy the classifier whose number of nearest neighbours is to be set
+     * @param copy the classifier whose number of nearest neighbors is to be set
      * @param deep indicates whether a deep copy should be made
      */
     protected void init(KNNClassifier copy, boolean deep) {

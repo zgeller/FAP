@@ -26,7 +26,7 @@ import fap.core.distance.Distance;
 
 /**
  * Weighted kNN classifier utilizing Zavrel's weighting function. The class of a
- * time series is determined by weighted voting of its k-nearest neighbours in
+ * time series is determined by weighted voting of its k-nearest neighbors in
  * the training set. Weights are calculated as defined by Zavrel:
  * 
  * <blockquote> <img src="doc-files/ZavrelKNNClassifier-1.png"> </blockquote>
@@ -70,7 +70,7 @@ public class ZavrelKNNClassifier extends KNNClassifier {
 
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing Zavrel's
-     * weighting function, with the default number of nearest neighbours
+     * weighting function, with the default number of nearest neighbors
      * ({@link KNNClassifier#k k}) and the default values of the parameters
      * {@link #alpha} and {@link #beta}.
      */
@@ -79,11 +79,11 @@ public class ZavrelKNNClassifier extends KNNClassifier {
     
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing Zavrel's
-     * weighting function, with the specified number of nearest neighbours
+     * weighting function, with the specified number of nearest neighbors
      * ({@code k}), and the default values of the parameters {@link #alpha} and
      * {@link #beta}.
      * 
-     * @param k number of nearest neighbours, must be {@code >= 1}
+     * @param k number of nearest neighbors, must be {@code >= 1}
      */
     public ZavrelKNNClassifier(int k) {
         super(k);
@@ -91,11 +91,11 @@ public class ZavrelKNNClassifier extends KNNClassifier {
     
     /**
      * Constructs a new weighted kNN classifier utilizing Zavrel's weighting
-     * function, with the specified number of nearest neighbours ({@code k}), number
+     * function, with the specified number of nearest neighbors ({@code k}), number
      * of threads ({@code tnumber}), and the default values of the parameters
      * {@link #alpha} and {@link #beta}.
      * 
-     * @param k       number of nearest neighbours, must be {@code >= 1}
+     * @param k       number of nearest neighbors, must be {@code >= 1}
      * @param tnumber number of threads
      */
     public ZavrelKNNClassifier(int k, int tnumber) {
@@ -104,11 +104,11 @@ public class ZavrelKNNClassifier extends KNNClassifier {
 
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing Zavrel's
-     * weighting function, with the given number of nearest neighbours ({@code k}),
+     * weighting function, with the given number of nearest neighbors ({@code k}),
      * and slope ({@code alpha}) and power ({@code beta}) of the exponential decay
      * function.
      * 
-     * @param k     number of nearest neighbours, must be {@code >= 1}
+     * @param k     number of nearest neighbors, must be {@code >= 1}
      * @param alpha slope of the exponential decay function
      * @param beta  power of the exponential decay function
      */
@@ -120,11 +120,11 @@ public class ZavrelKNNClassifier extends KNNClassifier {
     
     /**
      * Constructs a new weighted kNN classifier utilizing Zavrel's weighting
-     * function, with the specified number of nearest neighbours ({@code k}), slope
+     * function, with the specified number of nearest neighbors ({@code k}), slope
      * ({@code alpha}) and power ({@code beta}) of the exponential decay function,
      * and number of threads ({@code tnumber}).
      * 
-     * @param k       number of nearest neighbours, must be {@code >= 1}
+     * @param k       number of nearest neighbors, must be {@code >= 1}
      * @param alpha   slope of the exponential decay function
      * @param beta    power of the exponential decay function
      * @param tnumber number of threads
@@ -138,7 +138,7 @@ public class ZavrelKNNClassifier extends KNNClassifier {
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing Zavrel's
      * weighting function, with the given distance measure ({@code distance}) and
-     * with the default number of nearest neighbours ({@link KNNClassifier#k k}).
+     * with the default number of nearest neighbors ({@link KNNClassifier#k k}).
      * 
      * @param distance distance measure
      */
@@ -149,7 +149,7 @@ public class ZavrelKNNClassifier extends KNNClassifier {
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing Zavrel's
      * weighting function, with the given distance measure ({@code distance}),
-     * number of nearest neighbours ({@code k}), and the default values of the
+     * number of nearest neighbors ({@code k}), and the default values of the
      * parameters {@link #alpha} and {@link #beta}.
      * 
      * @param distance distance measure
@@ -162,11 +162,11 @@ public class ZavrelKNNClassifier extends KNNClassifier {
     /**
      * Constructs a new weighted kNN classifier utilizing Zavrel's weighting
      * function, with the specified distance measure ({@code distance}), number of
-     * nearest neighbours ({@code k}), number of threads ({@code tnumber}), and the
+     * nearest neighbors ({@code k}), number of threads ({@code tnumber}), and the
      * default values of the parameters {@link #alpha} and {@link #beta}.
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      * @param tnumber  number of threads
      */
     public ZavrelKNNClassifier(Distance distance, int k, int tnumber) {
@@ -176,11 +176,11 @@ public class ZavrelKNNClassifier extends KNNClassifier {
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing Zavrel's
      * weighting function, with the given distance measure ({@code distance}),
-     * number of nearest neighbours ({@code k}), and slope ({@code alpha}) and power
+     * number of nearest neighbors ({@code k}), and slope ({@code alpha}) and power
      * ({@code beta}) of the exponential decay function.
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      * @param alpha    slope of the exponential decay function
      * @param beta     power of the exponential decay function
      */
@@ -193,12 +193,12 @@ public class ZavrelKNNClassifier extends KNNClassifier {
     /**
      * Constructs a new weighted kNN classifier utilizing Zavrel's weighting
      * function, with the given distance measure ({@code distance}), number of
-     * nearest neighbours ({@code k}), slope ({@code alpha}) and power
+     * nearest neighbors ({@code k}), slope ({@code alpha}) and power
      * ({@code beta}) of the exponential decay function, and number of threads
      * ({@code tnumber}).
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      * @param alpha    slope of the exponential decay function
      * @param beta     power of the exponential decay function
      * @param tnumber  number of threads
@@ -246,10 +246,10 @@ public class ZavrelKNNClassifier extends KNNClassifier {
     }
 
     /**
-     * Finds the best label among the nearest neighbours. Weights are calculated as
+     * Finds the best label among the nearest neighbors. Weights are calculated as
      * defined by Zavrel.
      * 
-     * @param list sorted list of the nearest neighbours
+     * @param list sorted list of the nearest neighbors
      * @return the best label
      */
     @Override

@@ -27,7 +27,7 @@ import fap.exception.IncomparableTimeSeriesException;
 import fap.util.ThreadUtils;
 
 /**
- * 1NN (Nearest Neighbours) classifier.
+ * 1NN (Nearest Neighbors) classifier.
  * 
  * @author Zoltán Gellér
  * @version 2024.09.17.
@@ -80,13 +80,13 @@ public class NNClassifier extends AbstractNNClassifier {
     }
 
     /**
-     * Finds the the nearest neighbour (and its distance) of the specified time
+     * Finds the the nearest neighbor (and its distance) of the specified time
      * series ({@code series}) in the given training set ({@code trainset}).
      * 
      * @param series   the time series whose nearest neighbor (and its distance) is
      *                 to be found
      * @param trainset the training set
-     * @return a {@link DistanceNode} object containing the nearest neighbour of
+     * @return a {@link DistanceNode} object containing the nearest neighbor of
      *         {@code series} in {@code trainset} and its distance
      * @throws InterruptedException if the thread has been interrupted
      * @throws Exception            if an error occurs
@@ -160,11 +160,11 @@ public class NNClassifier extends AbstractNNClassifier {
         
         double label;
 
-        // if the sorted list of nearest neighbours exists
+        // if the sorted list of nearest neighbors exists
         if (kNeighbours != null)
             label = kNeighbours.get(series.getIndex()).getFirst().obj.getLabel();
 
-        // if the sorted list of nearest neighbours doesn't exist
+        // if the sorted list of nearest neighbors doesn't exist
         else {
 
             int tnumber = ThreadUtils.getThreadLimit(this.getNumberOfThreads());
@@ -181,14 +181,14 @@ public class NNClassifier extends AbstractNNClassifier {
     }
     
     /**
-     * Finds the nearest neighbour (and its distance) of the specified time series
+     * Finds the nearest neighbor (and its distance) of the specified time series
      * ({@code series}) in the training set ({@code trainset}) relying on
      * {@code tnumber} of threads.
      * 
      * @param series   the time series to be classified
      * @param trainset the training set
      * @param tnumber  number of threads
-     * @return a {@link DistanceNode} object containing the nearest neighbour of
+     * @return a {@link DistanceNode} object containing the nearest neighbor of
      *         {@code series} in the training set ({@code trainset}) and its
      *         distance
      * @throws InterruptedException if the thread has been interrupted

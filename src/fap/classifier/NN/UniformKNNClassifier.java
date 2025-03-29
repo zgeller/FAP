@@ -26,9 +26,9 @@ import fap.core.distance.Distance;
 
 /**
  * Weighted kNN classifier utilizing the uniform weighting function. The class
- * of a time series is determined by weighted voting of its k-nearest neighbours
+ * of a time series is determined by weighted voting of its k-nearest neighbors
  * in the training set. Weights are calculated using inverse ranks of the
- * neighbours:
+ * neighbors:
  * 
  * <blockquote> <img src="doc-files/UniformKNNClassifier-1.png"> </blockquote>
  * 
@@ -51,7 +51,7 @@ public class UniformKNNClassifier extends KNNClassifier {
 
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing the
-     * uniform weighting function, with the default number of nearest neighbours
+     * uniform weighting function, with the default number of nearest neighbors
      * ({@link KNNClassifier#k k}).
      */
     public UniformKNNClassifier() {
@@ -59,10 +59,10 @@ public class UniformKNNClassifier extends KNNClassifier {
 
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing the
-     * uniform weighting function, with the given number of nearest neighbours
+     * uniform weighting function, with the given number of nearest neighbors
      * ({@code k}).
      * 
-     * @param k number of nearest neighbours, must be {@code >= 1}
+     * @param k number of nearest neighbors, must be {@code >= 1}
      */
     public UniformKNNClassifier(int k) {
         super(k);
@@ -70,10 +70,10 @@ public class UniformKNNClassifier extends KNNClassifier {
     
     /**
      * Constructs a new weighted kNN classifier utilizing the uniform weighting
-     * function, with the given number of nearest neighbours ({@code k}), and number
+     * function, with the given number of nearest neighbors ({@code k}), and number
      * of threads ({@code tnumber}).
      * 
-     * @param k       number of nearest neighbours, must be {@code >= 1}
+     * @param k       number of nearest neighbors, must be {@code >= 1}
      * @param tnumber number of threads
      */
     public UniformKNNClassifier(int k, int tnumber) {
@@ -83,7 +83,7 @@ public class UniformKNNClassifier extends KNNClassifier {
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing the
      * uniform weighting function, with the given distance measure
-     * ({@code distance}) and with the default number of nearest neighbours
+     * ({@code distance}) and with the default number of nearest neighbors
      * ({@link KNNClassifier#k k}).
      * 
      * @param distance distance measure
@@ -95,10 +95,10 @@ public class UniformKNNClassifier extends KNNClassifier {
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing the
      * uniform weighting function, with the given distance measure
-     * ({@code distance}) and number of nearest neighbours ({@code k}).
+     * ({@code distance}) and number of nearest neighbors ({@code k}).
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      */
     public UniformKNNClassifier(Distance distance, int k) {
         super(distance, k);
@@ -107,10 +107,10 @@ public class UniformKNNClassifier extends KNNClassifier {
     /**
      * Constructs a new weighted kNN classifier utilizing the uniform weighting
      * function, with the given distance measure ({@code distance}), number of
-     * nearest neighbours ({@code k}), and number of threads ({@code tnumber}).
+     * nearest neighbors ({@code k}), and number of threads ({@code tnumber}).
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      * @param tnumber  number of threads
      */
     public UniformKNNClassifier(Distance distance, int k, int tnumber) {
@@ -118,10 +118,10 @@ public class UniformKNNClassifier extends KNNClassifier {
     }
 
     /**
-     * Finds the best label among the nearest neighbours. Weights are calculated
-     * using inverse ranks of the neighbours.
+     * Finds the best label among the nearest neighbors. Weights are calculated
+     * using inverse ranks of the neighbors.
      * 
-     * @param list sorted list of the nearest neighbours
+     * @param list sorted list of the nearest neighbors
      * @return the best label
      */
     @Override

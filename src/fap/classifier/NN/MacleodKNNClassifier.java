@@ -31,7 +31,7 @@ import fap.util.ThreadUtils;
 
 /**
  * Weighted kNN classifier utilizing Macleod's weighting function. The class of a
- * time series is determined by weighted voting of its k-nearest neighbours in
+ * time series is determined by weighted voting of its k-nearest neighbors in
  * the training set. Weights are calculated as defined by Macleod:
  * 
  * <blockquote> <img src="doc-files/MacleodKNNClassifier-1.png">, </blockquote>
@@ -73,7 +73,7 @@ public class MacleodKNNClassifier extends KNNClassifier {
 
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing Macleod's
-     * weighting function, with the default number of nearest neighbours
+     * weighting function, with the default number of nearest neighbors
      * ({@link KNNClassifier#k k}) and default values of parameters
      * ({@code s = k, alpha = 1}).
      */
@@ -82,11 +82,11 @@ public class MacleodKNNClassifier extends KNNClassifier {
 
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing Macleod's
-     * weighting function, with the specified number of nearest neighbours
+     * weighting function, with the specified number of nearest neighbors
      * ({@link KNNClassifier#k k}) and default values of parameters
      * ({@code s = k, alpha = 1}).
      * 
-     * @param k number of nearest neighbours, must be {@code >= 1}
+     * @param k number of nearest neighbors, must be {@code >= 1}
      */
     public MacleodKNNClassifier(int k) {
         super(k);
@@ -94,11 +94,11 @@ public class MacleodKNNClassifier extends KNNClassifier {
 
     /**
      * Constructs a new weighted kNN classifier utilizing Macleod's weighting
-     * function, with the specified number of nearest neighbours
+     * function, with the specified number of nearest neighbors
      * ({@link KNNClassifier#k k}), default values of parameters
      * ({@code s = k, alpha = 1}), and number of threads ({@code tnumber}).
      * 
-     * @param k       number of nearest neighbours, must be {@code >= 1}
+     * @param k       number of nearest neighbors, must be {@code >= 1}
      * @param tnumber number of threads
      */
     public MacleodKNNClassifier(int k, int tnumber) {
@@ -107,10 +107,10 @@ public class MacleodKNNClassifier extends KNNClassifier {
 
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing Macleod's
-     * weighting function, with the specified number of nearest neighbours
+     * weighting function, with the specified number of nearest neighbors
      * ({@code k}) and parameters ({@code s, alpha}).
      * 
-     * @param k     number of nearest neighbours, must be {@code >= 1}
+     * @param k     number of nearest neighbors, must be {@code >= 1}
      * @param s     should be {@code >= k}
      * @param alpha must be {@code >= 0}
      */
@@ -122,10 +122,10 @@ public class MacleodKNNClassifier extends KNNClassifier {
     
     /**
      * Constructs a new weighted kNN classifier utilizing Macleod's weighting
-     * function, with the specified number of nearest neighbours ({@code k}),
+     * function, with the specified number of nearest neighbors ({@code k}),
      * parameters ({@code s, alpha}), and number of threads ({@code tnumber}).
      * 
-     * @param k       number of nearest neighbours, must be {@code >= 1}
+     * @param k       number of nearest neighbors, must be {@code >= 1}
      * @param s       should be {@code >= k}
      * @param alpha   must be {@code >= 0}
      * @param tnumber number of threads
@@ -139,7 +139,7 @@ public class MacleodKNNClassifier extends KNNClassifier {
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing Macleod's
      * weighting function, with the given distance measure ({@code distance}) and
-     * with the default number of nearest neighbours ({@link KNNClassifier#k k}).
+     * with the default number of nearest neighbors ({@link KNNClassifier#k k}).
      * 
      * @param distance distance measure
      */
@@ -150,11 +150,11 @@ public class MacleodKNNClassifier extends KNNClassifier {
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing Macleod's
      * weighting function, with the specified distance measure ({@code distance}),
-     * number of nearest neighbours ({@code k}), and default values of parameters
+     * number of nearest neighbors ({@code k}), and default values of parameters
      * ({@code s = k, alpha = 1}).
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      */
     public MacleodKNNClassifier(Distance distance, int k) {
         super(distance, k);
@@ -163,11 +163,11 @@ public class MacleodKNNClassifier extends KNNClassifier {
     /**
      * Constructs a new weighted kNN classifier utilizing Macleod's weighting
      * function, with the specified distance measure ({@code distance}), number of
-     * nearest neighbours ({@code k}), default values of parameters
+     * nearest neighbors ({@code k}), default values of parameters
      * ({@code s = k, alpha = 1}), and number of threads ({@code tnumber}).
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      * @param tnumber  number of threads
      */
     public MacleodKNNClassifier(Distance distance, int k, int tnumber) {
@@ -177,10 +177,10 @@ public class MacleodKNNClassifier extends KNNClassifier {
     /**
      * Constructs a new single-threaded weighted kNN classifier utilizing Macleod's
      * weighting function, with the specified distance measure ({@code distance}),
-     * number of nearest neighbours ({@code k}), and parameters ({@code s, alpha}).
+     * number of nearest neighbors ({@code k}), and parameters ({@code s, alpha}).
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      * @param s        should be {@code >= k}
      * @param alpha    must be {@code >= 0}
      */
@@ -193,11 +193,11 @@ public class MacleodKNNClassifier extends KNNClassifier {
     /**
      * Constructs a new weighted kNN classifier utilizing Macleod's weighting
      * function, with the specified distance measure ({@code distance}), number of
-     * nearest neighbours ({@code k}), parameters ({@code s, alpha}), and number of
+     * nearest neighbors ({@code k}), parameters ({@code s, alpha}), and number of
      * threads ({@code tnumber}).
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      * @param s        should be {@code >= k}
      * @param alpha    must be {@code >= 0}
      * @param tnumber  number of threads
@@ -249,10 +249,10 @@ public class MacleodKNNClassifier extends KNNClassifier {
     }
 
     /**
-     * Finds the best label among the nearest neighbours. Weights are calculated as
+     * Finds the best label among the nearest neighbors. Weights are calculated as
      * defined by Macleod.
      * 
-     * @param list sorted list of the nearest neighbours
+     * @param list sorted list of the nearest neighbors
      * @return the best label
      */
     @Override
@@ -365,16 +365,16 @@ public class MacleodKNNClassifier extends KNNClassifier {
         if (max < k)
             max = k;
 
-        // sorted list of k nearest neighbours
+        // sorted list of k nearest neighbors
         SortedList<TimeSeries> list;
 
         double label;
 
-        // if the sorted list of nearest neighbours exists
+        // if the sorted list of nearest neighbors exists
         if (kNeighbours != null)
             list = kNeighbours.get(series.getIndex());
 
-        // if the sorted list of nearest neighbours doesn't exist
+        // if the sorted list of nearest neighbors doesn't exist
         else {
 
             int tnumber = ThreadUtils.getThreadLimit(this.getNumberOfThreads());

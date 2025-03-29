@@ -46,20 +46,20 @@ public class AbstractInverseKNNClassifier extends KNNClassifier {
     }
 
     /**
-     * Constructor with the number of nearest neighbours ({@code k}), and the
+     * Constructor with the number of nearest neighbors ({@code k}), and the
      * default {@link #epsilon} value.
      * 
-     * @param k number of nearest neighbours, must be {@code k>=1}
+     * @param k number of nearest neighbors, must be {@code k>=1}
      */
     public AbstractInverseKNNClassifier(int k) {
         super(k);
     }
     
     /**
-     * Constructor with the number of nearest neighbours ({@code k}), number of
+     * Constructor with the number of nearest neighbors ({@code k}), number of
      * threads ({@code tnumber}), and the default {@link #epsilon} value.
      * 
-     * @param k       number of nearest neighbours, must be {@code k>=1}
+     * @param k       number of nearest neighbors, must be {@code k>=1}
      * @param tnumber number of threads
      */
     public AbstractInverseKNNClassifier(int k, int tnumber) {
@@ -68,7 +68,7 @@ public class AbstractInverseKNNClassifier extends KNNClassifier {
 
     /**
      * Constructor with the a distance measure ({@code distance}) and with the
-     * default number of nearest neighbours ({@link KNNClassifier#k k}).
+     * default number of nearest neighbors ({@link KNNClassifier#k k}).
      * 
      * @param distance distance measure
      */
@@ -78,7 +78,7 @@ public class AbstractInverseKNNClassifier extends KNNClassifier {
     
     /**
      * Constructor with a distance measure ({@code distance}), number of nearest
-     * neighbours ({@code k}) and with the default {@link #epsilon} value.
+     * neighbors ({@code k}) and with the default {@link #epsilon} value.
      * 
      * @param distance distance measure
      * @param k        number of nearest neighbours, must be {@code >= 1}
@@ -89,11 +89,11 @@ public class AbstractInverseKNNClassifier extends KNNClassifier {
     
     /**
      * Constructor with a distance measure ({@code distance}), number of nearest
-     * neighbours ({@code k}), number of threads ({@code tnumber}), and with the
+     * neighbors ({@code k}), number of threads ({@code tnumber}), and with the
      * default {@link #epsilon} value.
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      * @param tnumber  number of threads
      */
     public AbstractInverseKNNClassifier(Distance distance, int k, int tnumber) {
@@ -101,9 +101,9 @@ public class AbstractInverseKNNClassifier extends KNNClassifier {
     }
 
     /**
-     * Constructor with the number of nearest neighbours ({@code k}), and {@code epsilon} value.
+     * Constructor with the number of nearest neighbors ({@code k}), and {@code epsilon} value.
      * 
-     * @param k       number of nearest neighbours, must be {@code k>=1}
+     * @param k       number of nearest neighbors, must be {@code k>=1}
      * @param epsilon a small constant that is to be added to the denominator to
      *                avoid division by zero, must be {@code > 0}
      */
@@ -113,10 +113,10 @@ public class AbstractInverseKNNClassifier extends KNNClassifier {
     }
     
     /**
-     * Constructor with the number of nearest neighbours ({@code k}),
+     * Constructor with the number of nearest neighbors ({@code k}),
      * {@code epsilon} value, and number of threads ({@code tnumber}).
      * 
-     * @param k       number of nearest neighbours, must be {@code k>=1}
+     * @param k       number of nearest neighbors, must be {@code k>=1}
      * @param epsilon a small constant that is to be added to the denominator to
      *                avoid division by zero, must be {@code > 0}
      * @param tnumber number of threads
@@ -128,10 +128,10 @@ public class AbstractInverseKNNClassifier extends KNNClassifier {
 
     /**
      * Constructor with a distance measure ({@code distance}), number of nearest
-     * neighbours ({@code k}), and {@code epsilon} value.
+     * neighbors ({@code k}), and {@code epsilon} value.
      * 
      * @param distance the distance measure
-     * @param k        number of nearest neighbours, must be {@code k>=1}
+     * @param k        number of nearest neighbors, must be {@code k>=1}
      * @param epsilon a small constant that is to be added to the denominator to
      *                avoid division by zero, must be {@code > 0}
      */
@@ -142,11 +142,11 @@ public class AbstractInverseKNNClassifier extends KNNClassifier {
     
     /**
      * Constructor with a distance measure ({@code distance}), number of nearest
-     * neighbours ({@code k}), and {@code epsilon} value, and number of threads
+     * neighbors ({@code k}), and {@code epsilon} value, and number of threads
      * ({@code tnumber}).
      * 
      * @param distance the distance measure
-     * @param k        number of nearest neighbours, must be {@code k>=1}
+     * @param k        number of nearest neighbors, must be {@code k>=1}
      * @param epsilon a small constant that is to be added to the denominator to
      *                avoid division by zero, must be {@code > 0}
      * @param tnumber  number of threads

@@ -138,7 +138,7 @@ public class CallableDistance implements Callable<Double> {
     
     /**
      * Computes the distance between {@link #series1} and {@link #series2} using the
-     * {@link #distance distnace}.
+     * {@link #distance distance}.
      * 
      * @return a {@code Double} object representing the distance between
      *         {@code series1} and {@code series} computed using {@code distance}

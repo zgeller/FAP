@@ -18,7 +18,7 @@ package fap.core.input;
 
 /**
  * Parses comma (or any other character)-separated values and produces values.
- * Has interface similar to Interator.
+ * Has interface similar to Iterator.
  * 
  * @author Aleksa Todorović, Zoltán Gellér
  * @version 2013.04.04.

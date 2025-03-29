@@ -54,7 +54,7 @@ public class CSVDataPointFactory implements DataPointFactory {
      * @param values    list of comma-separated values
      * @param hasXValue if {@code true}, list contains values for {@code x},
      *                  otherwise list contains only {@code y} components of points,
-     *                  {@code x} is set automaticly
+     *                  {@code x} is set automatically
      */
     public CSVDataPointFactory(String values, boolean hasXValue) {
         parser = new CSVParser(values);
@@ -69,7 +69,7 @@ public class CSVDataPointFactory implements DataPointFactory {
      * @param separator character used to separate values in list
      * @param hasXValue if {@code true}, list contains values for {@code x},
      *                  otherwise list contains only {@code y} components of points,
-     *                  {@code x} is set automaticly
+     *                  {@code x} is set automatically
      */
     public CSVDataPointFactory(String values, char separator, boolean hasXValue) {
         parser = new CSVParser(values, separator);

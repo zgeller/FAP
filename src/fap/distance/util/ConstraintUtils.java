@@ -42,7 +42,7 @@ public class ConstraintUtils {
      * </dl>
      * </blockquote>
      * 
-     * <blockquote><b><clode>width = min{width, len}</code></b></blockquote>
+     * <blockquote><b><code>width = min{width, len}</code></b></blockquote>
      * 
      * <p>
      * where {@code len} denotes the length of the series (they must the same
@@ -168,7 +168,7 @@ public class ConstraintUtils {
                  * the diagonal joining the points (1, 1) and (len, len).
                  * 
                  * The end point of the ith row differs from the end point of the (i-1)th row as
-                 * much as the endg point of the ith column differs from the endg point of the
+                 * much as the end point of the ith column differs from the end point of the
                  * (i-1)th column. That difference is calculated using the count variable.
                  */
 

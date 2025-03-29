@@ -65,7 +65,7 @@ public class ItakuraParallelogram implements Serializable {
     /**
      * Returns the Itakura parallelogram. The first element of the arrays aren't
      * part of the warping window; they're used internally as start helper cell. The
-     * nult row contains the Starting and the first one the Ending Indicies.
+     * nult row contains the Starting and the first one the Ending Indices.
      * 
      * @param series1 the first time series
      * @param series2 the second data point series

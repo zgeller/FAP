@@ -267,10 +267,10 @@ public class Dataset implements List<TimeSeries>, Serializable {
 
     /**
      * Returns the array of time series labels of this dataset in the order of the
-     * time seires in this dataset.
+     * time series in this dataset.
      * 
      * @return the array of time series labels of this dataset in the order of the
-     *         time seires in this dataset
+     *         time series in this dataset
      */
     public double[] getLabels() {
 
@@ -497,7 +497,7 @@ public class Dataset implements List<TimeSeries>, Serializable {
     }
     
     /***
-     * Randomnly divides this dataset into {@code k} subsets of approximately equal
+     * Randomly divides this dataset into {@code k} subsets of approximately equal
      * sizes using the given random number generator.
      * 
      * @param k   the number of subsets, must be in the range {@code [1..size()]}

@@ -23,7 +23,7 @@ import fap.core.data.TimeSeries;
 import fap.core.data.Representation;
 
 /**
- * Piecewise Aggregate Appoximation (PAA)
+ * Piecewise Aggregate Approximation (PAA)
  * 
  * <p>
  * Representation of time series with piecewise aggregate segments.

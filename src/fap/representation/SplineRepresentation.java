@@ -24,7 +24,7 @@ import fap.core.data.Representation;
 import fap.util.Polynomial;
 
 /**
- * Representation of serie which uses splines.
+ * Representation of series which uses splines.
  * 
  * <p>
  * References:

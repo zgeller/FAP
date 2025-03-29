@@ -70,9 +70,9 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     
     /**
      * Indicates whether to apply parallel training and evaluating the classifier
-     * wich requires that both the trainer and the classifier implement the
+     * which requires that both the trainer and the classifier implement the
      * {@link Copyable} interface (or that there is no trainer). It they do not
-     * imeplemnt it, the algorithm will revert to sequential training (and parallel
+     * implement it, the algorithm will revert to sequential training (and parallel
      * evaluation). Default value is {@code true}.
      */
     protected boolean fullParallel = true;
@@ -610,7 +610,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     
     /**
      * Multiple iterations of classifier evaluation with sequential training (and
-     * parallal evaluating).
+     * parallel evaluating).
      * 
      * @param trainer    the trainer that is to be used to train the classifier
      * @param classifier the classifier that is to be evaluated

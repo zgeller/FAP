@@ -146,9 +146,9 @@ public abstract class AbstractDistanceGenerator<T> implements Serializable, Resu
     }
 
     /**
-     * Returns {@code true} if generating triangluar matrices has selected.
+     * Returns {@code true} if generating triangular matrices has selected.
      * 
-     * @return {@code true} if generating triangluar matrices has selected
+     * @return {@code true} if generating triangular matrices has selected
      */
     public boolean isSymmetrical() {
         return this.symmetrical;

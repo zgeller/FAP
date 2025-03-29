@@ -63,23 +63,23 @@ public class SimpleArrayListDistanceGenerator extends AbstractDistanceGenerator<
      * parameter values.
      * 
      * @param dataset     the dataset
-     * @param first       pos of the first element (indexing starts from {@code 0})
-     * @param last        pos of the last element (indexing starts from {@code 0})
+     * @param first       position of the first element (indexing starts from {@code 0})
+     * @param last        position of the last element (indexing starts from {@code 0})
      * @param symmetrical true for diagonal matrix
-     * @param simcomp     the similarity computor
+     * @param distance    the distance measure
      * @param callback    callback object
      */
     public SimpleArrayListDistanceGenerator(Dataset dataset, 
                                             int first, 
                                             int last, 
                                             boolean symmetrical, 
-                                            Distance simcomp,
+                                            Distance distance,
                                             Callback callback) {
         this.setDataSet(dataset);
         this.setFirst(first);
         this.setLast(last);
         this.setSymmetrical(symmetrical);
-        this.setDistance(simcomp);
+        this.setDistance(distance);
         this.setCallback(callback);
     }
 
@@ -88,9 +88,9 @@ public class SimpleArrayListDistanceGenerator extends AbstractDistanceGenerator<
      * triangular distance matrices with the given parameter values.
      * 
      * @param dataset  the dataset
-     * @param first    pos of the first element (indexing starts from {@code 0})
-     * @param last     pos of the last element (indexing starts from {@code 0})
-     * @param distance the similarity computor
+     * @param first    position of the first element (indexing starts from {@code 0})
+     * @param last     position of the last element (indexing starts from {@code 0})
+     * @param distance the distance measure
      * @param callback callback object
      */
     public SimpleArrayListDistanceGenerator(Dataset dataset, 
@@ -106,7 +106,7 @@ public class SimpleArrayListDistanceGenerator extends AbstractDistanceGenerator<
      * parameter values and {@code first=0}, {@code last=-1}.
      * 
      * @param dataset     the dataset
-     * @param distance    the similarity computor
+     * @param distance    the distance measure
      * @param symmetrical true for diagonal matrix
      * @param callback    callback object
      */
@@ -123,7 +123,7 @@ public class SimpleArrayListDistanceGenerator extends AbstractDistanceGenerator<
      * {@code first=0}, {@code last=-1}.
      * 
      * @param dataset  the dataset
-     * @param distance the similarity computor
+     * @param distance the distance measure
      * @param callback callback object
      */
     public SimpleArrayListDistanceGenerator(Dataset dataset, 
@@ -178,7 +178,7 @@ public class SimpleArrayListDistanceGenerator extends AbstractDistanceGenerator<
      * Single-threaded implementation.
      * 
      * @throws Exception if an error occurs
-     * @throes InterruptedException when the interrupted flag is set
+     * @throws InterruptedException when the interrupted flag is set
      */
     private void computeSingleThreaded() throws Exception {
 

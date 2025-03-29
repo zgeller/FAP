@@ -64,16 +64,20 @@ public class MatrixDistanceGenerator extends AbstractDistanceGenerator<Double[][
      * @param first       first line (line indexing starts from {@code 0})
      * @param last        last line (line indexing starts from {@code 0})
      * @param symmetrical true for diagonal matrix
-     * @param simcomp     the similarity computor
+     * @param distance    the distance measure
      * @param callback    callback object
      */
-    public MatrixDistanceGenerator(Dataset dataset, int first, int last, boolean symmetrical, Distance simcomp,
-            Callback callback) {
+    public MatrixDistanceGenerator(Dataset dataset, 
+                                   int first, 
+                                   int last, 
+                                   boolean symmetrical, 
+                                   Distance distance,
+                                   Callback callback) {
         this.setDataSet(dataset);
         this.setFirst(first);
         this.setLast(last);
         this.setSymmetrical(symmetrical);
-        this.setDistance(simcomp);
+        this.setDistance(distance);
         this.setCallback(callback);
     }
 
@@ -84,10 +88,14 @@ public class MatrixDistanceGenerator extends AbstractDistanceGenerator<Double[][
      * @param dataset  the dataset
      * @param first    first line (line indexing starts from {@code 0})
      * @param last     last line (line indexing starts from {@code 0})
-     * @param distance the similarity computor
+     * @param distance the distance measure
      * @param callback callback object
      */
-    public MatrixDistanceGenerator(Dataset dataset, int first, int last, Distance distance, Callback callback) {
+    public MatrixDistanceGenerator(Dataset dataset, 
+                                   int first, 
+                                   int last, 
+                                   Distance distance, 
+                                   Callback callback) {
         this(dataset, first, last, true, distance, callback);
     }
 
@@ -96,11 +104,14 @@ public class MatrixDistanceGenerator extends AbstractDistanceGenerator<Double[][
      * values and {@code first=0}, {@code last=-1}.
      * 
      * @param dataset     the dataset
-     * @param distance    the similarity computor
+     * @param distance    the distance measure
      * @param symmetrical true for diagonal matrix
      * @param callback    callback object
      */
-    public MatrixDistanceGenerator(Dataset dataset, Distance distance, boolean symmetrical, Callback callback) {
+    public MatrixDistanceGenerator(Dataset dataset, 
+                                   Distance distance, 
+                                   boolean symmetrical, 
+                                   Callback callback) {
         this(dataset, 0, -1, symmetrical, distance, callback);
     }
 
@@ -110,10 +121,12 @@ public class MatrixDistanceGenerator extends AbstractDistanceGenerator<Double[][
      * {@code first=0}, {@code last=-1}.
      * 
      * @param dataset  the dataset
-     * @param distance the similarity computor
+     * @param distance the distance measure
      * @param callback callback object
      */
-    public MatrixDistanceGenerator(Dataset dataset, Distance distance, Callback callback) {
+    public MatrixDistanceGenerator(Dataset dataset, 
+                                   Distance distance, 
+                                   Callback callback) {
         this(dataset, distance, true, callback);
     }
 
@@ -164,7 +177,7 @@ public class MatrixDistanceGenerator extends AbstractDistanceGenerator<Double[][
      * Single threaded implementation.
      * 
      * @throws Exception if an error occurs
-     * @throes InterruptedException when the interrupted flag is set
+     * @throws InterruptedException when the interrupted flag is set
      */
     private void computeSingleThreaded() throws Exception {
 
@@ -250,7 +263,7 @@ public class MatrixDistanceGenerator extends AbstractDistanceGenerator<Double[][
      * Multithreaded implementation.
      * 
      * @throws Exception if an error occurs
-     * @throes InterruptedException when the interrupted flag is set
+     * @throws InterruptedException when the interrupted flag is set
      */
     private void computeMultiThreaded(int tnumber) throws Exception {
 

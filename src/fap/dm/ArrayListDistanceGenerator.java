@@ -67,20 +67,20 @@ public class ArrayListDistanceGenerator extends AbstractDistanceGenerator<ArrayL
      * @param first       first row (row indexing starts from {@code 0})
      * @param last        last row (row indexing starts from {@code 0})
      * @param symmetrical {@code true} for diagonal matrix
-     * @param simcomp     the similarity computor
+     * @param distance    the distance measure
      * @param callback    callback object
      */
     public ArrayListDistanceGenerator(Dataset dataset, 
                                       int first, 
                                       int last, 
                                       boolean symmetrical,
-                                      Distance simcomp, 
+                                      Distance distance, 
                                       Callback callback) {
         this.setDataSet(dataset);
         this.setFirst(first);
         this.setLast(last);
         this.setSymmetrical(symmetrical);
-        this.setDistance(simcomp);
+        this.setDistance(distance);
         this.setCallback(callback);
     }
 
@@ -91,7 +91,7 @@ public class ArrayListDistanceGenerator extends AbstractDistanceGenerator<ArrayL
      * @param dataset  the dataset
      * @param first    first row (row indexing starts from {@code 0})
      * @param last     last row (row indexing starts from {@code 0})
-     * @param distance the similarity computor
+     * @param distance the distance measure
      * @param callback callback object
      */
     public ArrayListDistanceGenerator(Dataset dataset, 
@@ -107,7 +107,7 @@ public class ArrayListDistanceGenerator extends AbstractDistanceGenerator<ArrayL
      * parameter values and {@code first=0}, {@code last=-1}.
      * 
      * @param dataset     the dataset
-     * @param distance    the similarity computor
+     * @param distance    the distance measure
      * @param symmetrical {@code true} for diagonal matrix
      * @param callback    callback object
      */
@@ -124,7 +124,7 @@ public class ArrayListDistanceGenerator extends AbstractDistanceGenerator<ArrayL
      * {@code first=0}, {@code last=-1}.
      * 
      * @param dataset  the dataset
-     * @param distance the similarity computor
+     * @param distance the distance measure
      * @param callback callback object
      */
     public ArrayListDistanceGenerator(Dataset dataset, 
@@ -181,7 +181,7 @@ public class ArrayListDistanceGenerator extends AbstractDistanceGenerator<ArrayL
      * Single-threaded implementation.
      * 
      * @throws Exception if an error occurs
-     * @throes InterruptedException when the interrupted flag is set
+     * @throws InterruptedException when the interrupted flag is set
      */
     private void computeSingleThreaded() throws Exception {
 
@@ -264,7 +264,7 @@ public class ArrayListDistanceGenerator extends AbstractDistanceGenerator<ArrayL
      * Multithreaded implementation.
      * 
      * @throws Exception if an error occurs
-     * @throes InterruptedException when the interrupted flag is set
+     * @throws InterruptedException when the interrupted flag is set
      */
     private void computeMultiThreaded(int tnumber) throws Exception {
 

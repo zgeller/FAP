@@ -56,7 +56,7 @@ public class ItakuraERPDistance extends AbstractConstrainedDistance implements E
 
     /**
      * Constructs a new Itakura constrained ERP distance measure with the
-     * default width of the warping (editing) widnow
+     * default width of the warping (editing) window
      * ({@link AbstractConstrainedDistance#r r}) and the default value of
      * {@link #g}.
      */
@@ -65,7 +65,7 @@ public class ItakuraERPDistance extends AbstractConstrainedDistance implements E
 	
     /**
      * Constructs a new Itakura constrained ERP distance measure with the, default
-     * width of the warping (editing) widnow ({@link AbstractConstrainedDistance#r
+     * width of the warping (editing) window ({@link AbstractConstrainedDistance#r
      * r}) and the default value of {@link #g}, and sets whether to store distances.
      * 
      * @param storing {@code true} if storing distances should be enabled

@@ -20,7 +20,7 @@ import fap.util.TimeSeriesUtils;
 
 /**
  * Abstract {@code Distance} class using the Sakoe-Chiba band or the Itakura
- * parallelogram and with start treshold parameter.
+ * parallelogram and with start threshold parameter.
  * 
  * @author Zoltán Gellér
  * @version 2024.09.17.
@@ -110,7 +110,7 @@ public abstract class AbstractConstrainedThresholdDistance extends AbstractConst
 
     /**
      * Sets the value of the matching threshold. Two data points are considered to
-     * match if their distance is not greater than the matching treshold. Must be
+     * match if their distance is not greater than the matching threshold. Must be
      * {@code epsilon >= 0}.
      * 
      * @param epsilon the new value of the matching threshold, it must be

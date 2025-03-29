@@ -75,7 +75,7 @@ public abstract class AbstractThresholdDistance extends AbstractCopyableDistance
 
     /**
      * Sets the value of the matching threshold. Two data points are considered to
-     * match if their distance is not greater than the matching treshold. Must be
+     * match if their distance is not greater than the matching threshold. Must be
      * {@code epsilon >= 0}.
      * 
      * @param epsilon the new value of the matching threshold, it must be

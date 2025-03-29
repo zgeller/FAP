@@ -44,14 +44,14 @@ public class SakoeChibaDTWDistance extends AbstractConstrainedDistance {
 
     /**
      * Constructs a new Sakoe-Chiba constrained DTW distance measure with the default
-     * warping-widnow width ({@link AbstractConstrainedDistance#r r}).
+     * warping-window width ({@link AbstractConstrainedDistance#r r}).
      */
     public SakoeChibaDTWDistance() {
     }
     
     /**
      * Constructs a new Sakoe-Chiba constrained DTW distance measure with the default
-     * warping-widnow width ({@link AbstractConstrainedDistance#r r}) and sets
+     * warping-window width ({@link AbstractConstrainedDistance#r r}) and sets
      * whether to store distances.
      * 
      * @param storing {@code true} if storing distances should be enabled

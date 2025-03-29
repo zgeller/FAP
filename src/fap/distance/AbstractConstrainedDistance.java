@@ -138,10 +138,10 @@ public abstract class AbstractConstrainedDistance extends AbstractCopyableDistan
     }
 
     /**
-     * Initializes the specified distance meausre with the common data structures of this
+     * Initializes the specified distance measure with the common data structures of this
      * distance measure.
      * 
-     * @param copy the distance meausre whose data structures is to be initialized
+     * @param copy the distance measure whose data structures is to be initialized
      */
     protected void init(AbstractConstrainedDistance copy, boolean deep) {
         super.init(copy, deep);

@@ -42,7 +42,7 @@ public abstract class AbstractDistanceBasedClassifier implements DistanceBasedCl
     }
     
     /**
-     * Constructor with a distnace measure {@code distance}.
+     * Constructor with a distance measure {@code distance}.
      * 
      * @param distance distance measure
      */

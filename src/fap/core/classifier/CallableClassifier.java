@@ -65,7 +65,7 @@ public class CallableClassifier implements Callable<Double> {
     }
 
     /**
-     * Returns the classfier.
+     * Returns the classifier.
      * 
      * @return the classifier
      */

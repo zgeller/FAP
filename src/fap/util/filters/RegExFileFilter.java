@@ -43,7 +43,7 @@ public class RegExFileFilter extends AbstractFileFilter {
     }
 
     /**
-     * Creates a new {@code RegExFileFilter} object with the given descroption and
+     * Creates a new {@code RegExFileFilter} object with the given description and
      * pattern.
      * 
      * @param description the description

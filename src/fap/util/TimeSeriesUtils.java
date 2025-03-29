@@ -66,10 +66,10 @@ public final class TimeSeriesUtils {
     /**
      * Calculates the k-entropy of a time series.
      * 
-     * @param neighbours matrix of neighbours
+     * @param neighbours matrix of neighbors
      * @param classes    array of classes (labels)
      * @param labels     classes (labels) of the time series
-     * @param k          number of nearest neighbours to consider
+     * @param k          number of nearest neighbors to consider
      * @param index      index of the time series for which is k-entropy is
      *                   calculated
      * @return k-entropy of the given time series
@@ -93,10 +93,10 @@ public final class TimeSeriesUtils {
     /**
      * Calculates the k-entropy of a dataset.
      * 
-     * @param neighbours matrix of neighbours
+     * @param neighbours matrix of neighbors
      * @param classes    array of classes (labels)
      * @param labels     classes (labels) of the time series
-     * @param k          number of nearest neighbours to consider
+     * @param k          number of nearest neighbors to consider
      * @return k-entropy of the given dataset
      */
     public static double getKEntropy(int[][] neighbours, double[] classes, double[] labels, int k) {
@@ -110,10 +110,10 @@ public final class TimeSeriesUtils {
     /**
      * Calculates the k-entropy of individual time series and the dataset.
      * 
-     * @param neighbours matrix of neighbours
+     * @param neighbours matrix of neighbors
      * @param classes    array of classes (labels)
      * @param labels     classes (labels) of the time series
-     * @param k          number of nearest neighbours to consider
+     * @param k          number of nearest neighbors to consider
      * @return array of k-entropies of individual times series and the dataset as
      *         the last element of the array
      */
@@ -348,7 +348,7 @@ public final class TimeSeriesUtils {
      * Transforms the given time series <b>not taking into account</b> x coordinates
      * of the original series.
      * 
-     * @author Lidija Fodor, Zoltan Geller
+     * @author Lidija Fodor, Zoltán Gellér
      * @version 2024.09.10.
      * 
      * @param series the time series to transform
@@ -411,7 +411,7 @@ public final class TimeSeriesUtils {
      * Transforms the given time series <b>taking into account</b> x coordinates of
      * the original series.
      * 
-     * @author Lidija Fodor, Zoltan Geller
+     * @author Lidija Fodor, Zoltán Gellér
      * @version 2024.09.10.
      * 
      * @param series the time series to transform
@@ -479,7 +479,7 @@ public final class TimeSeriesUtils {
      * are sorted by time (x axes) component. It returns <code>null</code> if the
      * time series contains less than two points.
      * 
-     * @author Lidija Fodor, Zoltan Geller
+     * @author Lidija Fodor, Zoltán Gellér
      * @version 2024.09.10.
      * 
      * @param series        the time series whose linearly equiscaled version is to

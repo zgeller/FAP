@@ -27,7 +27,7 @@ import fap.core.data.DataPoint;
 public class Line {
 
     /**
-     * Coefficient of the line represented as Ax+By+C=0.
+     * Coefficient of the line represented as {@code Ax + By + C = 0}.
      */
     private double A, B, C;
 
@@ -71,13 +71,13 @@ public class Line {
     }
 
     /**
-     * Updates the line using the given slope, y-intercept and the x coordinates of
-     * the start and end point.
+     * Updates the line using the given slope, {@code y}-intercept and the {@code x}
+     * coordinates of the start and end point.
      * 
-     * @param startx x coordinate of the start point
-     * @param endx   x coordinates of the end point
+     * @param startx {@code x} coordinate of the start point
+     * @param endx   {@code x} coordinates of the end point
      * @param beta   the slope (gradient) of the line
-     * @param alpha  the y-intercept of the line
+     * @param alpha  the {@code y}-intercept of the line
      */
     public void update(double startx, double endx, double beta, double alpha) {
         B = -1;
@@ -88,10 +88,12 @@ public class Line {
     }
 
     /**
-     * The value of y for the given x so that (x,y) is on this line.
+     * The value of {@code y} for the given {@code x} so that {@code (x,y)} is on
+     * this line.
      * 
-     * @param x the x coordinate
-     * @return the value of the y coordinate so that (x,y) is on this line
+     * @param x the {@code x} coordinate
+     * @return the value of the {@code y} coordinate so that {@code (x,y)} is on
+     *         this line
      */
     public double getY(double x) {
         return -(A * x + C) / B;

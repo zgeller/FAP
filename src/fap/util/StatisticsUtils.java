@@ -122,9 +122,9 @@ public final class StatisticsUtils {
      *          https://doi.org/10.1007/978-3-540-24775-3_3</a>.
      * </ol>
      * 
-     * @param series1          the first time series
-     * @param series2          the second time series
-     * @param correction       n2 / n1
+     * @param series1    the first time series
+     * @param series2    the second time series
+     * @param correction n2 / n1
      * @return the corrected repeated r-times k-fold cross-validation test statistic
      * @throws IncomparableTimeSeriesException if the time series are not the same
      *                                         length

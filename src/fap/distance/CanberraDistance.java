@@ -25,7 +25,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * <blockquote> <img src="doc-files/CanberraDistance-1.png"> </blockquote>
  * 
  * <ul>
- *  <li> {@code 0/0} is treated as {@code 0} (see [2])
+ *  <li> {@code 0/0} is treated as {@code 0} (see [2]).
  * </ul>
  * 
  * <p>

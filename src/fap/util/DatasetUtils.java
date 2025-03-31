@@ -31,7 +31,7 @@ import fap.io.TimeSeriesTextFileWriter;
  * Dataset utilities.
  * 
  * @author Zoltán Gellér
- * @version 2025.03.06
+ * @version 2025.03.31
  */
 public final class DatasetUtils {
 
@@ -446,7 +446,8 @@ public final class DatasetUtils {
     }
 
     /**
-     * Loads the names of the datasets from the given CSV file.
+     * Loads the names of the datasets from the first column of the CSV file of the
+     * specified name.
      * 
      * @param fname the name of the CSV file
      * @return list of dataset names
@@ -455,7 +456,7 @@ public final class DatasetUtils {
     public static List<String> loadDatasetNames(String fname) throws IOException {
         List<String> dsNames = new ArrayList<String>();
         int lineno = 0;
-        try (BufferedReader reader = new BufferedReader(new FileReader("Datasets.csv"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fname))) {
             lineno++;
             String line = reader.readLine();
             while (line != null) {

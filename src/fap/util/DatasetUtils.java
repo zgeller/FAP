@@ -39,12 +39,12 @@ public final class DatasetUtils {
     }
 
     /**
-     * Character used to separate values. Default value is comma.
+     * The character used to separate values. The default value is comma.
      */
     public static char separator = ',';
 
     /**
-     * Root folder of the datasets. Default value is {@code DATASETS}.
+     * The root folder of the datasets. The default value is {@code DATASETS}.
      */
     public static String root = "DATASETS";
 
@@ -59,16 +59,17 @@ public final class DatasetUtils {
     }
 
     /**
-     * Loads the dataset with the given name. Assumptions:<br>
+     * Loads the dataset with the given name. Assumptions:
      * <ol>
-     * <li>the training set is stored in file {@code dsname\dsname+"_TRAIN"},</li>
-     * <li>the test set is stored in file {@code dsname\dsname+"_TEST"},</li>
-     * <li>the data points are separated by the default {@code separator}</li>
-     * <li>the data points don't contain x-coordinates</li>
+     *  <li>The training set is stored in the file {@code dsname\dsname+"_TRAIN"}.
+     *  <li>The test set is stored in the file {@code dsname\dsname+"_TEST"}.
+     *  <li>Data points are separated by the default {@link #separator}.
+     *  <li>Data points don't contain x-coordinates.
      * </ol>
+     * 
+     * <p>
      * The elements of the test set are added after the elements of the training
-     * set.<br>
-     * <br>
+     * set.
      * 
      * @param dsname the name of the dataset
      * @return the dataset
@@ -79,16 +80,17 @@ public final class DatasetUtils {
     }
 
     /**
-     * Loads the dataset with the given name from the given folder. Assumptions:<br>
+     * Loads the dataset with the given name from the given folder. Assumptions:
      * <ol>
-     * <li>the training set is stored in file {@code dsname\dsname+"_TRAIN"},</li>
-     * <li>the test set is stored in file {@code dsname\dsname+"_TEST"},</li>
-     * <li>the data points are separated by the default {@code separator}</li>
-     * <li>the data points don't contain x-coordinates</li>
+     *  <li>The training set is stored in the file {@code dsname\dsname+"_TRAIN"}.
+     *  <li>The test set is stored in the file {@code dsname\dsname+"_TEST"}.
+     *  <li>Data points are separated by the default {@link #separator}.
+     *  <li>Data points don't contain x-coordinates.
      * </ol>
+     * 
+     * <p>
      * The elements of the test set are added after the elements of the training
-     * set.<br>
-     * <br>
+     * set.
      * 
      * @param folder the name of the folder
      * @param dsname the name of the dataset
@@ -100,19 +102,20 @@ public final class DatasetUtils {
     }
 
     /**
-     * Loads the dataset with the given name. Assumptions:<br>
+     * Loads the dataset with the given name. Assumptions:
      * <ol>
-     * <li>the training set is stored in file {@code dsname\dsname+"_TRAIN"},</li>
-     * <li>the test set is stored in file {@code dsname\dsname+"_TEST"},</li>
-     * <li>the data points are separated by the default {@code separator}</li>
-     * <li>the data points don't contain x-coordinates</li>
+     *  <li>The training set is stored in the file {@code dsname\dsname+"_TRAIN"}.
+     *  <li>The test set is stored in the file {@code dsname\dsname+"_TEST"}.
+     *  <li>Data points are separated by the default {@link #separator}.
+     *  <li>Data points don't contain x-coordinates.
      * </ol>
+     * 
+     * <p>
      * The elements of the test set are added after the elements of the training
-     * set.<br>
-     * <br>
+     * set.
      * 
      * @param dsname the name of the dataset
-     * @param train  indicates whether to load train set
+     * @param train  indicates whether to load training set
      * @param test   indicates whether to load test set
      * @return the dataset
      * @throws IOException
@@ -123,70 +126,79 @@ public final class DatasetUtils {
     }
 
     /**
-     * Loads the dataset with the given name from the given folder. Assumptions:<br>
+     * Loads the dataset with the given name from the given folder. Assumptions:
      * <ol>
-     * <li>the training set is stored in file {@code dsname\dsname+"_TRAIN"},</li>
-     * <li>the test set is stored in file {@code dsname\dsname+"_TEST"},</li>
-     * <li>the data points are separated by a space</li>
-     * <li>the data points don't contain x-coordinates</li>
+     *  <li>The training set is stored in the file {@code dsname\dsname+"_TRAIN"}.
+     *  <li>The test set is stored in the file {@code dsname\dsname+"_TEST"}.
+     *  <li>Data points are separated by the default {@link #separator}.
+     *  <li>Data points don't contain x-coordinates.
      * </ol>
+     * 
+     * <p>
      * The elements of the test set are added after the elements of the training
-     * set.<br>
-     * <br>
+     * set.
      * 
      * @param folder the name of the folder
      * @param dsname the name of the dataset
-     * @param train  indicates whether to load train set
-     * @param test   indicates whether to load test set
+     * @param train  indicates whether to load the training set
+     * @param test   indicates whether to load the test set
      * @return the dataset
      * @throws IOException
      */
-    public static Dataset loadDataset(String folder, String dsname, boolean train, boolean test)
+    public static Dataset loadDataset(String folder, 
+                                      String dsname, 
+                                      boolean train, 
+                                      boolean test) 
             throws IOException {
         return loadDataset(folder, dsname, separator, false, train, test);
     }
 
     /**
-     * Loads the dataset with the given name. Assumptions:<br>
+     * Loads the dataset with the given name. Assumptions:
      * <ol>
-     * <li>the training set is stored in file {@code dsname\dsname+"_TRAIN"},</li>
-     * <li>the test set is stored in file {@code dsname\dsname+"_TEST"},</li>
-     * <li>the data points are separated by the given {@code separator}</li>
-     * <li>the data points don't contain x-coordinates</li>
+     *  <li>The training set is stored in the file {@code dsname\dsname+"_TRAIN"}.
+     *  <li>The test set is stored in the file {@code dsname\dsname+"_TEST"}.
+     *  <li>Data points are separated by the given {@code separator}
+     *  <li>Data points don't contain x-coordinates
      * </ol>
+     * 
+     * <p>
      * The elements of the test set are added after the elements of the training
-     * set.<br>
-     * <br>
+     * set.
      * 
      * @param dsname    the name of the dataset
      * @param separator the character which separates the values
-     * @param train     indicates whether to load train set
-     * @param test      indicates whether to load test set
+     * @param train     indicates whether to load the training set
+     * @param test      indicates whether to load the test set
      * @return the dataset
      * @throws IOException
      */
-    public static Dataset loadDataset(String dsname, char separator, boolean train,
-            boolean test) throws IOException {
+    public static Dataset loadDataset(String dsname, 
+                                      char separator, 
+                                      boolean train,
+                                      boolean test) 
+            throws IOException {
         return loadDataset(dsname, separator, false, train, test);
     }
 
     /**
-     * Loads the dataset with the given name from the given folder. Assumptions:<br>
+     * Loads the dataset with the given name from the given folder. Assumptions:
      * <ol>
-     * <li>the training set is stored in file {@code dsname\dsname+"_TRAIN"},</li>
-     * <li>the test set is stored in file {@code dsname\dsname+"_TEST"},</li>
-     * <li>the data points are separated by the given {@code separator}</li>
-     * <li>the data points don't contain x-coordinates</li>
+     *  <li>The training set is stored in the file {@code dsname\dsname+"_TRAIN"}.
+     *  <li>The test set is stored in the file {@code dsname\dsname+"_TEST"}.
+     *  <li>Data points are separated by the given {@code separator}.
+     *  <li>Data points don't contain x-coordinates.
      * </ol>
+     * 
+     * <p>
      * The elements of the test set are added after the elements of the training
-     * set.<br>
-     * <br>
+     * set.
      * 
      * @param folder    the folder
      * @param dsname    the name of the dataset
      * @param separator the character which separates the values
-     * @param train     indicates whether to load train set
-     * @param test      indicates whether to load test set
+     * @param train     indicates whether to load the training set
+     * @param test      indicates whether to load the test set
      * @return the dataset
      * @throws IOException
      */
@@ -196,22 +208,23 @@ public final class DatasetUtils {
     }
 
     /**
-     * Loads the dataset with the given name. Assumptions:<br>
+     * Loads the dataset with the given name. Assumptions:
      * <ol>
-     * <li>the training set is stored in file {@code dsname\dsname+"_TRAIN"},</li>
-     * <li>the test set is stored in file {@code dsname\dsname+"_TEST"},</li>
-     * <li>the data points are separated by the given {@code separator}</li>
+     *  <li>The training set is stored in the file {@code dsname\dsname+"_TRAIN"}.
+     *  <li>The test set is stored in the file {@code dsname\dsname+"_TEST"}.
+     *  <li>The data points are separated by the given {@code separator}.
      * </ol>
+     * 
+     * <p>
      * The elements of the test set are added after the elements of the training
-     * set.<br>
-     * <br>
+     * set.
      * 
      * @param dsname    the name of the dataset
      * @param separator the character which separates the values
-     * @param hasXValue tells if the list of input values contain x-coordinates of
-     *                  points
-     * @param train     indicates whether to load train set
-     * @param test      indicates whether to load test set
+     * @param hasXValue indicates whether the list of input values contain
+     *                  x-coordinates of points
+     * @param train     indicates whether to load the training set
+     * @param test      indicates whether to load the test set
      * @return the dataset
      * @throws IOException
      */
@@ -221,23 +234,24 @@ public final class DatasetUtils {
     }
 
     /**
-     * Loads the dataset with the given name from the given folder. Assumptions:<br>
+     * Loads the dataset with the given name from the given folder. Assumptions:
      * <ol>
-     * <li>the training set is stored in file {@code dsname\dsname+"_TRAIN"},</li>
-     * <li>the test set is stored in file {@code dsname\dsname+"_TEST"},</li>
-     * <li>the data points are separated by the given {@code separator}</li>
+     *  <li>The training set is stored in the file {@code dsname\dsname+"_TRAIN"}.
+     *  <li>The test set is stored in the file {@code dsname\dsname+"_TEST"}.
+     *  <li>Data points are separated by the given {@code separator}.
      * </ol>
+     * 
+     * <p>
      * The elements of the test set are added after the elements of the training
-     * set.<br>
-     * <br>
+     * set.
      * 
      * @param folder    the folder
      * @param dsname    the name of the dataset
      * @param separator the character which separates the values
-     * @param hasXValue tells if the list of input values contain x-coordinates of
-     *                  points
-     * @param train     indicates whether to load train set
-     * @param test      indicates whether to load test set
+     * @param hasXValue indicates whether the list of input values contain
+     *                  x-coordinates of points
+     * @param train     indicates whether to load the training set
+     * @param test      indicates whether to load the test set
      * @return the dataset
      * @throws IOException
      */
@@ -268,7 +282,6 @@ public final class DatasetUtils {
         }
 
         // preparing dataset
-        // 03.01.2011.
         Dataset dataset = null;
 
         if (train && test) {
@@ -279,7 +292,7 @@ public final class DatasetUtils {
                 testSet = null;
             } else {
                 dataset = testSet;
-                dataset.addAll(0, trainSet); // 10.02.2011.
+                dataset.addAll(0, trainSet);
                 trainSet.clear();
                 trainSet = null;
             }
@@ -301,7 +314,7 @@ public final class DatasetUtils {
      * default {@code separator}.
      * 
      * @param dsname  the name of the file
-     * @param dataset the dataset to save
+     * @param dataset the dataset to be saved
      * @throws IOException
      */
     public static void saveDataset(String dsname, Dataset dataset) throws IOException {
@@ -313,7 +326,7 @@ public final class DatasetUtils {
      * 
      * @param dsname    the name of the file
      * @param separator the character which separates the values
-     * @param dataset   the dataset to save
+     * @param dataset   the dataset to be saved
      * @throws IOException
      */
     public static void saveDataset(String dsname, char separator, Dataset dataset)
@@ -326,8 +339,8 @@ public final class DatasetUtils {
      * 
      * @param dsname    the name of the file
      * @param separator the character which separates the values
-     * @param hasXValue tells if the dataset values contain x-coordinates of points
-     * @param dataset   the dataset to save
+     * @param hasXValue indicates whether the output should contain x-coordinates of points
+     * @param dataset   the dataset to be saved
      * @throws IOException
      */
     public static void saveDataset(String dsname, char separator, boolean hasXValue,
@@ -376,7 +389,7 @@ public final class DatasetUtils {
 
     /**
      * Creates a new dataset based on the given list of labels. Time series are
-     * indexed based on the indexes of the labels within the list.
+     * indexed according to the positions of the labels within the array.
      * 
      * @param labels list of labels
      * @return the new dataset
@@ -387,11 +400,11 @@ public final class DatasetUtils {
 
     /**
      * Creates a new dataset based on the given list of labels. Time series are
-     * indexed based on the indexes of the labels within the list.
+     * indexed according to the positions of the labels within the array.
      * 
      * @param labels list of labels
-     * @param first  index of the first label to include
-     * @param last   index of the last label to include
+     * @param first  index of the first label to be included in the dataset
+     * @param last   index of the last label to be included in the dataset
      * @return the new dataset
      */
     public static Dataset createDataSet(List<Double> labels, int first, int last) {
@@ -405,8 +418,8 @@ public final class DatasetUtils {
     }
 
     /**
-     * Creates a new dataset based on the given list of labels. Time series are
-     * indexed based on the indexes of the labels within the array.
+     * Creates a new dataset based on the given array of labels. Time series are
+     * indexed according to the positions of the labels within the array.
      * 
      * @param labels array of labels
      * @return the new dataset
@@ -416,12 +429,12 @@ public final class DatasetUtils {
     }
 
     /**
-     * Creates a new dataset based on the given list of labels. Time series are
-     * indexed based on the indexes of the labels within the array.
+     * Creates a new dataset based on the given array of labels. Time series are
+     * indexed according to the positions of the labels within the array.
      * 
      * @param labels array of labels
-     * @param first  index of the first label to include
-     * @param last   index of the last label to include
+     * @param first  index of the first label to be included in the dataset
+     * @param last   index of the last label to be included in the dataset
      * @return the new dataset
      */
     public static Dataset createDataset(double[] labels, int first, int last) {
@@ -437,7 +450,7 @@ public final class DatasetUtils {
      * Creates a new dataset based on the labels loaded from the given file. Time
      * series are indexed based on the indexes of the labels within the file.
      * 
-     * @param fname the name of the file
+     * @param fname the name of the file containing the labels
      * @return the dataset
      * @throws IOException
      */
@@ -476,7 +489,7 @@ public final class DatasetUtils {
     /**
      * Loads the names of the datasets from the "Datasets.csv" file.
      * 
-     * @return
+     * @return list of dataset names
      * @throws IOException
      */
     public static List<String> loadDatasetNames() throws IOException {

@@ -202,8 +202,12 @@ public final class DatasetUtils {
      * @return the dataset
      * @throws IOException
      */
-    public static Dataset loadDataset(String folder, String dsname, char separator,
-            boolean train, boolean test) throws IOException {
+    public static Dataset loadDataset(String folder, 
+                                      String dsname, 
+                                      char separator,
+                                      boolean train, 
+                                      boolean test) 
+            throws IOException {
         return loadDataset(folder, dsname, separator, false, train, test);
     }
 
@@ -228,8 +232,12 @@ public final class DatasetUtils {
      * @return the dataset
      * @throws IOException
      */
-    public static Dataset loadDataset(String dsname, char separator, boolean hasXValue,
-            boolean train, boolean test) throws IOException {
+    public static Dataset loadDataset(String dsname, 
+                                      char separator, 
+                                      boolean hasXValue,
+                                      boolean train, 
+                                      boolean test) 
+            throws IOException {
         return loadDataset(root, dsname, separator, hasXValue, train, test);
     }
 
@@ -255,8 +263,13 @@ public final class DatasetUtils {
      * @return the dataset
      * @throws IOException
      */
-    public static Dataset loadDataset(String folder, String dsname, char separator,
-            boolean hasXValue, boolean train, boolean test) throws IOException {
+    public static Dataset loadDataset(String folder, 
+                                      String dsname, 
+                                      char separator,
+                                      boolean hasXValue, 
+                                      boolean train, 
+                                      boolean test) 
+            throws IOException {
 
         if (folder == null)
             folder = "";
@@ -343,8 +356,11 @@ public final class DatasetUtils {
      * @param dataset   the dataset to be saved
      * @throws IOException
      */
-    public static void saveDataset(String dsname, char separator, boolean hasXValue,
-            Dataset dataset) throws IOException {
+    public static void saveDataset(String dsname, 
+                                   char separator, 
+                                   boolean hasXValue,
+                                   Dataset dataset) 
+            throws IOException {
         TimeSeriesTextFileWriter writer = new TimeSeriesTextFileWriter(dsname, separator, hasXValue);
         writer.write(dataset);
     }

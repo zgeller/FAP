@@ -48,7 +48,7 @@ import fap.util.ThreadUtils.RunnableWrapper;
  * individual test subsets.
  * 
  * @author Zoltán Gellér
- * @version 2025.03.06.
+ * @version 2025.04.12.
  * @see AbstractExtendedEvaluator
  * @see Evaluator
  */
@@ -369,8 +369,6 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
 
         int tnumber = ThreadUtils.getThreadLimit(this.getNumberOfThreads());
 
-        ClassifyTask.tnumber = tnumber;
-        
         // checking conditions for parallel training
         boolean parallelTraining = (tnumber > 1) && 
                                    this.isFullParallel() && 
@@ -540,8 +538,6 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * Classification task.
      */
     protected class ClassifyTask implements Runnable {
-        
-        static int tnumber;
         
         /**
          * Fold index.

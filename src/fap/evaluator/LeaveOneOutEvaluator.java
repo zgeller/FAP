@@ -53,7 +53,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.03.06.
+ * @version 2025.04.17.
  * @see AbstractExtendedEvaluator
  */
 public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements Copyable {
@@ -206,7 +206,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
                 expectedErrors[i] = trainer.train(classifier, dataset);
 
             // building the classifier
-            classifier.initialize(dataset);
+            classifier.fit(dataset);
 
             // testing
             double label = classifier.classify(testSeries);
@@ -289,7 +289,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
 
             // initializing the classifier
             try {
-                classifier.initialize(trainset);
+                classifier.fit(trainset);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

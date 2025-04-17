@@ -30,7 +30,7 @@ import fap.util.ThreadUtils;
  * 1NN (Nearest Neighbors) classifier.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.17.
+ * @version 2025.04.17.
  * @see AbstractNNClassifier
  */
 public class NNClassifier extends AbstractNNClassifier {
@@ -74,8 +74,8 @@ public class NNClassifier extends AbstractNNClassifier {
     }
 
     @Override
-    public void initialize(Dataset trainset) throws Exception {
-        super.initialize(trainset);
+    public void fit(Dataset trainset) throws Exception {
+        super.fit(trainset);
         findKNeighbours(trainset, 1);
     }
 

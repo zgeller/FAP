@@ -58,7 +58,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.03.05.2
+ * @version 2025.04.17.
  * @see AbstractNNClassifier
  */
 public class KNNClassifier extends AbstractNNClassifier {
@@ -232,12 +232,13 @@ public class KNNClassifier extends AbstractNNClassifier {
         }
 
         return bestLabel;
+        
     }
 
     @Override
-    public void initialize(Dataset dataset) throws Exception {
-        super.initialize(dataset);
-        findKNeighbours(dataset, this.k);
+    public void fit(Dataset trainset) throws Exception {
+        super.fit(trainset);
+        findKNeighbours(trainset, this.k);
     }
 
     /**

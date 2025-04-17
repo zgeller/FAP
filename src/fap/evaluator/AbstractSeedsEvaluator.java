@@ -48,7 +48,7 @@ import fap.util.ThreadUtils.RunnableWrapper;
  * individual test subsets.
  * 
  * @author Zoltán Gellér
- * @version 2025.04.12.
+ * @version 2025.04.17.
  * @see AbstractExtendedEvaluator
  * @see Evaluator
  */
@@ -475,7 +475,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
                 classifierCopy = (Classifier) ((Copyable)classifier).makeACopy(false);
                 
                 try {
-                    classifierCopy.initialize(result.trainset);
+                    classifierCopy.fit(result.trainset);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -505,7 +505,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
             }
 
             try {
-                classifierCopy.initialize(result.trainset);
+                classifierCopy.fit(result.trainset);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -651,7 +651,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
                 if (trainer != null)
                     expectedError = trainer.train(classifier, result.trainset);
                 
-                classifier.initialize(result.trainset);
+                classifier.fit(result.trainset);
 
                 result.expectedError = expectedError;
                 result.bestParams = null;

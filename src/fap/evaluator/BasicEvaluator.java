@@ -41,7 +41,7 @@ import fap.util.ThreadUtils;
  * It evaluates a classifier based on the specified test and train sets.
  * 
  * @author Zoltán Gellér
- * @version 2025.03.05.
+ * @version 2025.04.17.
  * @see Serializable
  * @see Callbackable
  * @see Resumable
@@ -181,7 +181,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
             expectedError = trainer.train(classifier, trainset);
         
         // initializing the classifier
-        classifier.initialize(trainset);
+        classifier.fit(trainset);
         
         // evaluation
         int tnumber = ThreadUtils.getThreadLimit(this.getNumberOfThreads());

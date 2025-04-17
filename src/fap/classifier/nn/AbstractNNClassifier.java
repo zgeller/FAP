@@ -34,7 +34,7 @@ import fap.util.ThreadUtils;
  * Defines common methods and fields for (multithreaded) NN classifiers.
  * 
  * @author Zoltán Gellér
- * @version 2025.03.05.
+ * @version 2025.04.17.
  * @see AbstractDistanceBasedClassifier
  * @see Multithreaded
  * @see Copyable
@@ -198,7 +198,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
      * 
      * <p>
      * It should be invoked only within the
-     * {@link fap.core.classifier.Classifier#initialize(Dataset) initialize} method.
+     * {@link fap.core.classifier.Classifier#fit(Dataset) fit} method.
      * 
      * @param trainset the training dataset
      * @param k        number of neighbours
@@ -228,7 +228,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
     }
 
     @Override
-    public void initialize(Dataset trainset) throws Exception {
+    public void fit(Dataset trainset) throws Exception {
         this.trainset = trainset;
         /*
          * Method findKNeighbours cannot be called here because the number of nearest
@@ -238,7 +238,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
     }
 
     /**
-     * Sets the matrix of neighbours. Must be invoked before the {@link #initialize}
+     * Sets the matrix of neighbours. Must be invoked before the {@link #fit}
      * method.
      * 
      * @param neighbours the matrix of neighbours to set
@@ -257,7 +257,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
     }
 
     /**
-     * Sets the distance matrix. Must be invoked before the {@link #initialize}
+     * Sets the distance matrix. Must be invoked before the {@link #fit}
      * method.
      * 
      * @param distances the distance matrix to set

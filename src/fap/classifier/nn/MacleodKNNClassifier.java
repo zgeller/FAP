@@ -60,7 +60,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.03.05.2
+ * @version 2025.04.17.
  * @see KNNClassifier
  */
 public class MacleodKNNClassifier extends KNNClassifier {
@@ -340,8 +340,8 @@ public class MacleodKNNClassifier extends KNNClassifier {
     }
 
     @Override
-    public void initialize(Dataset trainset) throws Exception {
-        super.initialize(trainset);
+    public void fit(Dataset trainset) throws Exception {
+        super.fit(trainset);
         int max = this.getS();
         int k = this.getK();
         if (max < k)

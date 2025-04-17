@@ -25,7 +25,7 @@ import fap.core.data.TimeSeries;
  * Declares common methods for classifiers.
  * 
  * @author Zoltán Gellér
- * @version 2024.08.26.
+ * @version 2024.04.17.
  * @see Serializable
  */
 public interface Classifier extends Serializable {
@@ -34,13 +34,14 @@ public interface Classifier extends Serializable {
      * Initializes the classifier using the given training dataset.
      * 
      * <p>
-     * <b>It is not intended for training the classifier. An appropriate
-     * {@link fap.core.trainer.Trainer Trainer} should be used for training.</b>
+     * <b>It is not intended for tuning the hyperparameters of the classifier. An
+     * appropriate {@link fap.core.trainer.Trainer Trainer} should be used for
+     * tuning.</b>
      * 
      * @param trainset the training dataset
      * @throws Exception if an error occurs
      */
-    public void initialize(Dataset trainset) throws Exception;
+    public void fit(Dataset trainset) throws Exception;
 
     /**
      * Classifies the given time series.

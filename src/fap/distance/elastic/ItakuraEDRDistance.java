@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package fap.distance;
+package fap.distance.elastic;
 
 import fap.core.data.TimeSeries;
 import fap.distance.util.ItakuraParallelogram;
 import fap.exception.IncomparableTimeSeriesException;
 
 /**
- * Itakura-constrained {@link LCSDistance LCS} (Longest Common Subsequence)
+ * Itakura-constrained {@link EDRDistance EDR} (Edit Distance on Real sequence)
  * distance measure. Time series must be the same length.
  *
  * <p>
@@ -40,9 +40,9 @@ import fap.exception.IncomparableTimeSeriesException;
  * @author Zoltán Gellér
  * @version 2024.09.17.
  * @see AbstractConstrainedDistance
- * @see LCSDistance
+ * @see EDRDistance
  */
-public class ItakuraLCSDistance extends AbstractConstrainedThresholdDistance {
+public class ItakuraEDRDistance extends AbstractConstrainedThresholdDistance {
 
     private static final long serialVersionUID = 1L;
 
@@ -52,16 +52,16 @@ public class ItakuraLCSDistance extends AbstractConstrainedThresholdDistance {
     private ItakuraParallelogram itPara = new ItakuraParallelogram();
 
     /**
-     * Constructs a new Itakura constrained LCS distance measure with the default
+     * Constructs a new Itakura constrained EDR distance measure with the default
      * width of the warping (editing) window ({@link AbstractConstrainedDistance#r
      * r}) and the default value of the matching threshold
      * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}).
      */
-    public ItakuraLCSDistance() {
+    public ItakuraEDRDistance() {
     }
     
     /**
-     * Constructs a new Itakura constrained LCS distance measure with the default
+     * Constructs a new Itakura constrained EDR distance measure with the default
      * width of the warping (editing) window ({@link AbstractConstrainedDistance#r
      * r}) and the default value of the matching threshold
      * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}), and sets
@@ -69,12 +69,12 @@ public class ItakuraLCSDistance extends AbstractConstrainedThresholdDistance {
      * 
      * @param storing {@code true} if storing distances should be enabled
      */
-    public ItakuraLCSDistance(boolean storing) {
+    public ItakuraEDRDistance(boolean storing) {
         super(storing);
     }
 
     /**
-     * Constructs a new Itakura constrained LCS distance measure with the specified
+     * Constructs a new Itakura constrained EDR distance measure with the specified
      * relative width of the warping (editing) window ({@code r}) and the default
      * value of the matching threshold
      * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}).
@@ -82,12 +82,12 @@ public class ItakuraLCSDistance extends AbstractConstrainedThresholdDistance {
      * @param r the relative width of the warping (editing) window (as a percentage
      *          of the length of the time series)
      */
-    public ItakuraLCSDistance(double r) {
+    public ItakuraEDRDistance(double r) {
         super(r);
     }
     
     /**
-     * Constructs a new Itakura constrained LCS distance measure with the specified
+     * Constructs a new Itakura constrained EDR distance measure with the specified
      * relative width of the warping (editing) window ({@code r}) and the default
      * value of the matching threshold
      * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}), and sets
@@ -97,12 +97,12 @@ public class ItakuraLCSDistance extends AbstractConstrainedThresholdDistance {
      *                percentage of the length of the time series)
      * @param storing {@code true} if storing distances should be enabled
      */
-    public ItakuraLCSDistance(double r, boolean storing) {
+    public ItakuraEDRDistance(double r, boolean storing) {
         super(r, storing);
     }
     
     /**
-     * Constructs a new Itakura constrained LCS distance measure with the specified
+     * Constructs a new Itakura constrained EDR distance measure with the specified
      * relative width of the warping (editing) window ({@code r}) and the matching
      * threshold value ({@code epsilon}).
      * 
@@ -110,21 +110,21 @@ public class ItakuraLCSDistance extends AbstractConstrainedThresholdDistance {
      *                percentage of the length of the time series)
      * @param epsilon the value of the matching threshold, it must be {@code >= 0}
      */
-    public ItakuraLCSDistance(double r, double epsilon) {
+    public ItakuraEDRDistance(double r, double epsilon) {
         super(r, epsilon);
     }
     
     /**
-     * Constructs a new Itakura constrained LCS distance measure with the specified
+     * Constructs a new Itakura constrained EDR distance measure with the specified
      * relative width of the warping (editing) window ({@code r}) and the matching
-     * threshold value ({@code epsilon}), and sets whether to store distances.
+     * threshold value ({@code epsilon}), whether to store distances.
      * 
      * @param r       the relative width of the warping (editing) window (as a
      *                percentage of the length of the time series)
      * @param epsilon the value of the matching threshold, it must be {@code >= 0}
      * @param storing {@code true} if storing distances should be enabled
      */
-    public ItakuraLCSDistance(double r, double epsilon, boolean storing) {
+    public ItakuraEDRDistance(double r, double epsilon, boolean storing) {
         super(r, epsilon, storing);
     }
 
@@ -133,31 +133,31 @@ public class ItakuraLCSDistance extends AbstractConstrainedThresholdDistance {
      *                                         length
      */
     @Override
-    public double distance(TimeSeries series1, TimeSeries series2) throws IncomparableTimeSeriesException {
+    public double distance(TimeSeries series1, TimeSeries series2) {
 
         // try to recall the distance
         double distance = this.recall(series1, series2);
         if (!Double.isNaN(distance))
             return distance;
         
-        // throws IncomparableTimeSeriesException if the time series are not the same
-        // length
         int sei[][] = itPara.getSEI(series1, series2, getR(), getW()); 
-
+                                                                  
         int len = series1.length();
+
+        final long max = Long.MAX_VALUE - 1; // to prevent overflow
 
         int startj[] = sei[0];
         int endj[] = sei[1];
 
-        long min = 0;
+        double epsilon = getEpsilon();
 
         long curRow[] = new long[len + 1];
         long prevRow[] = new long[len + 1];
 
-        double epsilon = getEpsilon();
-
         // initialization
-        prevRow[0] = min;
+        prevRow[0] = 0;
+        for (int i = 1; i <= len; i++)
+            prevRow[i] = i;
 
         int prevEnd = 0;
 
@@ -167,14 +167,14 @@ public class ItakuraLCSDistance extends AbstractConstrainedThresholdDistance {
 
             int start = startj[i];
             int end = endj[i];
-            
+
             // initializing left and right side
+            
+            curRow[start - 1] = (start - 1 == 0) ? i : max; // left side
 
-            curRow[start - 1] = prevRow[start - 1]; // left side
-
-            if (prevEnd < len)
+            if (i > 1 && prevEnd < len)
                 for (int t = prevEnd + 1; t <= end; t++) // right side
-                    prevRow[t] = prevRow[prevEnd];
+                    prevRow[t] = max;
             prevEnd = end;
 
             double y1 = series1.getY(i - 1);
@@ -182,35 +182,31 @@ public class ItakuraLCSDistance extends AbstractConstrainedThresholdDistance {
             for (int j = start; j <= end; j++) {
                 
                 int jm1 = j - 1;
-                double y2 = series2.getY(jm1);
 
-                if (Math.abs(y1 - y2) <= epsilon)
-                    curRow[j] = 1 + prevRow[jm1];
-                else
-                    curRow[j] = Math.max(prevRow[j], curRow[jm1]);
+                int subcost = Math.abs(y1 - series2.getY(jm1)) <= epsilon ? 0 : 1;
+
+                curRow[j] = Math.min(prevRow[jm1] + subcost, 1 + Math.min(prevRow[j], curRow[jm1]));
                 
             }
 
             tmp = curRow;
             curRow = prevRow;
             prevRow = tmp;
-
+            
         }
-
-        distance = 0;
-        if (len > 0)
-            distance = (double) (len - prevRow[len]) / (double) len;
+        
+        distance = prevRow[len];
 
         // save the distance into the memory
         this.store(series1, series2, distance);
-
+        
         return distance;
         
     }
 
     @Override
     public Object makeACopy(boolean deep) {
-        ItakuraLCSDistance copy = new ItakuraLCSDistance();
+        ItakuraEDRDistance copy = new ItakuraEDRDistance();
         init(copy, deep);
         return copy;
     }

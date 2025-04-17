@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fap.distance;
+package fap.distance.elastic;
 
 /**
  * Declares getters and setters for the parameters of TWED-based distance

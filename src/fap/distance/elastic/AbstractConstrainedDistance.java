@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package fap.distance;
+package fap.distance.elastic;
+
+import fap.distance.AbstractCopyableDistance;
 
 /**
  * Defines basic methods for constrained elastic distance measures.

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package fap.distance;
+package fap.distance.elastic;
 
 import fap.core.data.TimeSeries;
+import fap.distance.AbstractCopyableDistance;
 
 /**
  * DTW (Dynamic Time Warping) distance measure.

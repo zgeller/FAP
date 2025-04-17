@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package fap.distance;
+package fap.distance.elastic;
+
+import fap.distance.ThresholdDistance;
 
 /**
  * Interface for constrained elastic distance measures that rely on a matching

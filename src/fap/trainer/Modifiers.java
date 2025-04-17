@@ -22,11 +22,11 @@ import fap.classifier.nn.ZavrelKNNClassifier;
 import fap.core.classifier.Classifier;
 import fap.core.classifier.DistanceBasedClassifier;
 import fap.core.distance.Distance;
-import fap.distance.ConstrainedDistance;
-import fap.distance.ERPParameters;
 import fap.distance.MinkowskiDistance;
-import fap.distance.TWEDParameters;
 import fap.distance.ThresholdDistance;
+import fap.distance.elastic.ConstrainedDistance;
+import fap.distance.elastic.ERPParameters;
+import fap.distance.elastic.TWEDParameters;
 
 /**
  * Auxiliary class that defines common modifiers.

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fap.distance;
+package fap.distance.elastic;
 
 import fap.util.TimeSeriesUtils;
 

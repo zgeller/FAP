@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package fap.distance;
+package fap.distance.elastic;
 
 import fap.core.data.TimeSeries;
 import fap.distance.util.ConstraintUtils;
 import fap.exception.IncomparableTimeSeriesException;
 
 /**
- * Sakoe-Chiba constrained {@link EDRDistance EDR} (Edit Distance on Real sequence)
+ * Sakoe-Chiba constrained {@link LCSDistance LCS} (Longest Common Subsequence)
  * distance measure. Time series must be the same length.
  * 
  * <p>
@@ -40,23 +40,23 @@ import fap.exception.IncomparableTimeSeriesException;
  * @author Zoltán Gellér
  * @version 2024.09.17.
  * @see AbstractConstrainedThresholdDistance
- * @see EDRDistance
+ * @see LCSDistance
  */
-public class SakoeChibaEDRDistance extends AbstractConstrainedThresholdDistance {
+public class SakoeChibaLCSDistance extends AbstractConstrainedThresholdDistance {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructs a new Sakoe-Chiba constrained EDR distance measure with the default
+     * Constructs a new Sakoe-Chiba constrained LCS distance measure with the default
      * width of the warping (editing) window ({@link AbstractConstrainedDistance#r
      * r}) and the default value of the matching threshold
      * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}).
      */
-    public SakoeChibaEDRDistance() {
+    public SakoeChibaLCSDistance() {
     }
     
     /**
-     * Constructs a new Sakoe-Chiba constrained EDR distance measure with the default
+     * Constructs a new Sakoe-Chiba constrained LCS distance measure with the default
      * width of the warping (editing) window ({@link AbstractConstrainedDistance#r
      * r}) and the default value of the matching threshold
      * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}), and sets
@@ -64,12 +64,12 @@ public class SakoeChibaEDRDistance extends AbstractConstrainedThresholdDistance 
      * 
      * @param storing {@code true} if storing distances should be enabled
      */
-    public SakoeChibaEDRDistance(boolean storing) {
+    public SakoeChibaLCSDistance(boolean storing) {
         super(storing);
     }
 
     /**
-     * Constructs a new Sakoe-Chiba constrained EDR distance measure with the specified
+     * Constructs a new Sakoe-Chiba constrained LCS distance measure with the specified
      * relative width of the warping (editing) window ({@code r}) and the default
      * value of the matching threshold
      * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}).
@@ -77,12 +77,12 @@ public class SakoeChibaEDRDistance extends AbstractConstrainedThresholdDistance 
      * @param r the relative width of the warping (editing) window (as a percentage
      *          of the length of the time series)
      */
-    public SakoeChibaEDRDistance(double r) {
+    public SakoeChibaLCSDistance(double r) {
         super(r);
     }
     
     /**
-     * Constructs a new Sakoe-Chiba constrained EDR distance measure with the specified
+     * Constructs a new Sakoe-Chiba constrained LCS distance measure with the specified
      * relative width of the warping (editing) window ({@code r}) and the default
      * value of the matching threshold
      * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}), and sets
@@ -92,12 +92,12 @@ public class SakoeChibaEDRDistance extends AbstractConstrainedThresholdDistance 
      *                percentage of the length of the time series)
      * @param storing {@code true} if storing distances should be enabled
      */
-    public SakoeChibaEDRDistance(double r, boolean storing) {
+    public SakoeChibaLCSDistance(double r, boolean storing) {
         super(r, storing);
     }
     
     /**
-     * Constructs a new Sakoe-Chiba constrained EDR distance measure with the specified
+     * Constructs a new Sakoe-Chiba constrained LCS distance measure with the specified
      * relative width of the warping (editing) window ({@code r}) and the matching
      * threshold value ({@code epsilon}).
      * 
@@ -105,21 +105,21 @@ public class SakoeChibaEDRDistance extends AbstractConstrainedThresholdDistance 
      *                percentage of the length of the time series)
      * @param epsilon the value of the matching threshold, it must be {@code >= 0}
      */
-    public SakoeChibaEDRDistance(double r, double epsilon) {
+    public SakoeChibaLCSDistance(double r, double epsilon) {
         super(r, epsilon);
     }
     
     /**
-     * Constructs a new Sakoe-Chiba constrained EDR distance measure with the specified
+     * Constructs a new Sakoe-Chiba constrained LCS distance measure with the specified
      * relative width of the warping (editing) window ({@code r}) and the matching
-     * threshold value ({@code epsilon}), whether to store distances.
+     * threshold value ({@code epsilon}), and sets whether to store distances.
      * 
      * @param r       the relative width of the warping (editing) window (as a
      *                percentage of the length of the time series)
      * @param epsilon the value of the matching threshold, it must be {@code >= 0}
      * @param storing {@code true} if storing distances should be enabled
      */
-    public SakoeChibaEDRDistance(double r, double epsilon, boolean storing) {
+    public SakoeChibaLCSDistance(double r, double epsilon, boolean storing) {
         super(r, epsilon, storing);
     }
 
@@ -134,66 +134,71 @@ public class SakoeChibaEDRDistance extends AbstractConstrainedThresholdDistance 
         double distance = this.recall(series1, series2);
         if (!Double.isNaN(distance))
             return distance;
-        
+
         // throws IncomparableTimeSeriesException if the time series are not the same
         // length
-        int scWidth = ConstraintUtils.getWarpingWindowWidth(series1, series2, getR(), getW()); 
+        int scWidth = ConstraintUtils.getWarpingWindowWidth(series1, series2, this.getR(), this.getW()); 
 
         int len = series1.length();
-
-        final long max = Long.MAX_VALUE - 1; // to prevent overflow
-
-        double epsilon = getEpsilon();
 
         long curRow[] = new long[len + 1];
         long prevRow[] = new long[len + 1];
 
-        // initialization
-        prevRow[0] = 0;
-        for (int i = 1; i <= len; i++)
-            prevRow[i] = i;
+        double epsilon = getEpsilon();
 
         long tmp[];
 
+        // initialization - not necessary as arrays are initialized with default values (0.0d)
+//        for (int i = 0; i <= len; i++)
+//            prevRow[i] = 0;
+
         for (int i = 1; i <= len; i++) {
-            
+
             int start = Math.max(1, i - scWidth);
             int end = Math.min(len, i + scWidth);
 
             // initializing left and right side
             
-            curRow[start - 1] = (start - 1 == 0) ? i : max; // left side
+            // this is needed only when scWidth = 0
+            curRow[start - 1] = prevRow[start - 1];  // left side
 
-            if (i > 1 && i + scWidth <= len)
-                prevRow[end] = max; // right side
+            // this is needed only when scWidth = 0
+            if (i + scWidth <= len)
+                prevRow[end] = prevRow[end - 1];    // right side
 
             double y1 = series1.getY(i - 1);
 
             for (int j = start; j <= end; j++) {
                 
-                int subcost = Math.abs(y1 - series2.getY(j - 1)) <= epsilon ? 0 : 1;
+                double y2 = series2.getY(j - 1);
 
-                curRow[j] = Math.min(prevRow[j - 1] + subcost, 1 + Math.min(prevRow[j], curRow[j - 1]));
+                if (Math.abs(y1 - y2) <= epsilon)
+                    curRow[j] = 1 + prevRow[j - 1];
+                else
+                    curRow[j] = Math.max(prevRow[j], curRow[j - 1]);
                 
             }
 
             tmp = curRow;
             curRow = prevRow;
             prevRow = tmp;
-            
+
         }
-        
-        distance = prevRow[len];
+
+        distance = 0;
+        if (len > 0)
+            distance = (double) (len - prevRow[len]) / (double) len;
         
         // save the distance into the memory
         this.store(series1, series2, distance);
-
+        
         return distance;
+        
     }
 
     @Override
     public Object makeACopy(boolean deep) {
-        SakoeChibaEDRDistance copy = new SakoeChibaEDRDistance();
+        SakoeChibaLCSDistance copy = new SakoeChibaLCSDistance();
         init(copy, deep);
         return copy;
     }

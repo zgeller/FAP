@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package fap.classifier.NN;
+package fap.classifier.nn;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import fap.classifier.NN.util.SortedList;
+import fap.classifier.nn.util.SortedList;
 import fap.core.classifier.AbstractDistanceBasedClassifier;
 import fap.core.data.Dataset;
 import fap.core.data.TimeSeries;

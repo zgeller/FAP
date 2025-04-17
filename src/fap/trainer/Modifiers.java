@@ -16,9 +16,9 @@
 
 package fap.trainer;
 
-import fap.classifier.NN.KNNClassifier;
-import fap.classifier.NN.MacleodKNNClassifier;
-import fap.classifier.NN.ZavrelKNNClassifier;
+import fap.classifier.nn.KNNClassifier;
+import fap.classifier.nn.MacleodKNNClassifier;
+import fap.classifier.nn.ZavrelKNNClassifier;
 import fap.core.classifier.Classifier;
 import fap.core.classifier.DistanceBasedClassifier;
 import fap.core.distance.Distance;

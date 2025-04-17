@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fap.classifier.NN.util;
+package fap.classifier.nn.util;
 
 /**
  * Each node contains an {@link #obj object} of type {@code T} and an associated {@code double} value

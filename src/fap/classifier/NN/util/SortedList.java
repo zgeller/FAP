@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fap.classifier.NN.util;
+package fap.classifier.nn.util;
 
 /**
  * A simple sorted list of {@link LinkedDistanceNode} objects. It can contain at

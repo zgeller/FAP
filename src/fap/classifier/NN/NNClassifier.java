@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package fap.classifier.NN;
+package fap.classifier.nn;
 
 import java.util.List;
 
-import fap.classifier.NN.util.DistanceNode;
+import fap.classifier.nn.util.DistanceNode;
 import fap.core.data.Dataset;
 import fap.core.data.TimeSeries;
 import fap.core.distance.Distance;

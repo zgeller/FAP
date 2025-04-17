@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fap.classifier.NN;
+package fap.classifier.nn;
 
 import fap.core.distance.Distance;
 import fap.util.MathUtils;

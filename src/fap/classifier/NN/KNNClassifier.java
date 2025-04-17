@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package fap.classifier.NN;
+package fap.classifier.nn;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import fap.classifier.NN.util.DistanceNode;
-import fap.classifier.NN.util.LinkedDistanceNode;
-import fap.classifier.NN.util.SortedList;
+import fap.classifier.nn.util.DistanceNode;
+import fap.classifier.nn.util.LinkedDistanceNode;
+import fap.classifier.nn.util.SortedList;
 import fap.core.data.Dataset;
 import fap.core.data.TimeSeries;
 import fap.core.distance.Distance;

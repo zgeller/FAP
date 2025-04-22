@@ -35,7 +35,7 @@ public interface Classifier extends Serializable {
      * 
      * <p>
      * <b>It is not intended for tuning the hyperparameters of the classifier. An
-     * appropriate {@link fap.core.trainer.Trainer Trainer} should be used for
+     * appropriate {@link fap.core.tuner.Tuner Tuner} should be used for
      * tuning.</b>
      * 
      * @param trainset the training dataset

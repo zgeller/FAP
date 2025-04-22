@@ -14,34 +14,23 @@
  * limitations under the License.
  */
 
-package fap.trainer;
-
-import fap.core.classifier.Classifier;
+package fap.tuner;
 
 /**
- * Declares methods for parameter setter classes.
+ * Auxiliary interface for classifier parameter setters that do not affects the
+ * underlying distance measure.
  * 
  * @param <T> the type of the parameter to be set by this parameter setter
  * 
  * @author Zoltán Gellér
- * @version 2024.09.22.
+ * @version 2024.09.23.
+ * @see Modifier
  */
-public interface Modifier<T> {
-    
-    /**
-     * Sets the specified {@code value} of the parameter of the {@code classifier}.
-     * 
-     * @param classifier the classifier whose parameter is to be set
-     * @param value      the value to set the parameter to
-     */
-    public void set(Classifier classifier, T value);
-    
-    /**
-     * Should return {@code true} if this parameter setter affects the distance
-     * measure.
-     * 
-     * @return {@code true} if this parameter setter affects the distance measure
-     */
-    public boolean affectsDistance();
+public interface ClassifierModifier<T> extends Modifier<T> {
 
+    @Override
+    public default boolean affectsDistance() {
+        return false;
+    }
+    
 }

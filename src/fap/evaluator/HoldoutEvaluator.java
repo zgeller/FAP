@@ -23,7 +23,7 @@ import java.util.Random;
 
 import fap.core.classifier.Classifier;
 import fap.core.data.Dataset;
-import fap.core.trainer.Trainer;
+import fap.core.tuner.Tuner;
 import fap.exception.EmptyDatasetException;
 import fap.util.Copyable;
 
@@ -31,13 +31,13 @@ import fap.util.Copyable;
  * Holdout classifier evaluator.
  * 
  * <p>
- * If the number of threads is greater than 1, parallel training is applied by
- * default. This means that copies of the classifier will be trained in parallel
- * using copies of the trainer, and then the time series of all the test subsets
- * are classified in parallel as well. This requires that both the trainer and
+ * If the number of threads is greater than 1, parallel tuning is applied by
+ * default. This means that copies of the classifier will be tuned in parallel
+ * using copies of the tuner, and then the time series of all the test subsets
+ * are classified in parallel as well. This requires that both the tuner and
  * the classifier implement the {@link Copyable} interface (or that there is no
- * trainer and the classifier implements it). If this condition is not met (or
- * the number of seeds is less than 2), it reverts to sequential training of the
+ * tuner and the classifier implements it). If this condition is not met (or
+ * the number of seeds is less than 2), it reverts to sequential tuning of the
  * classifier and parallel classification only the time series belonging to
  * individual test subsets.
  * 
@@ -53,7 +53,7 @@ import fap.util.Copyable;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.03.03.
+ * @version 2025.04.22.
  * @see AbstractExtendedEvaluator
  */
 public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable {
@@ -73,15 +73,15 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
     
     /**
      * Constructs a new single-threaded stratified Holdout evaluator that will use
-     * 50% of the dataset for training and 50% for testing.
+     * 50% of the dataset for tuning and training, and 50% for testing.
      */
     public HoldoutEvaluator() {
     }
 
     /**
      * Constructs a new stratified Holdout evaluator with the specified number of
-     * threads ({@code tnumber}) that will use 50% of the dataset for training and
-     * 50% for testing.
+     * threads ({@code tnumber}) that will use 50% of the dataset for tuning and
+     * training, and 50% for testing.
      * 
      * @param tnumber number of threads
      */
@@ -91,22 +91,22 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
     
     /**
      * Constructs a new stratified Holdout evaluator with the specified number of
-     * threads ({@code tnumber}) that will use 50% of the dataset for training and
-     * 50% for testing.
+     * threads ({@code tnumber}) that will use 50% of the dataset for tuning and
+     * training, and 50% for testing.
      * 
-     * @param tnumber          number of threads
-     * @param fullParallel indicates whether to apply full parallel training
-     *                         ({@code true})
+     * @param tnumber      number of threads
+     * @param fullParallel indicates whether to apply full parallel tuning
+     *                     ({@code true})
      */
-    public HoldoutEvaluator(int tnumber, boolean parallelTraining) {
-        super(tnumber, parallelTraining);
+    public HoldoutEvaluator(int tnumber, boolean fullParallel) {
+        super(tnumber, fullParallel);
     }
     
     
     /**
      * Constructs a new single-threaded stratified Holdout evaluator with the
-     * specified random {@code seeds} that will use 50% of the dataset for training
-     * and 50% for testing.
+     * specified random {@code seeds} that will use 50% of the dataset for tuning
+     * and training, and 50% for testing.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be
@@ -121,7 +121,7 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
     /**
      * Constructs a new stratified Holdout evaluator with the specified number of
      * threads ({@code tnumber}) and the specified random {@code seeds} that will
-     * use 50% of the dataset for training and 50% for testing.
+     * use 50% of the dataset for tuning and training, and 50% for testing.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be
@@ -137,25 +137,25 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
     /**
      * Constructs a new stratified Holdout evaluator with the specified number of
      * threads ({@code tnumber}) and the specified random {@code seeds} that will
-     * use 50% of the dataset for training and 50% for testing.
+     * use 50% of the dataset for tuning and training, and 50% for testing.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be
      * repeated.
      * 
-     * @param seeds            random seeds used to shuffle the dataset
-     * @param tnumber          number of threads
-     * @param fullParallel indicates whether to apply full parallel training
-     *                         ({@code true})
+     * @param seeds        random seeds used to shuffle the dataset
+     * @param tnumber      number of threads
+     * @param fullParallel indicates whether to apply full parallel tuning
+     *                     ({@code true})
      */
-    public HoldoutEvaluator(long[] seeds, int tnumber, boolean parallelTraining) {
-        super(seeds, tnumber, parallelTraining);
+    public HoldoutEvaluator(long[] seeds, int tnumber, boolean fullParallel) {
+        super(seeds, tnumber, fullParallel);
     }
     
     /**
      * Constructs a new single-threaded stratified Holdout evaluator that will use
-     * the specified {@code percentage} of the dataset for training the classifier,
-     * and the remaining portion for testing.
+     * the specified {@code percentage} of the dataset for tuning and training the
+     * classifier, and the remaining portion for testing.
      * 
      * @param percentage the percentage of the dataset that makes up the training
      *                   set, must be in the range {@code [0..100]}
@@ -167,8 +167,8 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
     /**
      * Constructs a new single-threaded stratified Holdout evaluator with the
      * specified random {@code seeds} that will use the specified {@code percentage}
-     * of the dataset for training the classifier, and the remaining portion for
-     * testing.
+     * of the dataset for tuning and training the classifier, and the remaining
+     * portion for testing.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be
@@ -186,8 +186,8 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
     /**
      * Constructs a new stratified Holdout evaluator with the specified number of
      * threads ({@code tnumber}) that will use the specified {@code percentage} of
-     * the dataset for training the classifier, and the remaining portion for
-     * testing.
+     * the dataset for tuning and training the classifier, and the remaining portion
+     * for testing.
      * 
      * @param percentage the percentage of the dataset that makes up the training
      *                   set, must be in the range {@code [0..100]}
@@ -200,24 +200,24 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
     /**
      * Constructs a new stratified Holdout evaluator with the specified number of
      * threads ({@code tnumber}) that will use the specified {@code percentage} of
-     * the dataset for training the classifier, and the remaining portion for
-     * testing.
+     * the dataset for tuning and training the classifier, and the remaining portion
+     * for testing.
      * 
-     * @param percentage       the percentage of the dataset that makes up the
-     *                         training set, must be in the range {@code [0..100]}
-     * @param tnumber          number of threads
-     * @param fullParallel indicates whether to apply full parallel training
-     *                         ({@code true})
+     * @param percentage   the percentage of the dataset that makes up the training
+     *                     set, must be in the range {@code [0..100]}
+     * @param tnumber      number of threads
+     * @param fullParallel indicates whether to apply full parallel tuning
+     *                     ({@code true})
      */
-    public HoldoutEvaluator(double percentage, int tnumber, boolean parallelTraining) {
-        this(percentage, null, tnumber, parallelTraining);
+    public HoldoutEvaluator(double percentage, int tnumber, boolean fullParallel) {
+        this(percentage, null, tnumber, fullParallel);
     }
     
     /**
      * Constructs a new stratified Holdout evaluator with the specified number of
      * threads ({@code tnumber}) and the specified random {@code seeds} that will
-     * use the specified {@code percentage} of the dataset for training the
-     * classifier, and the remaining portion for testing.
+     * use the specified {@code percentage} of the dataset for tuning and training
+     * the classifier, and the remaining portion for testing.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be
@@ -236,29 +236,29 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
     /**
      * Constructs a new stratified Holdout evaluator with the specified number of
      * threads ({@code tnumber}) and the specified random {@code seeds} that will
-     * use the specified {@code percentage} of the dataset for training the
-     * classifier, and the remaining portion for testing.
+     * use the specified {@code percentage} of the dataset for tuning and training
+     * the classifier, and the remaining portion for testing.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be
      * repeated.
      * 
-     * @param percentage       the percentage of the dataset that makes up the
-     *                         training set, must be in the range {@code [0..100]}
-     * @param seeds            random seeds used to shuffle the dataset
-     * @param tnumber          number of threads
-     * @param fullParallel indicates whether to apply full parallel training
-     *                         ({@code true})
+     * @param percentage   the percentage of the dataset that makes up the training
+     *                     set, must be in the range {@code [0..100]}
+     * @param seeds        random seeds used to shuffle the dataset
+     * @param tnumber      number of threads
+     * @param fullParallel indicates whether to apply full parallel tuning
+     *                     ({@code true})
      */
-    public HoldoutEvaluator(double percentage, long[] seeds, int tnumber, boolean parallelTraining) {
-        super(seeds, tnumber, parallelTraining);
+    public HoldoutEvaluator(double percentage, long[] seeds, int tnumber, boolean fullParallel) {
+        super(seeds, tnumber, fullParallel);
         this.setPercentage(percentage);
     }
     
     /**
      * Constructs a new single-threaded Holdout evaluator that will use the
-     * specified {@code percentage} of the dataset for training the classifier, and
-     * the remaining portion for testing.
+     * specified {@code percentage} of the dataset for tuning and training the
+     * classifier, and the remaining portion for testing.
      * 
      * @param percentage the percentage of the dataset that makes up the training
      *                   set, must be in the range {@code [0..100]}
@@ -272,7 +272,8 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
     /**
      * Constructs a new single-threaded Holdout evaluator with the specified random
      * {@code seeds} that will use the specified {@code percentage} of the dataset
-     * for training the classifier, and the remaining portion for testing.
+     * for tuning and training the classifier, and the remaining portion for
+     * testing.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be
@@ -292,7 +293,8 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
     /**
      * Constructs a new Holdout evaluator with the specified number of threads
      * ({@code tnumber}) that will use the specified {@code percentage} of the
-     * dataset for training the classifier, and the remaining portion for testing.
+     * dataset for tuning and training the classifier, and the remaining portion for
+     * testing.
      * 
      * @param percentage the percentage of the dataset that makes up the training
      *                   set, must be in the range {@code [0..100]}
@@ -307,25 +309,26 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
     /**
      * Constructs a new Holdout evaluator with the specified number of threads
      * ({@code tnumber}) that will use the specified {@code percentage} of the
-     * dataset for training the classifier, and the remaining portion for testing.
+     * dataset for tuning and training the classifier, and the remaining portion for
+     * testing.
      * 
-     * @param percentage       the percentage of the dataset that makes up the
-     *                         training set, must be in the range {@code [0..100]}
-     * @param stratified       indicates whether to use stratified ({@code true}) or
-     *                         random ({@code false}) holdout
-     * @param tnumber          number of threads
-     * @param fullParallel indicates whether to apply full parallel training
-     *                         ({@code true})
+     * @param percentage   the percentage of the dataset that makes up the training
+     *                     set, must be in the range {@code [0..100]}
+     * @param stratified   indicates whether to use stratified ({@code true}) or
+     *                     random ({@code false}) holdout
+     * @param tnumber      number of threads
+     * @param fullParallel indicates whether to apply full parallel tuning
+     *                     ({@code true})
      */
-    public HoldoutEvaluator(double percentage, boolean stratified, int tnumber, boolean parallelTraining) {
-        this(percentage, stratified, null, tnumber, parallelTraining);
+    public HoldoutEvaluator(double percentage, boolean stratified, int tnumber, boolean fullParallel) {
+        this(percentage, stratified, null, tnumber, fullParallel);
     }
     
     /**
      * Constructs a new Holdout evaluator with the specified number of threads
      * ({@code tnumber}) and the specified random {@code seeds} that will use the
-     * specified {@code percentage} of the dataset for training the classifier, and
-     * the remaining portion for testing.
+     * specified {@code percentage} of the dataset for tuning and training the
+     * classifier, and the remaining portion for testing.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be
@@ -333,8 +336,8 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
      * 
      * @param percentage the percentage of the dataset that makes up the training
      *                   set, must be in the range {@code [0..100]}
-     * @param stratified indicates whether to use stratified ({@code true}) or random
-     *                   ({@code false}) holdout
+     * @param stratified indicates whether to use stratified ({@code true}) or
+     *                   random ({@code false}) holdout
      * @param seeds      random seeds used to shuffle the dataset
      * @param tnumber    number of threads
      */
@@ -346,24 +349,24 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
     /**
      * Constructs a new Holdout evaluator with the specified number of threads
      * ({@code tnumber}) and the specified random {@code seeds} that will use the
-     * specified {@code percentage} of the dataset for training the classifier, and
-     * the remaining portion for testing.
+     * specified {@code percentage} of the dataset for tuning and training the
+     * classifier, and the remaining portion for testing.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be
      * repeated.
      * 
-     * @param percentage       the percentage of the dataset that makes up the
-     *                         training set, must be in the range {@code [0..100]}
-     * @param stratified       indicates whether to use stratified ({@code true}) or
-     *                         random ({@code false}) holdout
-     * @param seeds            random seeds used to shuffle the dataset
-     * @param tnumber          number of threads
-     * @param fullParallel indicates whether to apply full parallel training
-     *                         ({@code true})
+     * @param percentage   the percentage of the dataset that makes up the training
+     *                     set, must be in the range {@code [0..100]}
+     * @param stratified   indicates whether to use stratified ({@code true}) or
+     *                     random ({@code false}) holdout
+     * @param seeds        random seeds used to shuffle the dataset
+     * @param tnumber      number of threads
+     * @param fullParallel indicates whether to apply full parallel tuning
+     *                     ({@code true})
      */
-    public HoldoutEvaluator(double percentage, boolean stratified, long[] seeds, int tnumber, boolean parallelTraining) {
-        super(stratified, seeds, tnumber, parallelTraining);
+    public HoldoutEvaluator(double percentage, boolean stratified, long[] seeds, int tnumber, boolean fullParallel) {
+        super(stratified, seeds, tnumber, fullParallel);
         this.setPercentage(percentage);
     }
     
@@ -398,7 +401,7 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
      * @exception InterruptedException when the interrupted flag is set
      */
     @Override
-    public double evaluate(Trainer trainer, Classifier classifier, Dataset dataset) throws Exception {
+    public double evaluate(Tuner tuner, Classifier classifier, Dataset dataset) throws Exception {
 
         if (done)
             return error;
@@ -417,7 +420,7 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
         
         int cbCount = runs * tsize;
 
-        return super.evaluate(trainer, classifier, dataset, iterations, cbCount);
+        return super.evaluate(tuner, classifier, dataset, iterations, cbCount);
 
     }
     

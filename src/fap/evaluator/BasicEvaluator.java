@@ -26,7 +26,7 @@ import fap.callback.Callbackable;
 import fap.core.classifier.Classifier;
 import fap.core.data.Dataset;
 import fap.core.data.TimeSeries;
-import fap.core.trainer.Trainer;
+import fap.core.tuner.Tuner;
 import fap.exception.EmptyDatasetException;
 import fap.util.Copyable;
 import fap.util.Multithreaded;
@@ -41,7 +41,7 @@ import fap.util.ThreadUtils;
  * It evaluates a classifier based on the specified test and train sets.
  * 
  * @author Zoltán Gellér
- * @version 2025.04.17.
+ * @version 2025.04.22.
  * @see Serializable
  * @see Callbackable
  * @see Resumable
@@ -67,8 +67,8 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
     private transient ThreadPoolExecutor executor;
 
     /**
-     * The expected error rate (the lowest error rate on the training set). Default
-     * value is NaN (indicating that there was no training).
+     * The expected error rate (the lowest error rate on the training set).
+     * Default value is NaN (indicating that there was no tuning).
      */
     private double expectedError = Double.NaN;
     
@@ -140,15 +140,15 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
      * Evaluates the error rate of the specified classifier using the given test and
      * training sets.
      * 
-     * @param trainer    the trainer that is to be used to train the classifier
+     * @param tuner      the tuner that is to be used to train the classifier
      * @param classifier the classifier that is to be evaluated
      * @param testset    test set
-     * @param trainset   train set
+     * @param trainset   training set
      * @return the error rate of the classifier
      * @throws InterruptedException when the interrupted flag is set
      * @throws Exception            if an error occurs
      */
-    public double evaluate(Trainer trainer, Classifier classifier, Dataset testset, Dataset trainset) throws Exception {
+    public double evaluate(Tuner tuner, Classifier classifier, Dataset testset, Dataset trainset) throws Exception {
 
         if (done)
             return error;
@@ -176,9 +176,9 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
         else if (callback != null)
             callback.setCallbackCount(steps);
 
-        // training the classifier
-        if (trainer != null)
-            expectedError = trainer.train(classifier, trainset);
+        // tuning the classifier
+        if (tuner != null)
+            expectedError = tuner.tune(classifier, trainset);
         
         // initializing the classifier
         classifier.fit(trainset);
@@ -186,7 +186,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
         // evaluation
         int tnumber = ThreadUtils.getThreadLimit(this.getNumberOfThreads());
 
-        if (tnumber < 2 || ((trainer != null) && !(trainer instanceof Copyable)) || !(classifier instanceof Copyable))
+        if (tnumber < 2 || ((tuner != null) && !(tuner instanceof Copyable)) || !(classifier instanceof Copyable))
             evaluateSinglethreaded(classifier, testset);
         else
             evaluateMultithreaded(classifier, testset, tnumber);
@@ -201,7 +201,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
         }
         
         // reseting the trainger
-        if (trainer instanceof Resumable rt)
+        if (tuner instanceof Resumable rt)
             rt.reset();
 
         // reseting the classifier
@@ -390,7 +390,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
      * The expected error rate (the lowest error rate on the training set).
      * 
      * @return the expected error rate (the lowest error rate on the training set)
-     *         or NaN if there was no training
+     *         or NaN if there was no tuning
      */
     public double getExpectedError() {
         return expectedError;

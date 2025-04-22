@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fap.trainer;
+package fap.tuner;
 
 import fap.classifier.nn.KNNClassifier;
 import fap.classifier.nn.MacleodKNNClassifier;

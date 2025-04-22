@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package fap.core.trainer;
+package fap.core.tuner;
 
 /**
- * Defines common methods and fields for classifier trainers.
+ * Defines common methods and fields for classifier hyperparameter tuners.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.23.
- * @see Trainer
+ * @version 2025.04.21.
+ * @see Tuner
  */
-public abstract class AbstractTrainer implements Trainer {
+public abstract class AbstractTuner implements Tuner {
 
     private static final long serialVersionUID = 1L;
     
     /**
-     * Indicates whether this trainer affects the distance measure.
+     * Indicates whether this tuner affects the distance measure.
      */
     protected boolean affectsDistance;
 
@@ -40,16 +40,16 @@ public abstract class AbstractTrainer implements Trainer {
     /**
      * Empty constructor.
      */
-    public AbstractTrainer() {
+    public AbstractTuner() {
     }
     
     /**
-     * Constructor that sets whether the trainer affects the distance measure.
+     * Constructor that sets whether the tuner affects the distance measure.
      * 
-     * @param affectsDistance {@code true} if the trainer affacts the distance
+     * @param affectsDistance {@code true} if the tuner affacts the distance
      *                        measure
      */
-    public AbstractTrainer(boolean affectsDistance) {
+    public AbstractTuner(boolean affectsDistance) {
         this.setAffectsDistance(affectsDistance);
     }
     
@@ -68,13 +68,13 @@ public abstract class AbstractTrainer implements Trainer {
     }
     
     /**
-     * Initializes the specified trainer with the common data structures of this
-     * trainer.
+     * Initializes the specified tuner with the common data structures of this
+     * tuner.
      * 
-     * @param copy the classifier whose data structures is to be initialized
+     * @param copy the tuner whose data structures are to be initialized
      * @param deep indicates whether a deep copy should be made
      */
-    protected void init(AbstractTrainer copy, boolean deep) {
+    protected void init(AbstractTuner copy, boolean deep) {
         copy.setAffectsDistance(this.affectsDistance);
     }
 

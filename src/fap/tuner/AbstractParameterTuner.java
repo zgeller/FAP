@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fap.trainer;
+package fap.tuner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,8 +29,8 @@ import fap.callback.Callbackable;
 import fap.core.classifier.Classifier;
 import fap.core.data.Dataset;
 import fap.core.evaluator.Evaluator;
-import fap.core.trainer.AbstractTrainer;
-import fap.core.trainer.Trainer;
+import fap.core.tuner.AbstractTuner;
+import fap.core.tuner.Tuner;
 import fap.exception.EmptyDatasetException;
 import fap.util.Copier;
 import fap.util.Copyable;
@@ -40,39 +40,39 @@ import fap.util.ThreadUtils;
 
 /**
  * Defines common methods and fields for callbackable, resumable, multithreaded
- * trainers that tunes a single parameter of the classifier or distance measure
+ * tuners that tune a single parameter of a classifier or distance measure
  * relying on a parameter modifier.
  * 
  * @param <T> the type of the parameter that is to be tuned, it should implement
  *            the {@link Comparable} interface
  * 
  * @author Zoltán Gellér
- * @version 2025.03.06.
- * @see AbstractTrainer
- * @see ParameterTrainer
+ * @version 2025.04.21.
+ * @see AbstractTuner
+ * @see ParameterTuner
  * @see Callbackable
  * @see Resumable
  * @see Multithreaded
  * @see Modifier
  */
-public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends AbstractTrainer
-        implements ParameterTrainer<T>, Callbackable, Resumable, Multithreaded, Copyable {
+public abstract class AbstractParameterTuner<T extends Comparable<T>> extends AbstractTuner
+        implements ParameterTuner<T>, Callbackable, Resumable, Multithreaded, Copyable {
 
     private static final long serialVersionUID = 1L;
     
     /**
-     * The executor service used for implementing multithreaded classification.
+     * The executor service used for implementing multithreaded tuning.
      */
     protected transient ThreadPoolExecutor executor;
     
     /**
-     * The parameter modifier to set the value of to the parameter tuned by this
-     * trainer.
+     * The parameter modifier used to set the value of the parameter tuned by this
+     * tuner.
      */
     protected Modifier<T> modifier;
 
     /**
-     * List of values ​​evaluated by this trainer.
+     * List of values to be ​​evaluated by this tuner.
      */
     protected List<T> values;
 
@@ -93,19 +93,19 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
     protected Evaluator evaluator;
 
     /**
-     * The sub-trainer that is used to train the classifier.
+     * The subtuner that is used to tune another hyperparameter of the classifier.
      */
-    protected ParameterTrainer<?> trainer;
+    protected ParameterTuner<?> subtuner;
     
     /**
-     * Indicates whether the specified parameter value has already been used for training.
+     * Indicates whether the specified parameter value has already been used for tuning.
      */
-    protected boolean trained[];
+    protected boolean tuned[];
     
     /**
-     * List of copies of this trainer used by the parallel implementation.
+     * List of copies of this tuner used by the parallel implementation.
      */
-    protected ConcurrentLinkedQueue<Trainer> trainers;
+    protected ConcurrentLinkedQueue<Tuner> tuners;
     
     /**
      * List of classifier copies used by the parallel implementation.
@@ -113,10 +113,10 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
     protected ConcurrentLinkedQueue<Classifier> classifiers;
     
     /**
-     * During the parallel training, there will be a list of best parameters
-     * provided by the sub-trainer for each value of the parameter of this trainer.
+     * During the parallel tuning, there will be a list of best parameters provided
+     * by the subtuner for each value of the parameter of this tuner.
      */
-    protected List<List<Comparable<?>>> trainedParameters;
+    protected List<List<Comparable<?>>> tunedParameters;
 
     protected double stepSize = 0;
     protected double progress = 0;
@@ -145,16 +145,16 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
     /**
      * Empty constructor.
      */
-    public AbstractParameterTrainer() {
+    public AbstractParameterTuner() {
     }
 
     /**
      * Constructor with single-threaded execution and parameter modifier.
      * 
      * @param modifier the parameter modifier, which is to be used to set the value
-     *                 of the parameter tuned by the trainer
+     *                 of the parameter tuned by the tuner
      */
-    public AbstractParameterTrainer(Modifier<T> modifier) {
+    public AbstractParameterTuner(Modifier<T> modifier) {
         this.setModifier(modifier);
     }
 
@@ -163,7 +163,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * 
      * @param tnumber number of threads.
      */
-    public AbstractParameterTrainer(int tnumber) {
+    public AbstractParameterTuner(int tnumber) {
         this((Modifier<T>) null, tnumber);
     }
 
@@ -171,10 +171,10 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * Constructor with the parameter modifier and number of threads.
      * 
      * @param modifier the parameter modifier, which is to be used to set the value
-     *                 of the parameter tuned by the trainer
+     *                 of the parameter tuned by the tuner
      * @param tnumber  number of threads.
      */
-    public AbstractParameterTrainer(Modifier<T> modifier, int tnumber) {
+    public AbstractParameterTuner(Modifier<T> modifier, int tnumber) {
         this.setNumberOfThreads(tnumber);
         this.setModifier(modifier);
     }
@@ -186,7 +186,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * @param first the first value to be evaluated, must be {@code first <= last}
      * @param last  the first value to be evaluated, must be {@code first <= last}
      */
-    public AbstractParameterTrainer(T first, T last) {
+    public AbstractParameterTuner(T first, T last) {
         this(null, first, last, null, 1);
     }
 
@@ -195,13 +195,13 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * first and last parameter values.
      * 
      * @param modifier the parameter modifier, which is to be used to set the value
-     *                 of the parameter tuned by the trainer
+     *                 of the parameter tuned by the tuner
      * @param first    the first value to be evaluated, must be
      *                 {@code first <= last}
      * @param last     the first value to be evaluated, must be
      *                 {@code first <= last}
      */
-    public AbstractParameterTrainer(Modifier<T> modifier, T first, T last) {
+    public AbstractParameterTuner(Modifier<T> modifier, T first, T last) {
         this(modifier, first, last, null, 1);
     }
 
@@ -212,7 +212,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * @param last    the first value to be evaluated, must be {@code first <= last}
      * @param tnumber number of threads.
      */
-    public AbstractParameterTrainer(T first, T last, int tnumber) {
+    public AbstractParameterTuner(T first, T last, int tnumber) {
         this(null, first, last, null, tnumber);
     }
 
@@ -221,14 +221,14 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * and number of threads.
      * 
      * @param modifier the parameter modifier, which is to be used to set the value
-     *                 of the parameter tuned by the trainer
+     *                 of the parameter tuned by the tuner
      * @param first    the first value to be evaluated, must be
      *                 {@code first <= last}
      * @param last     the first value to be evaluated, must be
      *                 {@code first <= last}
      * @param tnumber  number of threads.
      */
-    public AbstractParameterTrainer(Modifier<T> modifier, T first, T last, int tnumber) {
+    public AbstractParameterTuner(Modifier<T> modifier, T first, T last, int tnumber) {
         this(modifier, first, last, null, tnumber);
     }
 
@@ -242,7 +242,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      *                  {@code first <= last}
      * @param increment the increment
      */
-    public AbstractParameterTrainer(T first, T last, T increment) {
+    public AbstractParameterTuner(T first, T last, T increment) {
         this(null, first, last, increment, 1);
     }
 
@@ -251,14 +251,14 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * and last parameter values, and the increment.
      * 
      * @param modifier  the parameter modifier, which is to be used to set the value
-     *                  of the parameter tuned by the trainer
+     *                  of the parameter tuned by the tuner
      * @param first     the first value to be evaluated, must be
      *                  {@code first <= last}
      * @param last      the first value to be evaluated, must be
      *                  {@code first <= last}
      * @param increment the increment
      */
-    public AbstractParameterTrainer(Modifier<T> modifier, T first, T last, T increment) {
+    public AbstractParameterTuner(Modifier<T> modifier, T first, T last, T increment) {
         this(modifier, first, last, increment, 1);
     }
 
@@ -273,7 +273,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * @param increment the increment
      * @param tnumber   number of threads.
      */
-    public AbstractParameterTrainer(T first, T last, T increment, int tnumber) {
+    public AbstractParameterTuner(T first, T last, T increment, int tnumber) {
         this(null, first, last, increment, tnumber);
     }
 
@@ -282,7 +282,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * the increment, and number of threads.
      * 
      * @param modifier  the parameter modifier, which is to be used to set the value
-     *                  of the parameter tuned by the trainer
+     *                  of the parameter tuned by the tuner
      * @param first     the first value to be evaluated, must be
      *                  {@code first <= last}
      * @param last      the first value to be evaluated, must be
@@ -290,7 +290,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * @param increment the increment
      * @param tnumber   number of threads.
      */
-    public AbstractParameterTrainer(Modifier<T> modifier, T first, T last, T increment, int tnumber) {
+    public AbstractParameterTuner(Modifier<T> modifier, T first, T last, T increment, int tnumber) {
         this.setValues(first, last, increment);
         this.setNumberOfThreads(tnumber);
         this.setModifier(modifier);
@@ -302,7 +302,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * 
      * @param values the list of values to be evaluated
      */
-    public AbstractParameterTrainer(List<T> values) {
+    public AbstractParameterTuner(List<T> values) {
         this(null, values, 1);
     }
 
@@ -311,10 +311,10 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * list of values to be evaluated.
      * 
      * @param modifier the parameter modifier, which is to be used to set the value
-     *                 of the parameter tuned by the trainer
+     *                 of the parameter tuned by the tuner
      * @param values   the list of values to be evaluated
      */
-    public AbstractParameterTrainer(Modifier<T> modifier, List<T> values) {
+    public AbstractParameterTuner(Modifier<T> modifier, List<T> values) {
         this(modifier, values, 1);
     }
 
@@ -325,7 +325,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * @param values  the list of values to be evaluated
      * @param tnumber number of threads.
      */
-    public AbstractParameterTrainer(List<T> values, int tnumber) {
+    public AbstractParameterTuner(List<T> values, int tnumber) {
         this(null, values, tnumber);
     }
 
@@ -334,11 +334,11 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * and number of threads.
      * 
      * @param modifier the parameter modifier, which is to be used to set the value
-     *                 of the parameter tuned by the trainer
+     *                 of the parameter tuned by the tuner
      * @param values   the list of values to be evaluated
      * @param tnumber  number of threads.
      */
-    public AbstractParameterTrainer(Modifier<T> modifier, List<T> values, int tnumber) {
+    public AbstractParameterTuner(Modifier<T> modifier, List<T> values, int tnumber) {
         this.setValues(values);
         this.setNumberOfThreads(tnumber);
         this.setModifier(modifier);
@@ -350,7 +350,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * 
      * @param values the array of values to be evaluated
      */
-    public AbstractParameterTrainer(T[] values) {
+    public AbstractParameterTuner(T[] values) {
         this(null, values, 1);
     }
 
@@ -359,10 +359,10 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * array of values to be evaluated.
      * 
      * @param modifier the parameter modifier, which is to be used to set the value
-     *                 of the parameter tuned by the trainer
+     *                 of the parameter tuned by the tuner
      * @param values   the array of values to be evaluated
      */
-    public AbstractParameterTrainer(Modifier<T> modifier, T[] values) {
+    public AbstractParameterTuner(Modifier<T> modifier, T[] values) {
         this(modifier, values, 1);
     }
 
@@ -373,7 +373,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * @param values  the array of values to be evaluated
      * @param tnumber number of threads
      */
-    public AbstractParameterTrainer(T[] values, int tnumber) {
+    public AbstractParameterTuner(T[] values, int tnumber) {
         this(null, values, tnumber);
     }
 
@@ -382,11 +382,11 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
      * and number of threads.
      * 
      * @param modifier the parameter modifier, which is to be used to set the value
-     *                 of the parameter tuned by the trainer
+     *                 of the parameter tuned by the tuner
      * @param values   the array of values to be evaluated
      * @param tnumber  number of threads
      */
-    public AbstractParameterTrainer(Modifier<T> modifier, T[] values, int tnumber) {
+    public AbstractParameterTuner(Modifier<T> modifier, T[] values, int tnumber) {
         this.setValues(values);
         this.setNumberOfThreads(tnumber);
         this.setModifier(modifier);
@@ -460,13 +460,13 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
     }
 
     @Override
-    public void setTrainer(ParameterTrainer<?> subTrainer) {
-        this.trainer = subTrainer;
+    public void setSubtuner(ParameterTuner<?> subTuner) {
+        this.subtuner = subTuner;
     }
 
     @Override
-    public ParameterTrainer<?> getTrainer() {
-        return this.trainer;
+    public ParameterTuner<?> getSubtuner() {
+        return this.subtuner;
     }
 
     // initialization
@@ -479,31 +479,31 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
         insideLoop = true;
         bestValue = null;
         int len = values.size();
-        trained = new boolean[len];
+        tuned = new boolean[len];
         parameters = new LinkedList<>();
-        trainedParameters = new ArrayList<>();
+        tunedParameters = new ArrayList<>();
         for (int i = 0; i < len; i++)
-            trainedParameters.add(null);
+            tunedParameters.add(null);
     }
 
     /**
-     * Trains the classifier using the specified trainset.
+     * Tunes the classifier using the specified dataset.
      * 
-     * @param classifier the classifier to be trained
-     * @param trainset   the training dataset
+     * @param classifier the classifier to be tuned
+     * @param dataset    the dataset
      * @param modifier   the parameter modifier, which is to be used to set the
-     *                   value of the parameter tuned by the trainer
+     *                   value of the parameter tuned by this tuner
      * @return the expected error rate
      * @throws Exception             if an error occurs
-     * @throws EmptyDatasetException if the trainset is empty
+     * @throws EmptyDatasetException if the dataset is empty
      */
-    protected double train(Classifier classifier, Dataset trainset, Modifier<T> modifier) throws Exception {
+    protected double tune(Classifier classifier, Dataset dataset, Modifier<T> modifier) throws Exception {
 
-        if (done || ((trainer == null) && (evaluator == null)))
+        if (done || ((subtuner == null) && (evaluator == null)))
             return expectedError;
 
-        if (trainset.isEmpty())
-            throw new EmptyDatasetException("The train set cannot be empty.");
+        if (dataset.isEmpty())
+            throw new EmptyDatasetException("The dataset cannot be empty.");
 
         final int len = values.size();
 
@@ -524,14 +524,14 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
         
         int tnumber = ThreadUtils.getThreadLimit(this.getNumberOfThreads());
 
-        boolean parallelTraining = (tnumber > 1) && 
-                                   ((trainer == null) || (trainer instanceof Copyable)) && 
-                                   (classifier instanceof Copyable);
+        boolean parallelTuning = (tnumber > 1) && 
+                                 ((subtuner == null) || (subtuner instanceof Copyable)) && 
+                                 (classifier instanceof Copyable);
         
-        if (parallelTraining)
-            trainParallel(classifier, trainset, modifier, tnumber);
+        if (parallelTuning)
+            tuneParallel(classifier, dataset, modifier, tnumber);
         else
-            trainSequential(classifier, trainset, modifier);
+            tuneSequential(classifier, dataset, modifier);
 
         // setting the best values of the parameters
         if (bestValue != null)
@@ -549,24 +549,24 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
     }
     
     /**
-     * Sequentially trains the classifier using the specified trainset.
+     * Sequentially tunes the classifier using the specified dataset.
      * 
-     * @param classifier the classifier to be trained
-     * @param trainset   the training dataset
+     * @param classifier the classifier to be tuned
+     * @param dataset    the dataset
      * @param modifier   the parameter modifier, which is to be used to set the
-     *                   value of the parameter tuned by the trainer
+     *                   value of the parameter tuned by this tuner
      * @throws Exception if an error occurs
      */
-    protected void trainSequential(Classifier classifier, Dataset trainset, Modifier<T> modifier) throws Exception {
+    protected void tuneSequential(Classifier classifier, Dataset dataset, Modifier<T> modifier) throws Exception {
 
         // finding the best value
-        for (int index = 0; index < trained.length; index++) {
+        for (int index = 0; index < tuned.length; index++) {
             
             if (Thread.interrupted())
                 throw new InterruptedException();
             
             // if the value has already been used
-            if (trained[index])
+            if (tuned[index])
                 continue;
 
             final T value = values.get(index);
@@ -576,16 +576,16 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
 
             double error = Double.POSITIVE_INFINITY;
 
-            if (trainer != null) {
+            if (subtuner != null) {
 
-                error = trainer.train(classifier, trainset);
+                error = subtuner.tune(classifier, dataset);
 
-                if (trainer instanceof Resumable rst)
+                if (subtuner instanceof Resumable rst)
                     rst.reset();
 
             } else {
 
-                error = evaluator.evaluate(null, classifier, trainset);
+                error = evaluator.evaluate(null, classifier, dataset);
                 
                 if (evaluator instanceof Resumable re)
                     re.reset();
@@ -601,12 +601,12 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
 
                 parameters.add(bestValue);
 
-                if (trainer != null)
-                    parameters.addAll(trainer.getParameters());
+                if (subtuner != null)
+                    parameters.addAll(subtuner.getParameters());
 
             }
             
-            trained[index] = true;
+            tuned[index] = true;
 
             // reseting the classifier
             if (classifier instanceof Resumable rc)
@@ -626,14 +626,14 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
     }
 
     /**
-     * Training task.
+     * Tuning task.
      */
-    protected class TrainTask implements Callable<Double> {
+    protected class TuneTask implements Callable<Double> {
         
         /**
-         * The train set.
+         * The dataset.
          */
-        static Dataset trainset;
+        static Dataset dataset;
 
         /**
          * The value of the parameter.
@@ -646,12 +646,12 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
         int index;
         
         /**
-         * Constructs a new training task for the specified {@code value}.
+         * Constructs a new tuning task for the specified {@code value}.
          * 
          * @param value the value of the parameter to be evaluated
          * @param index the index of the value
          */
-        public TrainTask(T value, int index) {
+        public TuneTask(T value, int index) {
             this.value = value;
             this.index = index;
         }
@@ -660,29 +660,29 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
         @Override
         public Double call() throws Exception {
             
-            // getting a trainer and a classifier
-            AbstractParameterTrainer<T> trainerCopy = (AbstractParameterTrainer<T>) trainers.poll();
+            // getting a tuner and a classifier
+            AbstractParameterTuner<T> tunerCopy = (AbstractParameterTuner<T>) tuners.poll();
             Classifier classifierCopy = classifiers.poll();
             
-            ParameterTrainer<?> subTrainer = trainerCopy.getTrainer();
-            Evaluator evaluator = trainerCopy.getEvaluator();
-            Modifier<T> modifier = trainerCopy.getModifier();
+            ParameterTuner<?> subTuner = tunerCopy.getSubtuner();
+            Evaluator evaluator = tunerCopy.getEvaluator();
+            Modifier<T> modifier = tunerCopy.getModifier();
 
             // setting the value of the parameter
             modifier.set(classifierCopy, value);
 
             double error = Double.POSITIVE_INFINITY;
 
-            if (subTrainer != null) {
+            if (subTuner != null) {
 
-                error = subTrainer.train(classifierCopy, TrainTask.trainset);
+                error = subTuner.tune(classifierCopy, TuneTask.dataset);
 
-                if (subTrainer instanceof Resumable rst)
+                if (subTuner instanceof Resumable rst)
                     rst.reset();
 
             } else {
 
-                error = evaluator.evaluate(null, classifierCopy, TrainTask.trainset);
+                error = evaluator.evaluate(null, classifierCopy, TuneTask.dataset);
 
                 if (evaluator instanceof Resumable re)
                     re.reset();
@@ -692,17 +692,17 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
             // memorizing parameter values
             List<Comparable<?>> params = new LinkedList<>();
             params.add(value);
-            if (subTrainer != null)
-                params.addAll(subTrainer.getParameters());
+            if (subTuner != null)
+                params.addAll(subTuner.getParameters());
             
-            trainedParameters.set(index, params);
+            tunedParameters.set(index, params);
 
-            trained[index] = true;
+            tuned[index] = true;
 
             if (classifierCopy instanceof Resumable rc)
                 rc.reset();
             
-            trainers.add(trainerCopy);
+            tuners.add(tunerCopy);
             classifiers.add(classifierCopy);
             
             if (callback != null)
@@ -710,7 +710,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
                     progress += stepSize;
                     if (progress >= steps) {
                         steps++;
-                        callback.callback(AbstractParameterTrainer.this);
+                        callback.callback(AbstractParameterTuner.this);
                     }
                 }
             
@@ -721,20 +721,20 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
     }
 
     /**
-     * Trains the classifier in parallel using the specified trainset.
+     * Tunes the classifier in parallel using the specified dataset.
      * 
-     * @param classifier the classifier to be trained
-     * @param trainset   the training dataset
+     * @param classifier the classifier to be tuned
+     * @param dataset    the dataset
      * @param modifier   the parameter modifier, which is to be used to set the
-     *                   value of the parameter tuned by the trainer
+     *                   value of the parameter tuned by this tuner
      * @param tnumber    number of threads
      * @throws Exception if an error occurs
      */
-    protected void trainParallel(Classifier classifier, Dataset trainset, Modifier<T> modifier, int tnumber) throws Exception {
+    protected void tuneParallel(Classifier classifier, Dataset dataset, Modifier<T> modifier, int tnumber) throws Exception {
         
-        // making copies of this trainer
-        trainers = new ConcurrentLinkedQueue<>();
-        Copier.makeCopies(this, trainers, tnumber);
+        // making copies of this tuner
+        tuners = new ConcurrentLinkedQueue<>();
+        Copier.makeCopies(this, tuners, tnumber);
         
         // making copies of the classifier
         classifiers = new ConcurrentLinkedQueue<>();
@@ -742,14 +742,14 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
         
         this.initExecutor(tnumber);
         
-        TrainTask.trainset = trainset;
+        TuneTask.dataset = dataset;
         
         // initializing tasks
-        List<TrainTask> tasks = new ArrayList<>();
+        List<TuneTask> tasks = new ArrayList<>();
         
-        for (int index = 0; index < trained.length; index++)
-            if (!trained[index])
-                tasks.add(new TrainTask(values.get(index), index));
+        for (int index = 0; index < tuned.length; index++)
+            if (!tuned[index])
+                tasks.add(new TuneTask(values.get(index), index));
         
         if (Thread.interrupted())
             throw new InterruptedException();
@@ -770,12 +770,12 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
         
         bestValue = tasks.get(bestIndex).value;
         
-        parameters = new LinkedList<>(trainedParameters.get(bestIndex));
+        parameters = new LinkedList<>(tunedParameters.get(bestIndex));
         
-        trainers = null;
+        tuners = null;
         classifiers = null;
-        trainedParameters = null;
-        trained = null;
+        tunedParameters = null;
+        tuned = null;
         
     }
     
@@ -825,17 +825,17 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
         if (evaluator instanceof Multithreaded me)
             me.shutdown();
 
-        if (trainer instanceof Multithreaded mst)
+        if (subtuner instanceof Multithreaded mst)
             mst.shutdown();
 
     }
 
     /**
      * Sets the parameter modifier, which is to be used to set the value of the
-     * parameter tuned by the trainer.
+     * parameter tuned by the tuner.
      * 
      * @param modifier the parameter modifier, which is to be used to set the value
-     *                 of the parameter tuned by the trainer
+     *                 of the parameter tuned by the tuner
      */
     public void setModifier(Modifier<T> modifier) {
         this.modifier = modifier;
@@ -843,10 +843,10 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
 
     /**
      * Returns the parameter modifier used to set the value of the parameter tuned
-     * by this trainer.
+     * by this tuner.
      * 
      * @return the parameter modifier used to set the value of the parameter tuned
-     *         by this trainer
+     *         by this tuner
      */
     public Modifier<T> getModifier() {
         return modifier;
@@ -854,7 +854,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
 
     /**
      * Delegates the first value to the parameter modifier and a new list containing
-     * the rest of the values to the sub-trainer.
+     * the rest of the values to the sub-tuner.
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -864,40 +864,40 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
         modifier.set(classifier, this.bestValue);
         List<Comparable<?>> sublist = new LinkedList<>(parameters);
         sublist.removeFirst();
-        if (trainer != null)
-            trainer.setParameters(classifier, sublist);
+        if (subtuner != null)
+            subtuner.setParameters(classifier, sublist);
     }
 
     @Override
-    public double train(Classifier classifier, Dataset trainset) throws Exception {
-        return train(classifier, trainset, modifier);
+    public double tune(Classifier classifier, Dataset dataset) throws Exception {
+        return tune(classifier, dataset, modifier);
     }
 
     /**
-     * Initializes the specified trainer with the common data structures of this
-     * trainer.
+     * Initializes the specified tuner with the common data structures of this
+     * tuner.
      * 
      * @param copy the classifier whose data structures is to be initialized
      * @param deep indicates whether a deep copy should be made
-     * @throws ClassCastException if the sub-trainer or the evaluator do not
+     * @throws ClassCastException if the sub-tuner or the evaluator do not
      *                            implement the {@link Copyable} interface (when
      *                            making a deep copy)
      */
-    protected void init(AbstractParameterTrainer<T> copy, boolean deep) {
+    protected void init(AbstractParameterTuner<T> copy, boolean deep) {
         
         super.init(copy, deep);
         
-        ParameterTrainer<?> subTrainerCopy = trainer;
+        ParameterTuner<?> subTunerCopy = subtuner;
         Evaluator evaluatorCopy = evaluator;
 
         if (deep) {
-            if (trainer != null)
-                subTrainerCopy = (ParameterTrainer<?>) ((Copyable) trainer).makeACopy();
+            if (subtuner != null)
+                subTunerCopy = (ParameterTuner<?>) ((Copyable) subtuner).makeACopy();
             if (evaluator != null)
                 evaluatorCopy = (Evaluator) ((Copyable) evaluator).makeACopy();
         }
 
-        copy.setTrainer(subTrainerCopy);
+        copy.setSubtuner(subTunerCopy);
         copy.setEvaluator(evaluatorCopy);
         copy.setModifier(this.getModifier()); // consider making a deep copy
         copy.setValues(this.getValues()); // consider making a deep copy
@@ -908,7 +908,7 @@ public abstract class AbstractParameterTrainer<T extends Comparable<T>> extends 
     public boolean affectsDistance() {
         return super.affectsDistance() || 
                (modifier != null && modifier.affectsDistance()) ||
-               (trainer != null && trainer.affectsDistance());
+               (subtuner != null && subtuner.affectsDistance());
     }
     
     @Override

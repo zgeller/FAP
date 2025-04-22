@@ -14,45 +14,45 @@
  * limitations under the License.
  */
 
-package fap.trainer;
+package fap.tuner;
 
 import java.util.List;
 
 import fap.core.classifier.Classifier;
 import fap.core.evaluator.Evaluator;
-import fap.core.trainer.Trainer;
+import fap.core.tuner.Tuner;
 
 /**
- * Declares common methods for classifier trainers that tunes a single parameter
- * of the classifier.
+ * Declares common methods for classifier hyperparameter tuners that tune a single parameter.
+ * 
  * 
  * @param <T> the type of the parameter that is to be tuned, it should implement
  *            the {@link Comparable} interface
  *            
  * @author Zoltán Gellér
- * @version 2024.09.23.
- * @see Trainer
+ * @version 2025.04.21.
+ * @see Tuner
  * @see Comparable
  */
-public interface ParameterTrainer<T extends Comparable<T>> extends Trainer {
+public interface ParameterTuner<T extends Comparable<T>> extends Tuner {
 
     /**
-     * Sets the list of parameter values ​​to be evaluated by this trainer.
+     * Sets the list of parameter values ​​to be evaluated by this tuner.
      * 
-     * @param values the list of parameter values ​​to be evaluated by this trainer
+     * @param values the list of parameter values ​​to be evaluated by this tuner
      */
     public void setValues(List<T> values);
 
     /**
-     * Sets the list of parameter values ​​to be evaluated by this trainer.
+     * Sets the list of parameter values ​​to be evaluated by this tuner.
      * 
      * @param values the array of parameter values ​​to be evaluated by this
-     *               trainer.
+     *               tuner.
      */
     public void setValues(T[] values);
 
     /**
-     * Initializes the list of parameter values ​​to be evaluated by this trainer
+     * Initializes the list of parameter values ​​to be evaluated by this tuner
      * with the values from {@code first} to {@code last}, in unit increment.
      * 
      * @param first the first value to be evaluated
@@ -61,7 +61,7 @@ public interface ParameterTrainer<T extends Comparable<T>> extends Trainer {
     public void setValues(T first, T last);
 
     /**
-     * Initializes the list of parameter values ​​to be evaluated by this trainer
+     * Initializes the list of parameter values ​​to be evaluated by this tuner
      * with the values from {@code first} to {@code last}, in the specified
      * {@code increment}.
      * 
@@ -72,9 +72,9 @@ public interface ParameterTrainer<T extends Comparable<T>> extends Trainer {
     public void setValues(T first, T last, T increment);
 
     /**
-     * Returns the list parameter values evaluated by this trainer.
+     * Returns the list parameter values evaluated by this tuner.
      * 
-     * @return the list parameter values evaluated by this trainer
+     * @return the list parameter values evaluated by this tuner
      */
     public List<T> getValues();
     
@@ -96,7 +96,7 @@ public interface ParameterTrainer<T extends Comparable<T>> extends Trainer {
     
     /**
      * It should initialize the parameter with the first element of the list and
-     * forward the rest of the list to the sub-trainer.
+     * forward the rest of the list to the subtuner.
      * 
      * @param classifier the classifier whose parameters are to be set
      * @param parameters the values of the parameters to be set
@@ -104,31 +104,35 @@ public interface ParameterTrainer<T extends Comparable<T>> extends Trainer {
     public void setParameters(Classifier classifier, List<Comparable<?>> parameters);
     
     /**
-     * Sets the evaluator that is be used to evaluate the classifier.
+     * Sets the evaluator that is to be used to evaluate the classifier.
      * 
-     * @param evaluator the evaluator that is be used to evaluate the classifier
+     * @param evaluator the evaluator that is to be used to evaluate the classifier
      */
     public void setEvaluator(Evaluator evaluator);
 
     /**
-     * Returns the evaluator used to evaluate the classifier.
+     * Returns the evaluator that is used to evaluate the classifier.
      * 
-     * @return the evaluator the evaluator used to evaluate the classifier
+     * @return the evaluator the evaluator that is used to evaluate the classifier
      */
     public Evaluator getEvaluator();
 
     /**
-     * Sets the sub-trainer that is to be used to train the classifier.
+     * Sets the subtuner that is to be used to tune another hyperparameter of the
+     * classifier.
      * 
-     * @param trainer the sub-trainer that is to be used to train the classifier
+     * @param subtuner the subtuner that is to be used to tune another
+     *                 hyperparameter of the classifier
      */
-    public void setTrainer(ParameterTrainer<?> trainer);
+    public void setSubtuner(ParameterTuner<?> subtuner);
 
     /**
-     * Returns the sub-trainer that is used to train the classifier.
+     * Returns the subtuner that is used to tune another hyperparameter of the
+     * classifier.
      * 
-     * @return the sub-trainer that is used to train the classifier
+     * @return the subtuner that is used to tune another hyperparameter of the
+     *         classifier
      */
-    public ParameterTrainer<?> getTrainer();
+    public ParameterTuner<?> getSubtuner();
 
 }

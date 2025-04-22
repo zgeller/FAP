@@ -20,13 +20,13 @@ import java.io.Serializable;
 
 import fap.core.classifier.Classifier;
 import fap.core.data.Dataset;
-import fap.core.trainer.Trainer;
+import fap.core.tuner.Tuner;
 
 /**
  * Declares basic methods for evaluating the performance of classifiers.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.17.
+ * @version 2025.04.22.
  * @see Serializable
  */
 public interface Evaluator extends Serializable {
@@ -48,12 +48,12 @@ public interface Evaluator extends Serializable {
     /**
      * Evaluates the error rate of the specified classifier using the given dataset.
      * 
-     * @param trainer    the trainer that is to be used to train the classifier
+     * @param tuner      the tuner that is to be used to train the classifier
      * @param classifier the classifier that is to be evaluated
      * @param dataset    the dataset to be used for evaluating the classifier
      * @return the error rate of the classifier
      * @throws Exception if an error occurs
      */
-    public double evaluate(Trainer trainer, Classifier classifier, Dataset dataset) throws Exception;
+    public double evaluate(Tuner tuner, Classifier classifier, Dataset dataset) throws Exception;
 
 }

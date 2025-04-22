@@ -21,13 +21,13 @@ import java.util.Collection;
 import fap.callback.Callbackable;
 import fap.core.classifier.Classifier;
 import fap.core.evaluator.Evaluator;
-import fap.core.trainer.Trainer;
+import fap.core.tuner.Tuner;
 
 /**
  * Evaluator utilities.
  * 
  * @author Zoltán Gellér
- * @version 2025.03.06.
+ * @version 2025.04.22.
  */
 public final class Copier {
 
@@ -35,44 +35,42 @@ public final class Copier {
     }
     
     /**
-     * Makes {@code n} copies of the specified {@code trainer} and
-     * {@code classifier} and adds them to the {@code trainers} and
-     * {@code classifiers} lists.
+     * Makes {@code n} copies of the specified {@code tuner} and {@code classifier}
+     * and adds them to the {@code tuners} and {@code classifiers} lists.
      * 
      * <p>
-     * If the {@code trainer} ({@code classifier}) implements the
+     * If the {@code tuner} ({@code classifier}) implements the
      * {@link Multithreaded} interface, sets the number of threads of the copies to
      * 1.
      * 
      * <p>
-     * If the {@code trainer} ({@code classifier}) implements the
-     * {@link Callbackable} interface, initializes the callback of the copies to
-     * {@code null}.
+     * If the {@code tuner} ({@code classifier}) implements the {@link Callbackable}
+     * interface, initializes the callback of the copies to {@code null}.
      * 
      * <p>
-     * If the trainer does not affect the distance measure, the copies of the
+     * If the tuner does not affect the distance measure, the copies of the
      * classifier will not be deep.
      * 
-     * @param trainer     the trainer whose copies should be made
+     * @param tuner       the tuner whose copies should be made
      * @param classifier  the classifier whose copies should be made
-     * @param trainers    the list to which the copies of the {@code trainer} should
+     * @param tuners      the list to which the copies of the {@code tuner} should
      *                    be added
      * @param classifiers the list to which the copies of the {@code classifier}
      *                    should be added
      * @param n           number of copies
      */
-    public static void makeCopies(Trainer trainer, Classifier classifier, Collection<Trainer> trainers, Collection<Classifier> classifiers, int n) {
+    public static void makeCopies(Tuner tuner, Classifier classifier, Collection<Tuner> tuners, Collection<Classifier> classifiers, int n) {
         
         for (int i = 0; i < n; i++) {
             
-            if (trainer != null) {
-                Trainer tCopy = (Trainer) ((Copyable)trainer).makeACopy();
-                trainers.add(tCopy);
+            if (tuner != null) {
+                Tuner tCopy = (Tuner) ((Copyable)tuner).makeACopy();
+                tuners.add(tCopy);
             }
             
-            // deep copy of the classifier is needed only if the trainer affects the
+            // deep copy of the classifier is needed only if the tuner affects the
             // underlying distance measure
-            boolean deepCopy = trainer != null && trainer.affectsDistance();
+            boolean deepCopy = tuner != null && tuner.affectsDistance();
             Classifier cCopy = (Classifier) ((Copyable)classifier).makeACopy(deepCopy);
             classifiers.add(cCopy);
             
@@ -81,30 +79,30 @@ public final class Copier {
     }
 
     /**
-     * Makes {@code n} copies of the specified {@code trainer} and adds them to the
-     * {@code trainers} list.
+     * Makes {@code n} copies of the specified {@code tuner} and adds them to the
+     * {@code tuners} list.
      * 
      * <p>
-     * If the {@code trainer} implements the {@link Multithreaded} interface, sets
+     * If the {@code tuner} implements the {@link Multithreaded} interface, sets
      * the number of threads of the copies to 1.
      * 
      * <p>
-     * If the {@code trainer} implements the {@link Callbackable} interface,
+     * If the {@code tuner} implements the {@link Callbackable} interface,
      * initializes the callback of the copies to {@code null}.
      * 
-     * @param trainer  the trainer whose copies should be made
-     * @param trainers the list to which the copies of the {@code trainer} should be
+     * @param tuner  the tuner whose copies should be made
+     * @param tuners the list to which the copies of the {@code tuner} should be
      *                 added
      * @param n        number of copies
      */
-    public static void makeCopies(Trainer trainer, Collection<Trainer> trainers, int n) {
+    public static void makeCopies(Tuner tuner, Collection<Tuner> tuners, int n) {
         
-        if (trainer == null)
+        if (tuner == null)
             return;
         
         for (int i = 0; i < n; i++) {
-            Trainer tCopy = (Trainer) ((Copyable)trainer).makeACopy();
-            trainers.add(tCopy);
+            Tuner tCopy = (Tuner) ((Copyable)tuner).makeACopy();
+            tuners.add(tCopy);
         }
         
     }

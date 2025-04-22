@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fap.core.trainer;
+package fap.core.tuner;
 
 import java.io.Serializable;
 
@@ -22,24 +22,24 @@ import fap.core.classifier.Classifier;
 import fap.core.data.Dataset;
 
 /**
- * Declares common methods for classifier trainers.
+ * Declares common methods for classifier hyperparameter tuners.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.22.
+ * @version 2025.04.21.
  * @see Serializable
  */
-public interface Trainer extends Serializable  {
+public interface Tuner extends Serializable  {
 
     /**
-     * Tunes/trains the specified classifier using the given training dataset. It
-     * should return the expected error rate.
+     * Tunes the hyperparameters of the specified classifier using the given
+     * dataset. It should return the expected error rate.
      * 
-     * @param classifier the classifier that is to be trained
-     * @param trainset   the training dataset
+     * @param classifier the classifier whose hyperparameters are to be tuned
+     * @param dataset    the dataset
      * @return the expected error rate
      * @throws Exception if an error occurs
      */
-    public double train(Classifier classifier, Dataset trainset) throws Exception;
+    public double tune(Classifier classifier, Dataset dataset) throws Exception;
 
     /**
      * Returns the expected error rate.
@@ -49,11 +49,11 @@ public interface Trainer extends Serializable  {
     public double getExpectedError();
     
     /**
-     * Should return {@code true} if this trainer or its subtrainer affects the
+     * Should return {@code true} if this tuner or any of its sutuners affects the
      * distance measure.
      * 
-     * @return {@code true} if this trainer or its subtrainer affects the distance
-     *         measure
+     * @return {@code true} if this tuner or any of its subtuners affects the
+     *         distance measure
      */
     public default boolean affectsDistance() {
         return false;

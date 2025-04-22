@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package fap.trainer;
+package fap.tuner;
 
 /**
- * Auxiliary interface for classifier parameter setters that do not affects the
- * underlying distance measure.
+ * Auxiliary interface for distance measure parameter setters.
  * 
  * @param <T> the type of the parameter to be set by this parameter setter
  * 
@@ -26,11 +25,11 @@ package fap.trainer;
  * @version 2024.09.23.
  * @see Modifier
  */
-public interface ClassifierModifier<T> extends Modifier<T> {
+public interface DistanceModifier<T> extends Modifier<T> {
 
     @Override
     public default boolean affectsDistance() {
-        return false;
+        return true;
     }
     
 }

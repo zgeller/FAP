@@ -23,7 +23,7 @@ import java.util.List;
 import fap.core.classifier.Classifier;
 import fap.core.data.Dataset;
 import fap.core.data.TimeSeries;
-import fap.core.trainer.Trainer;
+import fap.core.tuner.Tuner;
 import fap.exception.EmptyDatasetException;
 import fap.util.Copyable;
 import fap.util.Copier;
@@ -34,7 +34,7 @@ import fap.util.ThreadUtils;
  * Leave-One-Out (LOO) classifier evaluator.
  *
  * <p>
- * The multi-threaded implementation requires that the trainer (if there is one)
+ * The multi-threaded implementation requires that the tuner (if there is one)
  * and the classifier (properly) implement the {@link Copyable} interface. If
  * this condition is not met, it reverts to single-threaded implementation.
  *
@@ -53,7 +53,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.04.17.
+ * @version 2025.04.22.
  * @see AbstractExtendedEvaluator
  */
 public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements Copyable {
@@ -81,9 +81,9 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
     private int steps;
     
     /**
-     * List of trainer copies used by the multi-threaded implementation.
+     * List of tuner copies used by the multi-threaded implementation.
      */
-    private LinkedList<Trainer> trainers;
+    private LinkedList<Tuner> tuners;
     
     /**
      * List of classifier copies used by the multi-threaded implementation.
@@ -110,7 +110,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
      * 
      * @param size the size of the dataset
      */
-    private void init(int size, Trainer trainer) {
+    private void init(int size, Tuner tuner) {
         misclassified = 0;
         error = 0.0;
         progress = -1;
@@ -120,7 +120,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
             callback.setCallbackCount(0);
         insideLoop = true;
         labels = new Double[size];
-        if (trainer != null)
+        if (tuner != null)
             expectedErrors = new Double[size];
     }
     
@@ -128,7 +128,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
      * @throws InterruptedException when the interrupted flag is set
      */
     @Override
-    public double evaluate(Trainer trainer, Classifier classifier, Dataset dataset) throws Exception {
+    public double evaluate(Tuner tuner, Classifier classifier, Dataset dataset) throws Exception {
         
         if (done)
             return error;
@@ -148,7 +148,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
 
         // initialization
         if (!insideLoop)
-            init(dsize, trainer);
+            init(dsize, tuner);
         else if (callback != null)
             callback.setCallbackCount(steps);
         
@@ -156,11 +156,11 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
         int tnumber = ThreadUtils.getThreadLimit(this.getNumberOfThreads());
         
         if (tnumber < 2 || 
-            ((trainer != null) && !(trainer instanceof Copyable)) || 
+            ((tuner != null) && !(tuner instanceof Copyable)) || 
             !(classifier instanceof Copyable))
-            evaluateSinglethreaded(trainer, classifier, dataset);
+            evaluateSinglethreaded(tuner, classifier, dataset);
         else
-            evaluateMultithreaded(trainer, classifier, dataset, tnumber);
+            evaluateMultithreaded(tuner, classifier, dataset, tnumber);
         
         // finalization
         error = (double) misclassified / dsize;
@@ -178,14 +178,14 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
     /**
      * Single-threaded implementation of classifier evaluation.
      * 
-     * @param trainer    the trainer that is to be used to train the classifier
+     * @param tuner      the tuner that is to be used to train the classifier
      * @param classifier the classifier that is to be evaluated
      * @param dataset    the dataset to be used for evaluating the classifier
      * @return the error rate of the classifier
      * @throws InterruptedException when the interrupted flag is set
      * @throws Exception            if an error occurs
      */
-    private void evaluateSinglethreaded(Trainer trainer, Classifier classifier, Dataset dataset) throws Exception {
+    private void evaluateSinglethreaded(Tuner tuner, Classifier classifier, Dataset dataset) throws Exception {
 
         final int dsize = dataset.size();
 
@@ -201,9 +201,9 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
             // test series
             TimeSeries testSeries = dataset.remove(i);
 
-            // training
-            if (trainer != null)
-                expectedErrors[i] = trainer.train(classifier, dataset);
+            // tuning
+            if (tuner != null)
+                expectedErrors[i] = tuner.tune(classifier, dataset);
 
             // building the classifier
             classifier.fit(dataset);
@@ -220,7 +220,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
             labels[i] = label;
 
             // reseting the trainger
-            if (trainer instanceof Resumable rt)
+            if (tuner instanceof Resumable rt)
                 rt.reset();
             
             // reseting the classifier
@@ -270,19 +270,19 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
             Dataset trainset = new Dataset(dataset);
             trainset.remove(index);
             
-            // getting a trainer and a classifier
-            Trainer trainer;
+            // getting a tuner and a classifier
+            Tuner tuner;
             Classifier classifier;
             
-            synchronized(trainers) {
-                trainer = trainers.poll();
+            synchronized(tuners) {
+                tuner = tuners.poll();
                 classifier = classifiers.poll();
             }
             
-            // training
-            if (trainer != null)
+            // tuning
+            if (tuner != null)
                 try {
-                    expectedErrors[index] = trainer.train(classifier, trainset);
+                    expectedErrors[index] = tuner.tune(classifier, trainset);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -304,16 +304,16 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
 
             labels[index] = label;
             
-            // reseting the trainer
-            if (trainer instanceof Resumable rt)
+            // reseting the tuner
+            if (tuner instanceof Resumable rt)
                 rt.reset();
             
             // reseting the classifier
             if (classifier instanceof Resumable rc)
                 rc.reset();
 
-            // updating the results, calling back, releasing the trainer and the classifier
-            synchronized(trainers) {
+            // updating the results, calling back, releasing the tuner and the classifier
+            synchronized(tuners) {
                 
                 // updating the results
                 counter++;
@@ -334,8 +334,8 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
                     }
                 }
 
-                // releasing the trainer and the classifier
-                trainers.add(trainer);
+                // releasing the tuner and the classifier
+                tuners.add(tuner);
                 classifiers.add(classifier);
                 
             }
@@ -347,7 +347,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
     /**
      * Multi-threaded implementation of classifier evaluation.
      * 
-     * @param trainer    the trainer that is to be used to train the classifier
+     * @param tuner      the tuner that is to be used to train the classifier
      * @param classifier the classifier that is to be evaluated
      * @param dataset    the dataset to be used for evaluating the classifier
      * @param tnumber    number of threads
@@ -355,19 +355,19 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
      * @throws InterruptedException when the interrupted flag is set
      * @throws Exception            if an error occurs
      */
-    private void evaluateMultithreaded(Trainer trainer, 
+    private void evaluateMultithreaded(Tuner tuner, 
                                        Classifier classifier, 
                                        Dataset dataset, 
                                        int tnumber) throws Exception {
 
         final int dsize = dataset.size();
 
-        // preparing the trainers and the classifiers
+        // preparing the tuners and the classifiers
         
-        trainers = new LinkedList<>();
+        tuners = new LinkedList<>();
         classifiers = new LinkedList<>();
 
-        Copier.makeCopies(trainer, classifier, trainers, classifiers, tnumber);
+        Copier.makeCopies(tuner, classifier, tuners, classifiers, tnumber);
         
         // preparing the executor service and the tasks 
 
@@ -400,7 +400,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
      * set).
      * 
      * @return the expected error rates (the lowest error rates on the training set)
-     *         or {@code null} if there was no training
+     *         or {@code null} if there was no tuning
      */
     public Double[] getExpectedErrors() {
         return expectedErrors;

@@ -24,7 +24,7 @@ import java.util.Random;
 
 import fap.core.classifier.Classifier;
 import fap.core.data.Dataset;
-import fap.core.trainer.Trainer;
+import fap.core.tuner.Tuner;
 import fap.exception.EmptyDatasetException;
 import fap.util.Copyable;
 
@@ -32,13 +32,13 @@ import fap.util.Copyable;
  * Cross-Validation classifier evaluator.
  *
  * <p>
- * If the number of threads is greater than 1, parallel training is applied by
- * default. This means that copies of the classifier will be trained in parallel
- * using copies of the trainer, and then the time series of all the test subsets
- * are classified in parallel as well. This requires that both the trainer and
+ * If the number of threads is greater than 1, parallel tuning is applied by
+ * default. This means that copies of the classifier will be tuned in parallel
+ * using copies of the tuner, and then the time series of all the test subsets
+ * are classified in parallel as well. This requires that both the tuner and
  * the classifier implement the {@link Copyable} interface (or that there is no
- * trainer and the classifier implements it). If this condition is not met (or
- * the number of seeds is less than 2), it reverts to sequential training of the
+ * tuner and the classifier implements it). If this condition is not met (or
+ * the number of seeds is less than 2), it reverts to sequential tuning of the
  * classifier and parallel classification only the time series belonging to
  * individual test subsets.
  * 
@@ -59,7 +59,7 @@ import fap.util.Copyable;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.03.04.
+ * @version 2025.04.22.
  * @see AbstractExtendedEvaluator
  */
 public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements Copyable {
@@ -100,7 +100,7 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
     /**
      * Constructs a new stratified CrossValidation evaluator with the specified
      * number of threads ({@code tnumber}), the specified random {@code seeds}, and
-     * parallel training.
+     * parallel tuning.
      * 
      * @param seeds   random seeds used to shuffle the dataset
      * @param tnumber number of threads
@@ -115,7 +115,7 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * 
      * @param seeds        random seeds used to shuffle the dataset
      * @param tnumber      number of threads
-     * @param fullParallel indicates whether to apply full parallel training
+     * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
     public CrossValidationEvaluator(long[] seeds, int tnumber, boolean fullParallel) {
@@ -135,7 +135,7 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
     /**
      * Constructs a new stratified CrossValidation evaluator with the specified
      * number of folds ({@code fnumber}) and threads ({@code tnumber}), and parallel
-     * training.
+     * tuning.
      * 
      * @param fnumber number of folds, must be {@code > 1}
      * @param tnumber number of threads
@@ -151,7 +151,7 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * 
      * @param fnumber      number of folds, must be {@code > 1}
      * @param tnumber      number of threads
-     * @param fullParallel indicates whether to apply full parallel training
+     * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
     public CrossValidationEvaluator(int fnumber, int tnumber, boolean fullParallel) {
@@ -179,7 +179,7 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
     /**
      * Constructs a new stratified CrossValidation evaluator with the specified
      * number of folds ({@code fnumber}) and threads ({@code tnumber}), the
-     * specified random {@code seeds}, and parallel training.
+     * specified random {@code seeds}, and parallel tuning.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be
@@ -206,7 +206,7 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * @param fnumber      number of folds, must be {@code > 1}
      * @param seeds        random seeds used to shuffle the dataset
      * @param tnumber      number of threads
-     * @param fullParallel indicates whether to apply full parallel training
+     * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
     public CrossValidationEvaluator(int fnumber, long[] seeds, int tnumber, boolean fullParallel) {
@@ -247,7 +247,7 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
 
     /**
      * Constructs a new CrossValidation evaluator with the specified number of folds
-     * ({@code fnumber}) and threads ({@code tnumber}), and parallel training.
+     * ({@code fnumber}) and threads ({@code tnumber}), and parallel tuning.
      * 
      * @param fnumber    number of folds, must be {@code > 1}
      * @param stratified indicates whether the folds should be stratified
@@ -266,7 +266,7 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * @param stratified   indicates whether the folds should be stratified
      *                     {@code true}
      * @param tnumber      number of threads
-     * @param fullParallel indicates whether to apply full parallel training
+     * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
     public CrossValidationEvaluator(int fnumber, boolean stratified, int tnumber, boolean fullParallel) {
@@ -276,7 +276,7 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
     /**
      * Constructs a new CrossValidation evaluator with the specified number of folds
      * ({@code fnumber}) and threads ({@code tnumber}), and the specified random
-     * {@code seeds}, and parallel training.
+     * {@code seeds}, and parallel tuning.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be
@@ -307,7 +307,7 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      *                     {@code true}
      * @param seeds        random seeds used to shuffle the dataset
      * @param tnumber      number of threads
-     * @param fullParallel indicates whether to apply full parallel training
+     * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
     public CrossValidationEvaluator(int fnumber, boolean stratified, long[] seeds, int tnumber, boolean fullParallel) {
@@ -340,7 +340,7 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * @throws InterruptedException when the interrupted flag is set
      */
     @Override
-    public double evaluate(Trainer trainer, Classifier classifier, Dataset dataset) throws Exception {
+    public double evaluate(Tuner tuner, Classifier classifier, Dataset dataset) throws Exception {
 
         if (done)
             return error;
@@ -370,7 +370,7 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
             }
 
         try {
-            return super.evaluate(trainer, classifier, dataset, iterations, cbCount);
+            return super.evaluate(tuner, classifier, dataset, iterations, cbCount);
         }
         catch (Exception e) {
             listOfFolds = null;

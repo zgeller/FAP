@@ -25,8 +25,8 @@ import fap.core.classifier.Classifier;
 import fap.core.data.Dataset;
 import fap.core.data.TimeSeries;
 import fap.core.evaluator.Evaluator;
-import fap.core.trainer.Trainer;
-import fap.trainer.ParameterTrainer;
+import fap.core.tuner.Tuner;
+import fap.tuner.ParameterTuner;
 import fap.util.Copier;
 import fap.util.Copyable;
 import fap.util.Multithreaded;
@@ -37,18 +37,18 @@ import fap.util.ThreadUtils.RunnableWrapper;
 /**
  * Defines common methods and fields for classifier evaluators with seeds.
  * 
- * If the number of threads is greater than 1, parallel training is applied by
- * default. This means that copies of the classifier will be trained in parallel
- * using copies of the trainer, and then the time series of all the test subsets
- * are classified in parallel as well. This requires that both the trainer and
- * the classifier implement the {@link Copyable} interface (or that there is no
- * trainer and the classifier implements it). If this condition is not met (or
- * the number of seeds is less than 2), it reverts to sequential training of the
+ * If the number of threads is greater than 1, parallel tuning is applied by
+ * default. This means that copies of the classifier will be tuned in parallel
+ * using copies of the tuner, and then the time series of all the test subsets
+ * are classified in parallel as well. This requires that both the tuner and the
+ * classifier implement the {@link Copyable} interface (or that there is no
+ * tuner and the classifier implements it). If this condition is not met (or the
+ * number of seeds is less than 2), it reverts to sequential tuning of the
  * classifier and parallel classification only the time series belonging to
  * individual test subsets.
  * 
  * @author Zoltán Gellér
- * @version 2025.04.17.
+ * @version 2025.04.22.
  * @see AbstractExtendedEvaluator
  * @see Evaluator
  */
@@ -69,10 +69,10 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     protected long[] seeds;
     
     /**
-     * Indicates whether to apply parallel training and evaluating the classifier
-     * which requires that both the trainer and the classifier implement the
-     * {@link Copyable} interface (or that there is no trainer). It they do not
-     * implement it, the algorithm will revert to sequential training (and parallel
+     * Indicates whether to apply parallel tuning and evaluating the classifier
+     * which requires that both the tuner and the classifier implement the
+     * {@link Copyable} interface (or that there is no tuner). It they do not
+     * implement it, the algorithm will revert to sequential tuning (and parallel
      * evaluation). Default value is {@code true}.
      */
     protected boolean fullParallel = true;
@@ -84,12 +84,12 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     protected FoldResult[] results;
     
     /**
-     * List of trainer copies used by the parallel implementation.
+     * List of tuner copies used by the parallel implementation.
      */
-    protected ConcurrentLinkedQueue<Trainer> trainers;
+    protected ConcurrentLinkedQueue<Tuner> tuners;
     
     /**
-     * A trained classifier for each run.
+     * A tuned classifier for each run.
      */
     protected Classifier[] classifiers;
     
@@ -104,7 +104,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     protected int[] classifiedCount;
     
     /**
-     * New futures created within the trainer tasks.
+     * New futures created within the tuner tasks.
      */
     private transient ConcurrentLinkedQueue<Future<?>> newFutures;
     
@@ -114,7 +114,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     
     /**
      * Emptyt constructor (single-threaded, stratified splitting of the dataset,
-     * parallel training).
+     * parallel tuning).
      */
     public AbstractSeedsEvaluator() {
     }
@@ -131,7 +131,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     
     /**
      * Constructor with the number of threads, stratified splitting of the
-     * dataset, and parallel training.
+     * dataset, and parallel tuning.
      * 
      * @param tnumber number of threads.
      */
@@ -140,7 +140,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     }
 
     /**
-     * Constructor with the number of threads, and parallel training.
+     * Constructor with the number of threads, and parallel tuning.
      * 
      * @param stratified indicates whether to use stratified ({@code true}) or
      *                   random ({@code false}) splitting
@@ -157,7 +157,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * dataset.
      * 
      * @param tnumber      number of threads.
-     * @param fullParallel indicates whether to apply full parallel training
+     * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
     public AbstractSeedsEvaluator(int tnumber, boolean fullParallel) {
@@ -170,7 +170,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * @param stratified   indicates whether to use stratified ({@code true}) or
      *                     random ({@code false}) splitting
      * @param tnumber      number of threads.
-     * @param fullParallel indicates whether to apply full parallel training
+     * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
     public AbstractSeedsEvaluator(boolean stratified, int tnumber, boolean fullParallel) {
@@ -179,7 +179,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     
     /**
      * Constructor with the seeds, stratified splitting of the dataset, and parallel
-     * training.
+     * tuning.
      * 
      * @param seeds random seeds used to shuffle the dataset
      */
@@ -188,7 +188,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     }
 
     /**
-     * Constructor with the seeds, and parallel training.
+     * Constructor with the seeds, and parallel tuning.
      * 
      * @param stratified indicates whether to use stratified ({@code true}) or
      *                   random ({@code false}) splitting
@@ -201,7 +201,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     
     /**
      * Constructor with the seeds and the number of threads, stratified splitting of
-     * the dataset, and parallel training.
+     * the dataset, and parallel tuning.
      * 
      * @param seeds   random seeds used to shuffle the dataset
      * @param tnumber number of threads
@@ -212,7 +212,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     }
     
     /**
-     * Constructor with the seeds and the number of threads, and parallel training.
+     * Constructor with the seeds and the number of threads, and parallel tuning.
      * 
      * @param stratified indicates whether to use stratified ({@code true}) or
      *                   random ({@code false}) splitting
@@ -232,7 +232,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * 
      * @param seeds        random seeds used to shuffle the dataset
      * @param tnumber      number of threads
-     * @param fullParallel indicates whether to apply full parallel training
+     * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
     public AbstractSeedsEvaluator(long[] seeds, int tnumber, boolean fullParallel) {
@@ -248,7 +248,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      *                     random ({@code false}) splitting
      * @param seeds        random seeds used to shuffle the dataset
      * @param tnumber      number of threads
-     * @param fullParallel indicates whether to apply full parallel training
+     * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
     public AbstractSeedsEvaluator(boolean stratified, long[] seeds, int tnumber, boolean fullParallel) {
@@ -296,18 +296,18 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     }
     
     /**
-     * Returns {@code true} if parallel training (and evaluating) should be applied.
+     * Returns {@code true} if parallel tuning (and evaluating) should be applied.
      * 
-     * @return {@code true} if parallel training (and evaluating) should be applied
+     * @return {@code true} if parallel tuning (and evaluating) should be applied
      */
     public boolean isFullParallel() {
         return fullParallel;
     }
     
     /**
-     * Indicates whether parallel training (and evaluating) should be applied.
+     * Indicates whether parallel tuning (and evaluating) should be applied.
      * 
-     * @param fullParallel indicates whether parallel training (and evaluating)
+     * @param fullParallel indicates whether parallel tuning (and evaluating)
      *                     should be applied
      */
     public void setFullParallel(boolean fullParallel) {
@@ -339,10 +339,10 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     }
     
     /**
-     * Evaluates the specified {@code classifier} using the specified
-     * {@code trainer} and {@code dataset}.
+     * Evaluates the specified {@code classifier} using the specified {@code tuner}
+     * and {@code dataset}.
      * 
-     * @param trainer    the trainer that is to be used to train the classifier
+     * @param tuner      the tuner that is to be used to train the classifier
      * @param classifier the classifier that is to be evaluated
      * @param dataset    the dataset to be used for evaluating the classifier
      * @param iterations number of iterations
@@ -350,7 +350,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * @return the error rate
      * @throws Exception if an error occurs
      */
-    protected double evaluate(Trainer trainer, Classifier classifier, Dataset dataset, int iterations, int cbCount) throws Exception {
+    protected double evaluate(Tuner tuner, Classifier classifier, Dataset dataset, int iterations, int cbCount) throws Exception {
 
         // callback initialization
         if (callback != null) {
@@ -369,16 +369,16 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
 
         int tnumber = ThreadUtils.getThreadLimit(this.getNumberOfThreads());
 
-        // checking conditions for parallel training
-        boolean parallelTraining = (tnumber > 1) && 
-                                   this.isFullParallel() && 
-                                   ((trainer == null) || (trainer instanceof Copyable)) && 
-                                   (classifier instanceof Copyable);
+        // checking conditions for parallel tuning
+        boolean parallelTuning = (tnumber > 1) && 
+                                 this.isFullParallel() && 
+                                 ((tuner == null) || (tuner instanceof Copyable)) && 
+                                 (classifier instanceof Copyable);
 
-        if (parallelTraining)
-            evaluateParallelTraining(trainer, classifier, dataset, iterations, tnumber);
+        if (parallelTuning)
+            evaluateParallelTuning(tuner, classifier, dataset, iterations, tnumber);
         else
-            evaluateSequentialTraining(trainer, classifier, dataset, iterations, tnumber);
+            evaluateSequentialTuning(tuner, classifier, dataset, iterations, tnumber);
 
         // calculating error rates
         error = 0;
@@ -400,22 +400,22 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     }
     
     /**
-     * It should split the dataset for the specified {@code iteration} into training
+     * It should split the dataset for the specified {@code iteration} into tuning
      * and test subsets, in a thread-safe manner.
      * 
      * <p>
-     * The zeroth element of the resulting list should represent the training set,
-     * and the first element should represent the test set.
+     * The zeroth element of the resulting list should represent the tuning set, and
+     * the first element should represent the test set.
      * 
      * @param iteration iteration sequence number
-     * @return the list containing the training and test set (in this order)
+     * @return the list containing the tuning and test set (in this order)
      */
     protected abstract List<Dataset> splitDataset(Dataset dataset, int iteration);
     
     /**
-     * Training task.
+     * Tuning task.
      */
-    protected class TrainTask implements Runnable {
+    protected class TuneTask implements Runnable {
 
         /**
          * The dataset.
@@ -423,9 +423,9 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
         static Dataset dataset;
         
         /**
-         * The trainer.
+         * The tuner.
          */
-        static Trainer trainer;
+        static Tuner tuner;
         
         /**
          * The classifier.
@@ -438,21 +438,21 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
         int iteration;
         
         /**
-         * A copy of the trainer used to train the classifier.
+         * A copy of the tuner used to train the classifier.
          */
-        Trainer trainerCopy;
+        Tuner tunerCopy;
         
         /**
-         * A copy of the classifier that is to be trained.
+         * A copy of the classifier that is to be tuned.
          */
         Classifier classifierCopy;
         
         /**
-         * Constructs a new training task for the specified {@code index}.
+         * Constructs a new tuning task for the specified {@code index}.
          * 
          * @param index the index of this task
          */
-        public TrainTask(int iteration) {
+        public TuneTask(int iteration) {
             this.iteration = iteration;
         }
 
@@ -462,15 +462,15 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
             // creating a new result object
             FoldResult result = new FoldResult();
             
-            List<Dataset> list = splitDataset(TrainTask.dataset, iteration);
+            List<Dataset> list = splitDataset(TuneTask.dataset, iteration);
             
             result.trainset = list.get(0);
             result.testset = list.get(1);
             
             classified[iteration] = new boolean[result.testset.size()];
             
-            // if there is no need for training
-            if (trainer == null) {
+            // if there is no need for tuning
+            if (tuner == null) {
                 
                 classifierCopy = (Classifier) ((Copyable)classifier).makeACopy(false);
                 
@@ -488,17 +488,17 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
                 
             }
             
-            // getting a trainer
-            trainerCopy = trainers.poll();
+            // getting a tuner
+            tunerCopy = tuners.poll();
             
-            // deep copy of the classifier is needed only if the trainer affects the
+            // deep copy of the classifier is needed only if the tuner affects the
             // underlying distance measure
-            classifierCopy = (Classifier) ((Copyable)classifier).makeACopy(trainerCopy.affectsDistance());
+            classifierCopy = (Classifier) ((Copyable)classifier).makeACopy(tunerCopy.affectsDistance());
             
-            // training and updating the result object 
+            // tuning and updating the result object 
             try {
-                result.expectedError = trainerCopy.train(classifierCopy, result.trainset);
-                if (trainerCopy instanceof ParameterTrainer<?> pt)
+                result.expectedError = tunerCopy.tune(classifierCopy, result.trainset);
+                if (tunerCopy instanceof ParameterTuner<?> pt)
                     result.bestParams = pt.getParameters();
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -513,12 +513,12 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
             classifiers[iteration] = classifierCopy;
             results[iteration] = result;
             
-            // reseting the trainer
-            if (trainerCopy instanceof Resumable rt)
+            // reseting the tuner
+            if (tunerCopy instanceof Resumable rt)
                 rt.reset();
 
-            // releasing the trainer
-            trainers.add(trainerCopy);
+            // releasing the tuner
+            tuners.add(tunerCopy);
             
             // creating classifying tasks and executing them
             List<ClassifyTask> classifyTasks = new ArrayList<>();
@@ -605,21 +605,21 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     }
     
     /**
-     * Multiple iterations of classifier evaluation with sequential training (and
+     * Multiple iterations of classifier evaluation with sequential tuning (and
      * parallel evaluating).
      * 
-     * @param trainer    the trainer that is to be used to train the classifier
+     * @param tuner    the tuner that is to be used to train the classifier
      * @param classifier the classifier that is to be evaluated
      * @param dataset    the dataset to be used for evaluating the classifier
      * @param iterations number of iterations
      * @param tnumber    number of threads
      * @throws Exception if an error occurs
      */
-    protected void evaluateSequentialTraining(Trainer trainer, 
-                                              Classifier classifier, 
-                                              Dataset dataset, 
-                                              int iterations,
-                                              int tnumber) throws Exception {
+    protected void evaluateSequentialTuning(Tuner tuner, 
+                                            Classifier classifier, 
+                                            Dataset dataset, 
+                                            int iterations,
+                                            int tnumber) throws Exception {
         
         if (tnumber > 1)
             this.initExecutor(tnumber);
@@ -631,31 +631,31 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
             
             FoldResult result;
 
-            // if the classifier has already been trained and evaluated on the test set
+            // if the classifier has already been tuned and evaluated on the test set
             if (results[iteration] != null && classifiedCount[iteration] == results[iteration].testset.size())
                     continue;
             
-            // if the classifier needs training
+            // if the classifier needs tuning
             else {
 
                 result = new FoldResult();
                 
                 List<Dataset> list = splitDataset(dataset, iteration);
                 
-                // preparing the test and training sets
+                // preparing the test and tuning sets
                 result.trainset = list.get(0);
                 result.testset = list.get(1);
                 
-                // training the classifier
+                // tuning the classifier
                 double expectedError = Double.NaN;
-                if (trainer != null)
-                    expectedError = trainer.train(classifier, result.trainset);
+                if (tuner != null)
+                    expectedError = tuner.tune(classifier, result.trainset);
                 
                 classifier.fit(result.trainset);
 
                 result.expectedError = expectedError;
                 result.bestParams = null;
-                if (trainer instanceof ParameterTrainer<?> pt)
+                if (tuner instanceof ParameterTuner<?> pt)
                     result.bestParams = pt.getParameters();
 
                 results[iteration] = result;
@@ -663,7 +663,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
                 classified[iteration] = new boolean[result.testset.size()];
                 
                 // reseting the trainger
-                if (trainer instanceof Resumable rt)
+                if (tuner instanceof Resumable rt)
                     rt.reset();
                 
                 if (Thread.interrupted())
@@ -751,39 +751,40 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     }
     
     /**
-     * Multiple iterations of classifier evaluation with parallel training (and evaluating).
+     * Multiple iterations of classifier evaluation with parallel tuning (and
+     * evaluating).
      * 
-     * @param trainer    the trainer that is to be used to train the classifier
+     * @param tuner      the tuner that is to be used to train the classifier
      * @param classifier the classifier that is to be evaluated
      * @param dataset    the dataset to be used for evaluating the classifier
      * @param iterations number of iterations
      * @param tnumber    number of threads
      * @throws Exception if an error occurs
      */
-    protected void evaluateParallelTraining(Trainer trainer, 
-                                            Classifier classifier, 
-                                            Dataset dataset,
-                                            int iterations,
-                                            int tnumber) throws Exception {
+    protected void evaluateParallelTuning(Tuner tuner, 
+                                          Classifier classifier, 
+                                          Dataset dataset,
+                                          int iterations,
+                                          int tnumber) throws Exception {
 
 
         this.initExecutor(tnumber);
         
-        // preparing the trainers
-        trainers = new ConcurrentLinkedQueue<>();
-        if (trainer != null)
-            Copier.makeCopies(trainer, trainers, tnumber);
+        // preparing the tuners
+        tuners = new ConcurrentLinkedQueue<>();
+        if (tuner != null)
+            Copier.makeCopies(tuner, tuners, tnumber);
         
-        TrainTask.dataset = dataset;
-        TrainTask.trainer = trainer;
-        TrainTask.classifier = classifier;
+        TuneTask.dataset = dataset;
+        TuneTask.tuner = tuner;
+        TuneTask.classifier = classifier;
         
         // creating train tasks and executing them
-        List<TrainTask> trainTasks = new ArrayList<>();
+        List<TuneTask> trainTasks = new ArrayList<>();
         
         for (int iteration = 0; iteration < iterations; iteration++ )
             if (results[iteration] == null)
-                trainTasks.add(new TrainTask(iteration));
+                trainTasks.add(new TuneTask(iteration));
         
         newFutures = new ConcurrentLinkedQueue<>();
         
@@ -807,7 +808,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
         
         ThreadUtils.startRunnables(executor, classifyTasks);
         
-        trainers = null;
+        tuners = null;
         classifiers = null;
         classified = null;
         classifiedCount = null;

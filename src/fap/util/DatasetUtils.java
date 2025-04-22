@@ -31,7 +31,7 @@ import fap.io.TimeSeriesTextFileWriter;
  * Dataset utilities.
  * 
  * @author Zoltán Gellér
- * @version 2025.03.31
+ * @version 2025.03.31.
  */
 public final class DatasetUtils {
 

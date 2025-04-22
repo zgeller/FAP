@@ -46,10 +46,10 @@ public class EmptyDatasetException extends CoreRuntimeException {
     }
     
     /**
-     * Checks if the specified dataset is empty and throws an {@code EmptyDataset} exception
-     * if it is empty.
+     * Checks if the specified {@code dataset} is empty and throws an
+     * {@code EmptyDataset} exception if it is empty.
      * 
-     * @throws EmptyDatasetException if the training dataset is empty
+     * @throws EmptyDatasetException if the {@code dataset} is empty
      */
     public static void check(Dataset dataset) {
         

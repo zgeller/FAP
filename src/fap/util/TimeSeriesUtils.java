@@ -318,7 +318,7 @@ public final class TimeSeriesUtils {
      * the specified factor.
      * 
      * @param series the time series that is to be shifted
-     * @param scaley shift factor for the y coordinate of the data points
+     * @param shifty shift factor for the y coordinate of the data points
      */
     public static void shift(TimeSeries series, double shifty) {
 
@@ -332,8 +332,8 @@ public final class TimeSeriesUtils {
      * series by the specified factors.
      * 
      * @param series the time series that is to be shifted
-     * @param scalex shift factor for the x coordinate of the data points
-     * @param scaley shift factor for the y coordinate of the data points
+     * @param shiftx shift factor for the x coordinate of the data points
+     * @param shifty shift factor for the y coordinate of the data points
      */
     public static void shift(TimeSeries series, double shiftx, double shifty) {
         

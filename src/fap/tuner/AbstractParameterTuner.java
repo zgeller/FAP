@@ -47,7 +47,7 @@ import fap.util.ThreadUtils;
  *            the {@link Comparable} interface
  * 
  * @author Zoltán Gellér
- * @version 2025.04.21.
+ * @version 2025.08.03.
  * @see AbstractTuner
  * @see ParameterTuner
  * @see Callbackable
@@ -486,18 +486,8 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
             tunedParameters.add(null);
     }
 
-    /**
-     * Tunes the classifier using the specified dataset.
-     * 
-     * @param classifier the classifier to be tuned
-     * @param dataset    the dataset
-     * @param modifier   the parameter modifier, which is to be used to set the
-     *                   value of the parameter tuned by this tuner
-     * @return the expected error rate
-     * @throws Exception             if an error occurs
-     * @throws EmptyDatasetException if the dataset is empty
-     */
-    protected double tune(Classifier classifier, Dataset dataset, Modifier<T> modifier) throws Exception {
+    @Override
+    public double tune(Classifier classifier, Dataset dataset) throws Exception {
 
         if (done || ((subtuner == null) && (evaluator == null)))
             return expectedError;
@@ -529,9 +519,9 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
                                  (classifier instanceof Copyable);
         
         if (parallelTuning)
-            tuneParallel(classifier, dataset, modifier, tnumber);
+            tuneParallel(classifier, dataset, tnumber);
         else
-            tuneSequential(classifier, dataset, modifier);
+            tuneSequential(classifier, dataset);
 
         // setting the best values of the parameters
         if (bestValue != null)
@@ -553,11 +543,9 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * 
      * @param classifier the classifier to be tuned
      * @param dataset    the dataset
-     * @param modifier   the parameter modifier, which is to be used to set the
-     *                   value of the parameter tuned by this tuner
      * @throws Exception if an error occurs
      */
-    protected void tuneSequential(Classifier classifier, Dataset dataset, Modifier<T> modifier) throws Exception {
+    protected void tuneSequential(Classifier classifier, Dataset dataset) throws Exception {
 
         // finding the best value
         for (int index = 0; index < tuned.length; index++) {
@@ -725,12 +713,10 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * 
      * @param classifier the classifier to be tuned
      * @param dataset    the dataset
-     * @param modifier   the parameter modifier, which is to be used to set the
-     *                   value of the parameter tuned by this tuner
      * @param tnumber    number of threads
      * @throws Exception if an error occurs
      */
-    protected void tuneParallel(Classifier classifier, Dataset dataset, Modifier<T> modifier, int tnumber) throws Exception {
+    protected void tuneParallel(Classifier classifier, Dataset dataset, int tnumber) throws Exception {
         
         // making copies of this tuner
         tuners = new ConcurrentLinkedQueue<>();
@@ -866,11 +852,6 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
         sublist.removeFirst();
         if (subtuner != null)
             subtuner.setParameters(classifier, sublist);
-    }
-
-    @Override
-    public double tune(Classifier classifier, Dataset dataset) throws Exception {
-        return tune(classifier, dataset, modifier);
     }
 
     /**

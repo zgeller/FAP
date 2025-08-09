@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Zoltán Gellér
+ * Copyright 2024-2025 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import fap.core.data.TimeSeries;
  * Writes time series into a text file.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.11.
+ * @version 2025.08.09.
  * @see TimeSeriesTextIOHelper
  */
 public class TimeSeriesTextFileWriter extends TimeSeriesTextIOHelper {
@@ -85,14 +85,17 @@ public class TimeSeriesTextFileWriter extends TimeSeriesTextIOHelper {
 
             for (TimeSeries series : dataset) {
 
-                String line = String.valueOf(series.getLabel());
+                StringBuilder line = new StringBuilder(String.valueOf(series.getLabel()));
 
                 for (DataPoint dp : series) {
 
-                    if (hasXValue)
-                        line += separator + String.valueOf(dp.getX());
+                    if (hasXValue) {
+                        line.append(separator);
+                        line.append(String.valueOf(dp.getX()));
+                    }
 
-                    line += separator + String.valueOf(dp.getY());
+                    line.append(separator);
+                    line.append(String.valueOf(dp.getY()));
 
                 }
 
@@ -101,10 +104,7 @@ public class TimeSeriesTextFileWriter extends TimeSeriesTextIOHelper {
             }
 
             writer.flush();
-            writer.close();
 
-        } catch (IOException e) {
-            throw e;
         }
 
     }

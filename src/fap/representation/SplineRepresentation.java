@@ -37,6 +37,7 @@ import fap.util.Polynomial;
  * 
  * @author Aleksa Todorović, Vladimir Kurbalija, Zoltán Gellér
  * @version 2024.09.14.
+ * @see Representation
  */
 public class SplineRepresentation implements Representation {
 

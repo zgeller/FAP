@@ -51,6 +51,7 @@ public abstract class AbstractCopyableDistance extends AbstractDistance implemen
      * distance.
      * 
      * @param copy the distance measure whose data structures is to be initialized
+     * @param deep indicates whether a deep copy should be made
      */
     protected void init(AbstractCopyableDistance copy, boolean deep) {
         copy.setStoring(this.isStoring());

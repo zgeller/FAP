@@ -91,8 +91,8 @@ public class KulczynskiDistance extends AbstractCopyableDistance {
 
         int len = IncomparableTimeSeriesException.checkLength(series1, series2);
         
-        double sumMin = 0;
         double sumAbs = 0;
+        double sumMin = 0;
 
         for (int i = 0; i < len; i++) {
 

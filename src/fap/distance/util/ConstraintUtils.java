@@ -35,8 +35,8 @@ public class ConstraintUtils {
      * 
      * <blockquote>
      * <dl>
-     * <dt>if <code>w < 0</code> then
-     * <dd><code>width = len * r / 100</code>
+     * <dt>if <code>w &lt; 0</code> then
+     * <dd><code>width = (int) (len * r / 100)</code>
      * <dt>else
      * <dd><code>width = len</code>
      * </dl>

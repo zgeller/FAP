@@ -36,7 +36,7 @@ import fap.core.data.TimeSeries;
  * </ul>
  * 
  * @author Zoltán Gellér
- * @version 2025.03.14.
+ * @version 2025.08.12.
  * @see Distance
  */
 public abstract class AbstractDistance implements Distance {
@@ -94,7 +94,7 @@ public abstract class AbstractDistance implements Distance {
     }
 
     /**
-     * If storing distances is enabled the both the specified time series have
+     * If storing distances is enabled and both the specified time series have
      * non-negative {@link TimeSeries#getIndex() indices}, it stores the specified
      * distance between the given time series for reuse.
      * 
@@ -132,28 +132,25 @@ public abstract class AbstractDistance implements Distance {
     }
 
     /**
-     * Returns the stored distance between the time series with the given indices.
+     * Returns the stored distance between the time series with the given indices or
+     * {@code null} if the storage does not contain the distance between them.
      * {@code index1} is used as the primary and {@code index2} as the secondary
      * key.
      * 
      * @param index1 the index of the first time series used as the primary key
      * @param index2 the index of the second time series used as the secondary key
-     * @return the stored distance between {@code series1} and {@code series2}
+     * @return the stored distance between the time series with the given indices or
+     *         {@code null} if the storage does not contain the distance between
+     *         them
      */
-    private double getDistance(int index1, int index2) {
+    private Double getDistance(int index1, int index2) {
 
-        double distance = Double.NaN;
+        Double distance = null;
             
         ConcurrentMap<Integer, Double> data = storage.get(index1);
 
-        if (data != null) {
-
-            Double dist = data.get(index2);
-
-            if (dist != null)
-                distance = dist;
-
-        }
+        if (data != null)
+            distance = data.get(index2);
             
         return distance;
 
@@ -162,27 +159,27 @@ public abstract class AbstractDistance implements Distance {
 
     /**
      * Returns the stored distance between the specified time series or
-     * {@link Double#NaN} if the storage does not contain the distance between them
+     * {@code null} if the storage does not contain the distance between them
      * or storing distances is not enabled.
      * 
      * @param series1 the first time series
      * @param series2 the second time series
      * @return the stored distance between {@code series1} and {@code series2} or
-     *         {@link Double#NaN} if the storage does not contain the distance
+     *         {@code null} if the storage does not contain the distance
      *         between them or storing distances is not enabled
      */
-    public double recall(TimeSeries series1, TimeSeries series2) {
+    public Double recall(TimeSeries series1, TimeSeries series2) {
 
         if (!this.isStoring())
-            return Double.NaN;
+            return null;
         
         int index1 = series1.getIndex();
         int index2 = series2.getIndex();
         
         if (index1 < 0 || index2 < 0)
-            return Double.NaN;
+            return null;
 
-        double distance = Double.NaN;
+        Double distance = null;
         
         if (index1 < index2)
             distance = getDistance(index1, index2);

@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Zoltán Gellér
+ * Copyright 2024-2025 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ import fap.distance.AbstractThresholdDistance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2024.09.17.
+ * @version 2025.08.12.
  * @see AbstractThresholdDistance
  */
 public class LCSDistance extends AbstractThresholdDistance {
@@ -97,9 +97,9 @@ public class LCSDistance extends AbstractThresholdDistance {
     public double distance(TimeSeries series1, TimeSeries series2) {
 
         // try to recall the distance
-        double distance = this.recall(series1, series2);
-        if (!Double.isNaN(distance))
-            return distance;
+        Double recall = this.recall(series1, series2);
+        if (recall != null)
+            return recall;
         
         TimeSeries sdata, gdata;
 
@@ -157,7 +157,7 @@ public class LCSDistance extends AbstractThresholdDistance {
 
         int len = slen + glen;
 
-        distance = 0;
+        double distance = 0;
         if (len > 0)
             distance = (double) (len - 2 * prevRow[slen]) / (double) len;
         

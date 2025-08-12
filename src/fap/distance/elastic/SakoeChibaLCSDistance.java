@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Zoltán Gellér
+ * Copyright 2024-2025 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2024.09.17.
+ * @version 2024.08.12.
  * @see AbstractConstrainedThresholdDistance
  * @see LCSDistance
  */
@@ -131,9 +131,9 @@ public class SakoeChibaLCSDistance extends AbstractConstrainedThresholdDistance 
     public double distance(TimeSeries series1, TimeSeries series2) throws IncomparableTimeSeriesException {
 
         // try to recall the distance
-        double distance = this.recall(series1, series2);
-        if (!Double.isNaN(distance))
-            return distance;
+        Double recall = this.recall(series1, series2);
+        if (recall != null)
+            return recall;
 
         // throws IncomparableTimeSeriesException if the time series are not the same
         // length
@@ -185,7 +185,7 @@ public class SakoeChibaLCSDistance extends AbstractConstrainedThresholdDistance 
 
         }
 
-        distance = 0;
+        double distance = 0;
         if (len > 0)
             distance = (double) (len - prevRow[len]) / (double) len;
         

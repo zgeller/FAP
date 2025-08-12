@@ -53,7 +53,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.08.10.
+ * @version 2025.08.12.
  * @see AbstractCopyableDistance
  */
 public class TanimotoDistance extends AbstractCopyableDistance {
@@ -85,9 +85,9 @@ public class TanimotoDistance extends AbstractCopyableDistance {
     public double distance(TimeSeries series1, TimeSeries series2) {
 
         // try to recall the distance
-        double distance = this.recall(series1, series2);
-        if (!Double.isNaN(distance))
-            return distance;
+        Double recall = this.recall(series1, series2);
+        if (recall != null)
+            return recall;
         
         int len = IncomparableTimeSeriesException.checkLength(series1, series2);
 
@@ -105,7 +105,8 @@ public class TanimotoDistance extends AbstractCopyableDistance {
             denominator += y1 * y1 + y2 * y2 - y1 * y2;
             
         }
-        
+
+        double distance;
         if (numerator == 0 && denominator == 0)
             distance = 0;
         else

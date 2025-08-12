@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Zoltán Gellér
+ * Copyright 2024-2025 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import fap.util.ThreadUtils;
  * Defines common methods and fields for (multithreaded) NN classifiers.
  * 
  * @author Zoltán Gellér
- * @version 2025.04.17.
+ * @version 2025.08.12.
  * @see AbstractDistanceBasedClassifier
  * @see Multithreaded
  * @see Copyable
@@ -366,13 +366,13 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
 
                     TimeSeries ts = trainset.get(i);
 
-                    double recall = dist.recall(series, ts);
+                    Double recall = dist.recall(series, ts);
 
                     distances.add(recall);
 
-                    if (Double.isNaN(recall)) {
+                    if (recall == null) {
                         indices.add(i);
-                        dataset.add(ts);
+                        newDataset.add(ts);
                     }
 
                 }

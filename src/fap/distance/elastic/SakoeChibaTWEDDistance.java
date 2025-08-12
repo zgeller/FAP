@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Zoltán Gellér
+ * Copyright 2024-2025 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2024.09.24.
+ * @version 2025.08.12.
  * @see AbstractConstrainedDistance
  * @see TWEDParameters
  * @see TWEDDistance
@@ -188,9 +188,9 @@ public class SakoeChibaTWEDDistance extends AbstractConstrainedDistance implemen
     public double distance(TimeSeries series1, TimeSeries series2) throws IncomparableTimeSeriesException {
 
         // try to recall the distance
-        double distance = this.recall(series1, series2);
-        if (!Double.isNaN(distance))
-            return distance;
+        Double recall = this.recall(series1, series2);
+        if (recall != null)
+            return recall;
         
         // throws IncomparableTimeSeriesException if the time series are not the same
         // length
@@ -250,8 +250,8 @@ public class SakoeChibaTWEDDistance extends AbstractConstrainedDistance implemen
         prevy1 = 0; // value
         prevx1 = 0; // time
 
-        for (int i = 1; i <= len; i++) // i-th row
-        {
+        for (int i = 1; i <= len; i++) { // i-th row
+            
             int start = Math.max(1, i - scWidth); // starting column
             int end = Math.min(len, i + scWidth); // ending column
 
@@ -307,12 +307,13 @@ public class SakoeChibaTWEDDistance extends AbstractConstrainedDistance implemen
             
         }
 
-        distance = prevRow[len];
+        double distance = prevRow[len];
         
         // save the distance into the memory
         this.store(series1, series2, distance);
         
         return distance;
+        
     }
 
     /**

@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Aleksa Todorović, Vladimir Kurbalija, Zoltán Gellér
+ * Copyright 2024-2025 Aleksa Todorović, Vladimir Kurbalija, Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import fap.util.Polynomial;
  * </ol>
  * 
  * @author Aleksa Todorović, Vladimir Kurbalija, Zoltán Gellér
- * @version 2024.09.17.
+ * @version 2025.08.12.
  * @see AbstractCopyableDistance
  * @see SplineRepresentation
  */
@@ -64,9 +64,9 @@ public class SplineDistance extends AbstractCopyableDistance {
     public double distance(TimeSeries series1, TimeSeries series2) {
 
         // try to recall the distance
-        double distance = this.recall(series1, series2);
-        if (!Double.isNaN(distance))
-            return distance;
+        Double recall = this.recall(series1, series2);
+        if (recall != null)
+            return recall;
         
         int ithis = 0;
         int itest = 0;
@@ -92,6 +92,7 @@ public class SplineDistance extends AbstractCopyableDistance {
         while ((ithis < series1.length()) && (itest < series2.length())) {
 
             if (series2.getX(itest) == series1.getX(ithis))
+
                 // if points have same x then we are looking for the smaller
                 // next point
                 if ((itest < series2.length() - 1) && (ithis < series1.length() - 1)) {
@@ -111,6 +112,7 @@ public class SplineDistance extends AbstractCopyableDistance {
                     else {
                         ithis++;
                     }
+                    
                 }
 
                 else {
@@ -165,7 +167,7 @@ public class SplineDistance extends AbstractCopyableDistance {
             }
         }
 
-
+        double distance;
         if (itest >= series2.length())
             distance = tempsim / (series2.getX(series2.length() - 1) - xmin);
         else
@@ -175,6 +177,7 @@ public class SplineDistance extends AbstractCopyableDistance {
         this.store(series1, series2, distance);
 
         return distance;
+        
     }
 
     @Override

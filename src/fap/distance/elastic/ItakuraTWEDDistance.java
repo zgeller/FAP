@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Zoltán Gellér
+ * Copyright 2024-2025 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2024.09.24.
+ * @version 2025.08.12.
  * @see AbstractConstrainedDistance
  * @see TWEDParameters
  * @see TWEDDistance
@@ -193,9 +193,9 @@ public class ItakuraTWEDDistance extends AbstractConstrainedDistance implements 
     public double distance(TimeSeries series1, TimeSeries series2) throws IncomparableTimeSeriesException {
 
         // try to recall the distance
-        double distance = this.recall(series1, series2);
-        if (!Double.isNaN(distance))
-            return distance;
+        Double recall = this.recall(series1, series2);
+        if (recall != null)
+            return recall;
 
         // throws IncomparableTimeSeriesException if the time series are not the same
         // length
@@ -246,6 +246,7 @@ public class ItakuraTWEDDistance extends AbstractConstrainedDistance implements 
             delta2[i] = Math.abs(y - prevy2) + nu * Math.abs(x - prevx2) + lambda;
             prevy2 = y;
             prevx2 = x;
+            
         }
 
         int prevEnd = 0;
@@ -316,12 +317,13 @@ public class ItakuraTWEDDistance extends AbstractConstrainedDistance implements 
             
         }
         
-        distance = prevRow[len];
+        double distance = prevRow[len];
         
         // save the distance into the memory
         this.store(series1, series2, distance);
 
         return distance;
+        
     }
     
     /**

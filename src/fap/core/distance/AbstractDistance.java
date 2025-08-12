@@ -27,7 +27,7 @@ import fap.core.data.TimeSeries;
  * 
  * <p>
  * Distances may be stored for future reuse. For this purpose, this class
- * utilizes a {@link HashMap} whose keys are the {@link TimeSeries#getIndex()
+ * utilizes a {@link ConcurrentHashMap} whose keys are the {@link TimeSeries#getIndex()
  * indices} of time series.
  * <ul>
  *  <li> <b>Time series should not be changed while storing distances is enabled.</b>

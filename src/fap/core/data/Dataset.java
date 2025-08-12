@@ -560,7 +560,10 @@ public class Dataset implements List<TimeSeries>, Serializable {
     
     /**
      * Divides this dataset into {@code k} stratified subsets of approximately equal
-     * sizes. If the given random number generator is not {@code null}, it shuffles
+     * sizes. 
+     * 
+     * <p>
+     * If the given random number generator is not {@code null}, it shuffles
      * each group of time series which belong to the same class before splitting the
      * dataset.
      * 

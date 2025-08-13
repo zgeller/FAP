@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Aleksa Todorović, Zoltán Gellér
+ * Copyright 2024-2025 Aleksa Todorović, Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import java.io.Serializable;
  * One point of time series data.
  * 
  * @author Aleksa Todorović, Zoltán Gellér
- * @version 2024.09.14.
+ * @version 2025.08.13.
  * @see Serializable
  * @see Comparable
  */
@@ -63,8 +63,8 @@ public class DataPoint implements Serializable, Comparable<DataPoint> {
      * @param y the value of the y-coordinate
      */
     public DataPoint(double x, double y) {
-        this.setX(x);
-        this.setY(y);
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -104,8 +104,82 @@ public class DataPoint implements Serializable, Comparable<DataPoint> {
     }
     
     /**
-     * Textual representation of the data point.
+     * Sets the coordinates of this data point.
+     * 
+     * @param x the value of the x-coordinate
+     * @param y the value of the y-coordinate
      */
+    public void setXY(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+    
+    /**
+     * Shifts the x-coordinate of this data point by the given factor:<br>
+     * {@code x = x + factor}.
+     * 
+     * @param factor the factor to shift the x-coordinate
+     */
+    public void shiftX(double factor) {
+        this.x += factor;
+    }
+
+    /**
+     * Shifts the y-coordinate of this data point by the given factor:<br>
+     * {@code y = y + factor}.
+     * 
+     * @param factor the factor to shift the y-coordinate
+     */
+    public void shiftY(double factor) {
+        this.y += factor;
+    }
+
+    /**
+     * Shifts the coordinates of this data point by the given factors:<br>
+     * {@code x = x + xFactor},<br>
+     * {@code y = y + yFactor}.
+     * 
+     * @param xFactor the factor to shift the x-coordinate
+     * @param yFactor the factor to shift the y-coordinate
+     */
+    public void shiftXY(double xFactor, double yFactor) {
+        this.x += xFactor;
+        this.y += yFactor;
+    }
+
+    /**
+     * Scales the x-coordinate of this data point by the given factor:<br>
+     * {@code x = x * factor}.
+     * 
+     * @param factor the factor to scale the x-coordinate
+     */
+    public void scaleX(double factor) {
+        this.x *= factor;
+    }
+
+    /**
+     * Scales the y-coordinate of this data point by the given factor:<br>
+     * {@code y = y * factor}.
+     * 
+     * @param factor the factor to scale the y-coordinate
+     */
+    public void scaleY(double factor) {
+        this.y *= factor;
+    }
+
+    /**
+     * Scales the coordinates of this data point by the given factors:<br>
+     * {@code x = x * xFactor},<br>
+     * {@code y = y * yFactor}.
+     * 
+     * @param xFactor the factor to scale the x-coordinate
+     * @param yFactor the factor to scale the y-coordinate
+     */
+    public void scaleXY(double xFactor, double yFactor) {
+        this.x *= xFactor;
+        this.y *= yFactor;
+    }
+    
     @Override
     public String toString() {
         return "(" + Double.toString(getX()) + ", " + Double.toString(getY()) + ")";

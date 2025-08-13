@@ -82,17 +82,17 @@ public class SplineInputOutputPredictor extends InputOutputPredictor {
                 continue;
             }
 
-            SplineRepresentation inputRepr = inputSeries.getRepr(SplineRepresentation.class);
+            SplineRepresentation inputRepr = inputSeries.getRepresentation(SplineRepresentation.class);
             if (inputRepr == null) {
                 continue;
             }
 
-            SplineRepresentation outputRepr = outputSerie.getRepr(SplineRepresentation.class);
+            SplineRepresentation outputRepr = outputSerie.getRepresentation(SplineRepresentation.class);
             if (outputRepr == null) {
                 continue;
             }
 
-            SplineRepresentation testInputRepr = testInputSeries.getRepr(SplineRepresentation.class);
+            SplineRepresentation testInputRepr = testInputSeries.getRepresentation(SplineRepresentation.class);
             if (testInputRepr == null) {
                 continue;
             }
@@ -172,7 +172,7 @@ public class SplineInputOutputPredictor extends InputOutputPredictor {
 
             min = best;
 
-            SplineRepresentation repr = bestSeries.getRepr(SplineRepresentation.class);
+            SplineRepresentation repr = bestSeries.getRepresentation(SplineRepresentation.class);
             if (repr == null) {
                 continue;
             }

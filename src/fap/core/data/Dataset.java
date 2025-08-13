@@ -776,7 +776,7 @@ public class Dataset implements List<TimeSeries>, Serializable {
         double mean = 0;
 
         for (TimeSeries ts : this)
-            mean += ts.getMeanY();
+            mean += ts.meanY();
 
         return mean / this.size();
 
@@ -794,7 +794,7 @@ public class Dataset implements List<TimeSeries>, Serializable {
         double stdDev = 0;
         
         for (TimeSeries ts : this)
-            stdDev += ts.getStDevY();
+            stdDev += ts.stdevY();
 
         return stdDev / this.size();
 

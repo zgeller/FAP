@@ -72,7 +72,7 @@ public abstract class AbstractPLARepresentation<SegmentType> implements Represen
      * @param algorithm type of the algorithm
      */
     public AbstractPLARepresentation(final TimeSeries series, double maxError, int algorithm) {
-        this(series.getYValues(), maxError, algorithm);
+        this(series.yValues(), maxError, algorithm);
     }
 	
     /**

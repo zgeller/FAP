@@ -74,9 +74,9 @@ public final class StatisticsUtils {
      */
     public static double correctedRepeatedCVTest(TimeSeries series, double correction) {
         
-        double mean = series.getMeanY();
+        double mean = series.meanY();
         
-        double variance = series.getVarianceY();
+        double variance = series.varianceY();
         
         return mean / Math.sqrt(variance * (1d / series.length() + correction));
         

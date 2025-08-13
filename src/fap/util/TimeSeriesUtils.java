@@ -162,11 +162,11 @@ public final class TimeSeriesUtils {
 
         if (series.length() > 1) {
 
-            double stdev = series.getStDevY(population);
+            double stdev = series.stdevY(population);
 
             if (stdev != 0) {
 
-                double mean = series.getMeanY();
+                double mean = series.meanY();
 
                 for (DataPoint dp : series)
                     dp.setY((dp.getY() - mean) / stdev);
@@ -189,8 +189,8 @@ public final class TimeSeriesUtils {
      */
     public static void meanNormalize(TimeSeries series) {
         
-        double mean = series.getMeanY();
-        double delta = series.getMaxY() - series.getMinY();
+        double mean = series.meanY();
+        double delta = series.maxY() - series.minY();
         
         for (DataPoint dp : series) {
             
@@ -228,8 +228,8 @@ public final class TimeSeriesUtils {
      */
     public static void minMaxNormalize(TimeSeries series, double min, double max) {
 
-        double mins = series.getMinY();
-        double deltas = series.getMaxY() - mins;
+        double mins = series.minY();
+        double deltas = series.maxY() - mins;
         double delta = max - min;
 
         if (deltas != 0.0)
@@ -253,7 +253,7 @@ public final class TimeSeriesUtils {
      */
     public static void maxAbsNormalize(TimeSeries series) {
        
-        double absMax = series.getMaxAbsY();
+        double absMax = series.maxAbsY();
 
         if (absMax > 0)
             for (DataPoint dp : series)
@@ -273,7 +273,7 @@ public final class TimeSeriesUtils {
      */
     public static void decimalScale(TimeSeries series) {
 
-        int k = Long.toString((long) series.getMaxAbsY()).length();
+        int k = Long.toString((long) series.maxAbsY()).length();
 
         double tenp = Math.pow(10, k);
 

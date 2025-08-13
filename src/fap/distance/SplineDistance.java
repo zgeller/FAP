@@ -73,8 +73,8 @@ public class SplineDistance extends AbstractCopyableDistance {
         double xmin;
         double tempsim = 0;
 
-        SplineRepresentation repr1 = series1.getRepr(SplineRepresentation.class);
-        SplineRepresentation repr2 = series2.getRepr(SplineRepresentation.class);
+        SplineRepresentation repr1 = series1.getRepresentation(SplineRepresentation.class);
+        SplineRepresentation repr2 = series2.getRepresentation(SplineRepresentation.class);
 
         if ((repr1 == null) || (repr2 == null))
             throw new IncomparableTimeSeriesException(); // TODO: add a meaningful message

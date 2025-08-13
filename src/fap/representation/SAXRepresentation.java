@@ -124,7 +124,7 @@ public class SAXRepresentation implements Representation {
      *                     {@code [2..maxAlphabetSize]}
      */
     public SAXRepresentation(final TimeSeries series, int d, int alphabetSize) {
-        this(series.getYValues(), d, alphabetSize);
+        this(series.yValues(), d, alphabetSize);
 	}
 	
     /**
@@ -138,7 +138,7 @@ public class SAXRepresentation implements Representation {
      *                 {@code [2..maxAlphabetSize]}
      */
     public SAXRepresentation(final TimeSeries series, int d, char alphabet[]) {
-        this(series.getYValues(), d, alphabet);
+        this(series.yValues(), d, alphabet);
     }
 	
     /**

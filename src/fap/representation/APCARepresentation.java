@@ -59,7 +59,7 @@ public class APCARepresentation implements Representation {
      * @param d      representation dimensionality (must be even)
      */
     public APCARepresentation(final TimeSeries series, int d) {
-        this(series.getYValues(), d);
+        this(series.yValues(), d);
     }
 	
     /**

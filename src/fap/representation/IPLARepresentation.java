@@ -73,7 +73,7 @@ public class IPLARepresentation implements Representation {
      * @param d      representation dimensionality (must be even)
      */
     public IPLARepresentation(final TimeSeries series, int d) {
-        this(series.getYValues(), d);
+        this(series.yValues(), d);
     }
 	
     /**

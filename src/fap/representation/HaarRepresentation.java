@@ -97,7 +97,7 @@ public class HaarRepresentation implements Representation {
      *               dimensionality)
      */
     public HaarRepresentation(final TimeSeries series, int d) {
-        this(series.getYValues(), d);
+        this(series.yValues(), d);
     }
 	
     /**

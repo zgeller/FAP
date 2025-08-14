@@ -22,7 +22,7 @@ import java.io.Serializable;
  * One point of time series data.
  * 
  * @author Aleksa Todorović, Zoltán Gellér
- * @version 2025.08.13.
+ * @version 2025.08.14.
  * @see Serializable
  * @see Comparable
  */
@@ -178,6 +178,39 @@ public class DataPoint implements Serializable, Comparable<DataPoint> {
     public void scaleXY(double xFactor, double yFactor) {
         this.x *= xFactor;
         this.y *= yFactor;
+    }
+
+    /**
+     * Divides the x-coordinate of this data point by the given factor:<br>
+     * {@code x = x / factor}.
+     * 
+     * @param factor the factor to divide the x-coordinate
+     */
+    public void divideX(double factor) {
+        this.x /= factor;
+    }
+    
+    /**
+     * Divides the y-coordinate of this data point by the given factor:<br>
+     * {@code y = y / factor}.
+     * 
+     * @param factor the factor to divide the y-coordinate
+     */
+    public void divideY(double factor) {
+        this.y /= factor;
+    }
+    
+    /**
+     * Divides the coordinates of this data point by the given factors:<br>
+     * {@code x = x / xFactor},<br>
+     * {@code y = y / yFactor}.
+     * 
+     * @param xFactor the factor to divide the x-coordinate
+     * @param yFactor the factor to divide the y-coordinate
+     */
+    public void divideXY(double xFactor, double yFactor) {
+        this.x /= xFactor;
+        this.y /= yFactor;
     }
     
     @Override

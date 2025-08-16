@@ -64,8 +64,7 @@ public class CosineDistance extends AbstractCopyableDistance {
     }
 
     /**
-     * Constructs a new Cosine distance measure and sets whether to store
-     * distances.
+     * Constructs a new Cosine distance measure and sets whether to store distances.
      * 
      * @param storing {@code true} if storing distances should be enabled
      */

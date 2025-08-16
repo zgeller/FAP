@@ -25,8 +25,8 @@ import fap.exception.IncomparableTimeSeriesException;
  * <blockquote> <img src="doc-files/CosineDistance-1.png"> </blockquote>
  * 
  * <ul>
- * <li>If at least one of the two time series contains only zeros, the distance
- * between them will be {@code Double.NaN}.
+ *  <li> If at least one of the two time series contains only zeros, the distance
+ *       between them will be {@code Double.NaN}.
  * </ul>
  * 
  * <p>

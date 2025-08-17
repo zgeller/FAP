@@ -49,7 +49,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.08.17.
+ * @version 2025.08.18.
  * @see AbstractCopyableDistance
  */
 public class TanimotoDistance extends AbstractCopyableDistance {

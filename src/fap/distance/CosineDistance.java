@@ -50,7 +50,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.08.12.
+ * @version 2025.08.18.
  * @see AbstractCopyableDistance
  */
 public class CosineDistance extends AbstractCopyableDistance {
@@ -102,11 +102,13 @@ public class CosineDistance extends AbstractCopyableDistance {
             
         }
 
+        double denominator = Math.sqrt(suma) * Math.sqrt(sumb);
+        
         double distance;
-        if (suma == 0 || sumb == 0)
+        if (denominator == 0 )
             distance = Double.NaN;
         else
-            distance = 1 - sumab / Math.sqrt(suma * sumb);
+            distance = 1 - sumab / denominator;
         
         // save the distance into the memory
         this.store(series1, series2, distance);

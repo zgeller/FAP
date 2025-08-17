@@ -87,26 +87,28 @@ public class TanimotoDistance extends AbstractCopyableDistance {
         
         int len = IncomparableTimeSeriesException.checkLength(series1, series2);
 
-        double numerator = 0;
-        double denominator = 0;
+        double sumab = 0;
+        double suma = 0;
+        double sumb = 0;
         
         for (int i = 0; i < len; i++) {
 
             double y1 = series1.getY(i);
             double y2 = series2.getY(i);
 
-            double tmp = y1 * y2;
-            numerator += tmp;
-            
-            denominator += y1 * y1 + y2 * y2 - tmp;
+            sumab += y1 * y2;
+            suma += y1 * y1;
+            sumb += y2 * y2;
             
         }
 
+        double denominator = suma + sumb - sumab;
+        
         double distance;
         if (denominator == 0)
             distance = 0;
         else
-            distance = 1 - numerator / denominator;
+            distance = 1 - sumab / denominator;
 
         // save the distance into the memory
         this.store(series1, series2, distance);

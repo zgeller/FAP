@@ -24,10 +24,6 @@ import fap.exception.IncomparableTimeSeriesException;
  * 
  * <blockquote> <img src="doc-files/DiceDistance-1.png"> </blockquote>
  * 
- * <ul>
- *  <li> {@code 0/0} is treated as {@code 0} (see [1]).
- * </ul>
- * 
  * <p>
  * References:
  * <ol>
@@ -49,7 +45,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.08.16.
+ * @version 2025.08.17.
  * @see AbstractCopyableDistance
  */
 public class DiceDistance extends AbstractCopyableDistance {
@@ -85,27 +81,28 @@ public class DiceDistance extends AbstractCopyableDistance {
         
         int len = IncomparableTimeSeriesException.checkLength(series1, series2);
         
-        double numerator = 0;
-        double denominator = 0;
+        double sumab = 0;
+        double suma = 0;
+        double sumb = 0;
         
         for (int i = 0; i < len; i++) {
 
             double y1 = series1.getY(i);
             double y2 = series2.getY(i);
 
-            y1 *= y1;
-            y2 *= y2;
-            
-            numerator += y1 - y2;
-            denominator += y1 + y2;
+            sumab += y1 * y2;
+            suma += y1 * y1;
+            sumb += y2 * y2;
             
         }
+        
+        double denominator = suma + sumb;
 
         double distance;
         if (denominator == 0)
             distance = 0;
         else
-            distance = numerator / denominator;
+            distance = 1 - 2 * sumab / denominator;
         
         // save the distance into the memory
         this.store(series1, series2, distance);

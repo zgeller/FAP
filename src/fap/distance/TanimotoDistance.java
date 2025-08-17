@@ -25,10 +25,6 @@ import fap.exception.IncomparableTimeSeriesException;
  * 
  * <blockquote> <img src="doc-files/TanimotoDistance-1.png"> </blockquote>
  * 
- * <ul>
- * <li>{@code 0/0} is treated as {@code 0} (see [3]).
- * </ul>
- * 
  * <p>
  * References:
  * <ol>
@@ -53,7 +49,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.08.12.
+ * @version 2025.08.17.
  * @see AbstractCopyableDistance
  */
 public class TanimotoDistance extends AbstractCopyableDistance {
@@ -99,18 +95,18 @@ public class TanimotoDistance extends AbstractCopyableDistance {
             double y1 = series1.getY(i);
             double y2 = series2.getY(i);
 
-            double tmp = y1 - y2;
-            numerator += tmp * tmp;
+            double tmp = y1 * y2;
+            numerator += tmp;
             
-            denominator += y1 * y1 + y2 * y2 - y1 * y2;
+            denominator += y1 * y1 + y2 * y2 - tmp;
             
         }
 
         double distance;
-        if (numerator == 0 && denominator == 0)
+        if (denominator == 0)
             distance = 0;
         else
-            distance = numerator / denominator;
+            distance = 1 - numerator / denominator;
 
         // save the distance into the memory
         this.store(series1, series2, distance);

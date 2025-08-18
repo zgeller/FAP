@@ -61,8 +61,6 @@ public class OrlociDistance extends AbstractCopyableDistance {
 
     private static final long serialVersionUID = 1L;
     
-    protected CosineDistance cosineDist = new CosineDistance(false);
-
     /**
      * Constructs a new Orloci distance measure.
      */
@@ -90,7 +88,30 @@ public class OrlociDistance extends AbstractCopyableDistance {
         if (recall != null)
             return recall;
         
-        double distance = Math.sqrt(2 * cosineDist.distance(series1, series2));
+        int len = IncomparableTimeSeriesException.checkLength(series1, series2);
+        
+        double sumab = 0;
+        double suma = 0;
+        double sumb = 0;
+        
+        for (int i = 0; i < len; i++) {
+
+            double y1 = series1.getY(i);
+            double y2 = series2.getY(i);
+
+            sumab += y1 * y2;
+            suma += y1 * y1;
+            sumb += y2 * y2;
+            
+        }
+
+        double denominator = Math.sqrt(suma) * Math.sqrt(sumb);
+        
+        double distance;
+        if (denominator == 0 )
+            distance = Double.NaN;
+        else
+            distance = Math.sqrt(2 * (1 - sumab / denominator));
         
         // save the distance into the memory
         this.store(series1, series2, distance);

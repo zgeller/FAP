@@ -54,14 +54,14 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.08.16.
+ * @version 2025.08.18.
  * @see AbstractCopyableDistance
  */
 public class OrlociDistance extends AbstractCopyableDistance {
 
     private static final long serialVersionUID = 1L;
     
-    private static CosineDistance cosineDist = new CosineDistance(false);
+    protected CosineDistance cosineDist = new CosineDistance(false);
 
     /**
      * Constructs a new Orloci distance measure.

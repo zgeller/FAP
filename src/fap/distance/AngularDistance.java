@@ -54,7 +54,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.08.18.
+ * @version 2025.08.23.
  * @see AbstractCopyableDistance
  */
 public class AngularDistance extends AbstractCopyableDistance {
@@ -105,13 +105,17 @@ public class AngularDistance extends AbstractCopyableDistance {
             
         }
 
-        double denominator = Math.sqrt(suma) * Math.sqrt(sumb);
-        
         double distance;
-        if (denominator == 0 )
+        
+        if (suma == 0 || sumb == 0)
             distance = Double.NaN;
+        
+        // Math.sqrt is just an approximation of the true mathematical square root
+        else if (sumab == suma && sumab == sumb)
+            distance = 0;
+        
         else
-            distance = Math.acos(sumab / denominator) / Math.PI;
+            distance = Math.acos(sumab / (Math.sqrt(suma) * Math.sqrt(sumb))) / Math.PI;
         
         // save the distance into the memory
         this.store(series1, series2, distance);

@@ -20,7 +20,7 @@ import fap.core.data.TimeSeries;
 import fap.exception.IncomparableTimeSeriesException;
 
 /**
- * Squared chord distance measure. Time series must be the same length (n):
+ * Squared-chord distance measure. Time series must be the same length (n):
  *
  * <blockquote> <img src="doc-files/SquaredChordDistance-1.png"> </blockquote>
  * 
@@ -53,13 +53,13 @@ public class SquaredChordDistance extends AbstractCopyableDistance {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructs a new SquaredChord distance measure.
+     * Constructs a new squared-chord distance measure.
      */
     public SquaredChordDistance() {
     }
 
     /**
-     * Constructs a new SquaredChord distance measure and sets whether to store
+     * Constructs a new squared-chord distance measure and sets whether to store
      * distances.
      * 
      * @param storing {@code true} if storing distances should be enabled

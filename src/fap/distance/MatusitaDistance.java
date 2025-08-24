@@ -20,7 +20,8 @@ import fap.core.data.TimeSeries;
 import fap.exception.IncomparableTimeSeriesException;
 
 /**
- * Matusita distance measure. Time series must be the same length (n):
+ * Matusita distance measure. Time series must be the same length (n) and 
+ * non-negative:
  *
  * <blockquote> <img src="doc-files/MatusitaDistance-1.png"> </blockquote>
  * 

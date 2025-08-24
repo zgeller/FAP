@@ -20,7 +20,8 @@ import fap.core.data.TimeSeries;
 import fap.exception.IncomparableTimeSeriesException;
 
 /**
- * Squared-chord distance measure. Time series must be the same length (n):
+ * Squared-chord distance measure. Time series must be the same length (n) and 
+ * non-negative:
  *
  * <blockquote> <img src="doc-files/SquaredChordDistance-1.png"> </blockquote>
  * 

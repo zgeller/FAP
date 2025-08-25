@@ -21,13 +21,12 @@ import fap.exception.IncomparableTimeSeriesException;
 import fap.util.MathUtils;
 
 /**
- * Soergel (Jaccard) distance measure. Time series must be the same length (n):
+ * Soergel (Jaccard) distance measure. Time series must be the same length (n)
+ * and they should be non-negative:
  *
  * <blockquote> <img src="doc-files/SoergelDistance-1.png"> </blockquote>
  * 
  * <ul>
- *  <li> <b>If not all elements of A and B are non-negative, the result may be
- *       negative.</b>
  *  <li> {@code 0/0} is treated as {@code 0} (see [2]).
  *  <li> Zero denominator is replaced by {@link MathUtils#getZeroDenominator()} 
  *       (see [2]).

@@ -20,8 +20,7 @@ import fap.core.data.TimeSeries;
 import fap.exception.IncomparableTimeSeriesException;
 
 /**
- * Squared Euclidean distance measure. Time series must be the same length
- * ({@code n}):
+ * Squared Euclidean distance measure. Time series must be the same length n:
  *
  * <blockquote> <img src="doc-files/SquaredEuclideanDistance-1.png"> </blockquote>
  * 

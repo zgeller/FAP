@@ -48,7 +48,6 @@ import fap.exception.IncomparableTimeSeriesException;
  *       <a href="https://doi.org/10.1186/s40537-025-01227-1">
  *          https://doi.org/10.1186/s40537-025-01227-1</a>.
  * </ol>
- * </ol>
  * 
  * @author Zoltán Gellér
  * @version 2025.08.25.

@@ -84,8 +84,11 @@ public abstract class AbstractConstrainedDistance extends AbstractCopyableDistan
 
     /**
      * Sets the relative width of the warping (editing) window (as a percentage of
-     * the length of the time series). Must be in the range {@code [0..100]}. The
-     * absolute width is set to -1 (i.e. {@link #w} {@code = -1}).
+     * the length of the time series). Must be in the range {@code [0..100]}.
+     * Default value is 100.
+     * 
+     * <p>
+     * The absolute width is set to -1 (i.e. {@link #w} {@code = -1}).
      * 
      * @param r the relative width of the warping (editing) window (as a percentage
      *          of the length of the time series), must be in range {@code [0..100]}
@@ -106,6 +109,12 @@ public abstract class AbstractConstrainedDistance extends AbstractCopyableDistan
 
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * <p>
+     * Default value is 100.
+     */
     @Override
     public double getR() {
         return this.r;

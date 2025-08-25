@@ -21,7 +21,7 @@ import fap.exception.IncomparableTimeSeriesException;
 
 /**
  * Tanimoto (generalized Jaccard) distance measure. Time series must be the same
- * length (n):
+ * length ({@code n}):
  * 
  * <blockquote> <img src="doc-files/TanimotoDistance-1.png"> </blockquote>
  * 

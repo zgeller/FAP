@@ -108,7 +108,6 @@ public class SquaredChiSquareDistance extends AbstractCopyableDistance {
         
         return distance;
 
-
     }
 
     @Override

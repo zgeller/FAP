@@ -20,8 +20,8 @@ import fap.core.data.TimeSeries;
 import fap.exception.IncomparableTimeSeriesException;
 
 /**
- * Squared chi-square distance measure. Time series must be the same length (n) and
- * non-negative:
+ * Squared chi-square distance measure. Time series must be the same length ({@code n}) and
+ * they should be non-negative:
  * 
  * <blockquote> <img src="doc-files/SquaredChiSquareDistance-1.png"> </blockquote>
  * 

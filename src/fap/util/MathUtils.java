@@ -35,7 +35,8 @@ public final class MathUtils {
     private static double zeroDenominator = 1.0e-8;
 
     /**
-     * Returns the value that replaces the zero denominator.
+     * Returns the value that replaces the zero denominator. Default value is
+     * 1.0e-8.
      * 
      * @return the value that replaces the zero denominator
      */
@@ -44,7 +45,8 @@ public final class MathUtils {
     }
 
     /**
-     * Sets the value that should replace the zero denominator.
+     * Sets the value that should replace the zero denominator. Default value is
+     * 1.0e-8.
      * 
      * @param zeroDenominator the value that should replace the zero denominator
      */

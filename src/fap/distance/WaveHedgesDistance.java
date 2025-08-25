@@ -22,7 +22,7 @@ import fap.util.MathUtils;
 
 /**
  * Wave-Hedges distance measure. Time series must be the same length
- * ({@code n}) and they should be non-negative:
+ * (n) and they should be non-negative:
  * 
  * <blockquote> <img src="doc-files/WaveHedgesDistance-1.png"> </blockquote>
  * 

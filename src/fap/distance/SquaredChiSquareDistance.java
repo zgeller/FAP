@@ -50,7 +50,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.08.25.
+ * @version 2025.08.26.
  * @see AbstractCopyableDistance
  */
 public class SquaredChiSquareDistance extends AbstractCopyableDistance {
@@ -95,10 +95,11 @@ public class SquaredChiSquareDistance extends AbstractCopyableDistance {
             double y2 = series2.getY(i);
 
             // 0/0 is treated as 0 (see [1])
-            double tmp = y1 - y2;
             double denominator = y1 + y2;
-            if (denominator != 0)
+            if (denominator != 0) {
+                double tmp = y1 - y2;
                 distance += tmp * tmp / denominator;
+            }
             
         }
         

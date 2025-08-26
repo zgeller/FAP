@@ -93,7 +93,7 @@ public class CanberraDistance extends AbstractCopyableDistance {
             double y1 = series1.getY(i);
             double y2 = series2.getY(i);
 
-            // 0/0 is treated as 0 (see [2]) 
+            // 0/0 is treated as 0 (see [2])
             double denominator = Math.abs(y1) + Math.abs(y2);
             if (denominator != 0)
                 distance += Math.abs(y1 - y2) / denominator;

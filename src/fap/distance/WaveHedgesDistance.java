@@ -50,7 +50,6 @@ import fap.util.MathUtils;
  * @version 2025.08.12.
  * @see AbstractCopyableDistance
  */
-
 public class WaveHedgesDistance extends AbstractCopyableDistance {
 
     private static final long serialVersionUID = 1L;

@@ -21,7 +21,7 @@ import fap.exception.IncomparableTimeSeriesException;
 import fap.util.MathUtils;
 
 /**
- * Additive symmetric chi-squared distance measure. Time series must be the same
+ * Additive symmetric chi-square distance measure. Time series must be the same
  * length (n) and they should be non-negative:
  * 
  * <blockquote> <img src="doc-files/AdditiveSymmetricChiSquareDistance-1.png"> </blockquote>
@@ -61,13 +61,13 @@ public class AdditiveSymmetricChiSquareDistance extends AbstractCopyableDistance
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructs a new additive symmetric chi-squared distance measure.
+     * Constructs a new additive symmetric chi-square distance measure.
      */
     public AdditiveSymmetricChiSquareDistance() {
     }
 
     /**
-     * Constructs a new additive symmetric chi-squared distance measure and sets whether to
+     * Constructs a new additive symmetric chi-square distance measure and sets whether to
      * store distances.
      * 
      * @param storing {@code true} if storing distances should be enabled

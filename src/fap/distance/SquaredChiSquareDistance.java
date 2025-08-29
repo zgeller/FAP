@@ -26,12 +26,22 @@ import fap.exception.IncomparableTimeSeriesException;
  * <blockquote> <img src="doc-files/SquaredChiSquareDistance-1.png"> </blockquote>
  * 
  * <ul>
- *  <li> {@code 0/0} is treated as {@code 0} (see [1]).
+ *  <li> {@code 0/0} is treated as {@code 0} (see [3]).
  * </ul>
  * 
  * <p>
  * References:
  * <ol>
+ *  <li> J.T. Overpeck, T. Webb, I.C. Prentice, Quantitative Interpretation of
+ *       Fossil Pollen Spectra: Dissimilarity Coefficients and the Method of Modern
+ *       Analogs, Quat. Res. 23 (1985) 87–108. 
+ *       <a href="https://doi.org/10.1016/0033-5894(85)90074-2">
+ *          https://doi.org/10.1016/0033-5894(85)90074-2</a>.
+ *  <li> D.G. Gavin, W.W. Oswald, E.R. Wahl, J.W. Williams, A statistical approach
+ *       to evaluating distance metrics and analog assignments for pollen records,
+ *       Quat. Res. 60 (2003) 356–367. 
+ *       <a href="https://doi.org/10.1016/S0033-5894(03)00088-7">
+ *          https://doi.org/10.1016/S0033-5894(03)00088-7</a>.
  *  <li> S.-H. Cha, Comprehensive Survey on Distance/Similarity Measures between
  *       Probability Density Functions, Int. J. Math. Model. Methods Appl. Sci. 1
  *       (2007) 300–307. 
@@ -94,7 +104,7 @@ public class SquaredChiSquareDistance extends AbstractCopyableDistance {
             double y1 = series1.getY(i);
             double y2 = series2.getY(i);
 
-            // 0/0 is treated as 0 (see [1])
+            // 0/0 is treated as 0 (see [3])
             double denominator = y1 + y2;
             if (denominator != 0) {
                 double tmp = y1 - y2;

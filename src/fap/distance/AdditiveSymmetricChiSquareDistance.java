@@ -67,8 +67,8 @@ public class AdditiveSymmetricChiSquareDistance extends AbstractCopyableDistance
     }
 
     /**
-     * Constructs a new additive symmetric chi-square distance measure and sets whether to
-     * store distances.
+     * Constructs a new additive symmetric chi-square distance measure and sets
+     * whether to store distances.
      * 
      * @param storing {@code true} if storing distances should be enabled
      */

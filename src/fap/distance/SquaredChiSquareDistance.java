@@ -58,13 +58,13 @@ public class SquaredChiSquareDistance extends AbstractCopyableDistance {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructs a new squared chi-squared distance measure.
+     * Constructs a new squared chi-square distance measure.
      */
     public SquaredChiSquareDistance() {
     }
 
     /**
-     * Constructs a new squared chi-squared distance measure and sets whether to
+     * Constructs a new squared chi-square distance measure and sets whether to
      * store distances.
      * 
      * @param storing {@code true} if storing distances should be enabled

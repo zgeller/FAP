@@ -99,12 +99,12 @@ public class VicisSymmetricChiSquare2Distance extends AbstractCopyableDistance {
             
             // 0/0 is treated as 0 (see [1])
             if (denominator != 0) {
-                double tmp = (y1 - y2);
+                double tmp = y1 - y2;
                 distance += tmp * tmp / denominator;
             }
             
             else if (y1 != y2) {
-                double tmp = (y1 - y2);
+                double tmp = y1 - y2;
                 distance += tmp * tmp  / MathUtils.getZeroDenominator();
             }
             

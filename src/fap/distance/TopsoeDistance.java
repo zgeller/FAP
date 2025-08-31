@@ -27,9 +27,8 @@ import fap.util.MathUtils;
  * <blockquote> <img src="doc-files/TopsoeDistance-1.png"> </blockquote>
  * 
  * <ul>
+ *  <li> {@code 0*ln(0)} is treated as 0 (see [2]).
  *  <li> Zero denominator is replaced by {@link MathUtils#getZeroDenominator()}
- *       (see [2]).
- *  <li> {@code ln(0)} is is replaced by -{@link MathUtils#getZeroDenominator()}
  *       (see [2]).
  * </ul>
  * 

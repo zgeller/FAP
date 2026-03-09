@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Aleksa Todorović, Vladimir Kurbalija, Zoltán Gellér
+ * Copyright 2024-2026 Aleksa Todorović, Vladimir Kurbalija, Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import fap.core.data.DataPoint;
-import fap.core.data.Dataset;
-import fap.core.data.TimeSeries;
-import fap.core.data.Representation;
-import fap.core.distance.Distance;
-import fap.core.predictor.InputOutputPredictor;
+import fap.data.DataPoint;
+import fap.data.Dataset;
+import fap.data.Representation;
+import fap.data.TimeSeries;
+import fap.distance.Distance;
 import fap.distance.SplineDistance;
 import fap.exception.IncomparableTimeSeriesException;
 import fap.representation.SplineRepresentation;

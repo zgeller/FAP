@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
 
 package fap.exception;
 
-import fap.core.data.TimeSeries;
-import fap.core.exception.CoreRuntimeException;
+import fap.data.TimeSeries;
 
 /**
  * Runtime exception thrown when the specified time series are not comparable

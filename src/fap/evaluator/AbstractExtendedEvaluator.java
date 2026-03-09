@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 import fap.callback.Callback;
 import fap.callback.Callbackable;
-import fap.core.evaluator.AbstractEvaluator;
 import fap.util.Multithreaded;
 import fap.util.Resumable;
 import fap.util.ThreadUtils;

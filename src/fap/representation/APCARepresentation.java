@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Miklós Kálózi, Zoltán Gellér, Brankica Bratić
+ * Copyright 2024-2026 Miklós Kálózi, Zoltán Gellér, Brankica Bratić
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import fap.core.data.TimeSeries;
-import fap.core.data.Representation;
+import fap.data.Representation;
+import fap.data.TimeSeries;
 
 /**
  * Adaptive Piecewise Constant Approximation (APCA) representation.
@@ -59,7 +59,7 @@ public class APCARepresentation implements Representation {
      * @param d      representation dimensionality (must be even)
      */
     public APCARepresentation(final TimeSeries series, int d) {
-        this(series.yValues(), d);
+        this(series.getYValues(), d);
     }
 	
     /**

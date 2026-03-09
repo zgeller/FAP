@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér, Brankica Bratić
+ * Copyright 2024-2026 Zoltán Gellér, Brankica Bratić
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import fap.core.data.TimeSeries;
-import fap.core.data.Representation;
+import fap.data.Representation;
+import fap.data.TimeSeries;
 import fap.util.MathUtils;
 
 /**
@@ -97,7 +97,7 @@ public class HaarRepresentation implements Representation {
      *               dimensionality)
      */
     public HaarRepresentation(final TimeSeries series, int d) {
-        this(series.yValues(), d);
+        this(series.getYValues(), d);
     }
 	
     /**

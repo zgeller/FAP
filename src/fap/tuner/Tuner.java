@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package fap.core.tuner;
+package fap.tuner;
 
 import java.io.Serializable;
 
-import fap.core.classifier.Classifier;
-import fap.core.data.Dataset;
+import fap.classifier.Classifier;
+import fap.data.Dataset;
 
 /**
  * Declares common methods for classifier hyperparameter tuners.

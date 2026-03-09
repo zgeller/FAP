@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package fap.evaluator;
 
 import java.util.List;
 
-import fap.core.data.Dataset;
+import fap.data.Dataset;
 
 /**
  * Auxiliary class for storing fold-related data.

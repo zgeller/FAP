@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package fap.core.data;
+package fap.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,7 +34,7 @@ import java.util.Map;
  * time series is determined at instantiation.
  * 
  * @author Zoltán Gellér
- * @version 2025.08.13.
+ * @version 2025.08.14.
  * @see DataPoint
  * @see List
  * @see Serializable
@@ -132,13 +133,12 @@ public class TimeSeries implements List<DataPoint>, Serializable {
      * specified data points.
      *
      * <p>
-     * The time series will be populated with data points constructed from the
-     * specified {@code y} values (coordinates). The {@code x} coordinate of the
-     * first point will be zero (0), and for each subsequent point it will increase
-     * by one (1).
+     * The time series will be populated with data points created from the specified
+     * {@code yValues} as y-coordinates. The x-coordinate of the first point will be
+     * zero (0), and for each subsequent point it will increase by one (1).
      * 
      * @param label   the label of the time series
-     * @param yValues the {@code y} coordinates of the data points
+     * @param yValues the y-coordinates of the data points
      */
     public TimeSeries(double label, double... yValues) {
         this(false, label, yValues);
@@ -150,14 +150,13 @@ public class TimeSeries implements List<DataPoint>, Serializable {
      * points.
      *
      * <p>
-     * The time series will be populated with data points constructed from the
-     * specified {@code y} values (coordinates). The {@code x} coordinate of the
-     * first point will be zero (0), and for each subsequent point it will increase
-     * by one (1).
+     * The time series will be populated with data points created from the specified
+     * {@code yValues} as y-coordinates. The x-coordinate of the first point will be
+     * zero (0), and for each subsequent point it will increase by one (1).
      * 
      * @param label   the label of the time series
      * @param index   the index of the time series
-     * @param yValues the {@code y} coordinates of the data points
+     * @param yValues the y-coordinates of the data points
      */
     public TimeSeries(double label, int index, double... yValues) {
         this(false, label, index, yValues);
@@ -257,7 +256,7 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     public TimeSeries(boolean linkedList, DataPoint[] points) {
         this(linkedList);
         if (points != null)
-            for (DataPoint dp : points)
+            for (DataPoint dp: points)
                 this.add(dp);
     }
 
@@ -302,16 +301,15 @@ public class TimeSeries implements List<DataPoint>, Serializable {
      * for storing data points, depending on the {@code linkedList} parameter.
      * 
      * <p>
-     * The time series will be populated with data points constructed from the
-     * specified {@code y} values (coordinates). The {@code x} coordinate of the
-     * first point will be zero (0), and for each subsequent point it will increase
-     * by one (1).
+     * The time series will be populated with data points created from the specified
+     * {@code yValues} as y-coordinates. The x-coordinate of the first point will be
+     * zero (0), and for each subsequent point it will increase by one (1).
      * 
      * @param linkedList determines whether a {@code LinkedList} ({@code true}) or
      *                   an {@code ArrayList} ({@code false} )should be used to
      *                   store the data points
      * @param label      the label of the time series
-     * @param yValues    the {@code y} coordinates of the data points
+     * @param yValues    the y-coordinates of the data points
      */
     public TimeSeries(boolean linkedList, double label, double... yValues) {
         this(linkedList, label);
@@ -328,17 +326,16 @@ public class TimeSeries implements List<DataPoint>, Serializable {
      * storing data points, depending on the {@code linkedList} parameter.
      * 
      * <p>
-     * The time series will be populated with data points constructed from the
-     * specified {@code y} values (coordinates). The {@code x} coordinate of the
-     * first point will be zero (0), and for each subsequent point it will increase
-     * by one (1).
+     * The time series will be populated with data points created from the specified
+     * {@code yValues} as y-coordinates. The x-coordinate of the first point will be
+     * zero (0), and for each subsequent point it will increase by one (1).
      * 
      * @param linkedList determines whether a {@code LinkedList} ({@code true}) or
-     *                   an {@code ArrayList} ({@code false} )should be used to
+     *                   an {@code ArrayList} ({@code false}) should be used to
      *                   store the data points
      * @param label      the label of the time series
      * @param index      the index of the time series
-     * @param yValues    the {@code y} coordinates of the data points
+     * @param yValues    the y-coordinates of the data points
      */
     public TimeSeries(boolean linkedList, double label, int index, double... yValues) {
         this(linkedList, label, yValues);
@@ -452,7 +449,7 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     /**
      * Sets the index of this time series.
      * 
-     * @param pos the index to set
+     * @param index the index to set
      */
     public void setIndex(int index) {
         this.index = index;
@@ -477,13 +474,17 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     }
 
     /**
-     * Returns the maximum value of the {@code y} coordinates of the data points of
-     * this time series.
+     * Returns the maximum value of the y-coordinates of the data points in this
+     * time series, or {@code Double.NaN} if the series contains no data points.
      * 
-     * @return the maximum value of the {@code y} coordinates of the data points of
-     *         this time series
+     * @return the maximum value of the y-coordinates of the data points in this
+     *         time series, or {@code Double.NaN} if the series contains no data
+     *         points
      */
     public double maxY() {
+        
+        if (this.isEmpty())
+            return Double.NaN;
 
         double maxy = Double.NEGATIVE_INFINITY;
 
@@ -498,14 +499,19 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     }
 
     /**
-     * Returns the maximum of the absolute {@code y} values of the data points of
-     * this time series.
+     * Returns the maximum absolute value of the y-coordinates of the data points in
+     * this time series, or {@code Double.NaN} if the series contains no data
+     * points.
      * 
-     * @return the maximum of the absolute {@code y} values of the data points of
-     *         this time series
+     * @return the maximum absolute value of the y-coordinates of the data points in
+     *         this time series, or {@code Double.NaN} if the series contains no
+     *         data points
      */
     public double maxAbsY() {
 
+        if (this.isEmpty())
+            return Double.NaN;
+        
         double maxy = 0;
 
         for (DataPoint dp : this) {
@@ -519,14 +525,18 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     }
 
     /**
-     * Returns the minimum value of the {@code y} coordinates of the data points of
-     * this time series.
+     * Returns the minimum value of the y-coordinates of the data points in this
+     * time series, or {@code Double.NaN} if the series contains no data points.
      * 
-     * @return the minimum value of the {@code y} coordinates of the data points of
-     *         this time series
+     * @return the minimum value of the y-coordinates of the data points in this
+     *         time series, or {@code Double.NaN} if the series contains no data
+     *         points
      */
     public double minY() {
 
+        if (this.isEmpty())
+            return Double.NaN;
+        
         double miny = Double.POSITIVE_INFINITY;
 
         for (DataPoint dp : this) {
@@ -540,13 +550,18 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     }
 
     /**
-     * Returns the minimum of the absolute {@code y} values of the data points of
-     * this time series.
+     * Returns the minimum absolute value of the y-coordinates of the data points in
+     * this time series, or {@code Double.NaN} if the series contains no data
+     * points.
      * 
-     * @return the minimum of the absolute {@code y} values of the data points of
-     *         this time series
+     * @return the minimum absolute value of the y-coordinates of the data points in
+     *         this time series, or {@code Double.NaN} if the series contains no
+     *         data points
      */
     public double minAbsY() {
+        
+        if (this.isEmpty())
+            return Double.NaN;
 
         double miny = Double.POSITIVE_INFINITY;
 
@@ -561,26 +576,29 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     }
 
     /**
-     * Returns the range of the {@code y} coordinates
-     * ({@code maxY() - minY()}) of the data points of this time series.
+     * Returns the range of the y-coordinates ({@code maxY() - minY()}) of the data
+     * points in this time series.
      * 
-     * @return the range of the {@code y} coordinates
-     *         ({@code maxY() - minY()}) of the data points of this time
-     *         series
+     * @return the range of the y-coordinates ({@code maxY() - minY()}) of the data
+     *         points in this time series
      */
     public double rangeY() {
         return maxY() - minY();
     }
 
     /**
-     * Returns the maximum value of the {@code x} coordinates of the data points of
-     * this time series.
+     * Returns the maximum value of the x-coordinates of the data points in this
+     * time series, or {@code Double.NaN} if the series contains no data points.
      * 
-     * @return the maximum value of the {@code x} coordinates of the data points of
-     *         this time series
+     * @return the maximum value of the x-coordinates of the data points in this
+     *         time series, or {@code Double.NaN} if the series contains no data
+     *         points
      */
     public double maxX() {
 
+        if (this.isEmpty())
+            return Double.NaN;
+        
         double maxx = Double.NEGATIVE_INFINITY;
 
         for (DataPoint dp : this) {
@@ -594,14 +612,18 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     }
 
     /**
-     * Returns the minimum value of the {@code x} coordinates of the data points of
-     * this time series.
+     * Returns the minimum value of the x-coordinates of the data points in this
+     * time series, or {@code Double.NaN} if the series contains no data points.
      * 
-     * @return the minimum value of the {@code x} coordinates of the data points of
-     *         this time series
+     * @return the minimum value of the x-coordinates of the data points in this
+     *         time series, or {@code Double.NaN} if the series contains no data
+     *         points
      */
     public double minX() {
 
+        if (this.isEmpty())
+            return Double.NaN;
+        
         double minx = Double.POSITIVE_INFINITY;
 
         for (DataPoint dp : this) {
@@ -615,14 +637,17 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     }
 
     /**
-     * Returns the mean value of the {@code y} coordinates of the data points of
-     * this time series.
+     * Returns the mean value of the y-coordinates of the data points in this time
+     * series, or {@code Double.NaN} if the series contains no data points.
      * 
-     * @return the mean value of the {@code y} coordinates of the data points of
-     *         this time series
+     * @return the mean value of the y-coordinates of the data points in this time
+     *         series, or {@code Double.NaN} if the series contains no data points.
      */
     public double meanY() {
 
+        if (this.isEmpty())
+            return Double.NaN;
+        
         double mean = 0;
 
         for (DataPoint dp : this)
@@ -633,13 +658,16 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     }
 
     /**
-     * Returns the median of the {@code y} coordinates of the data points of this
-     * time series.
+     * Returns the median of the y-coordinates of the data points in this time
+     * series, or {@code Double.NaN} if the series contains no data points.
      * 
-     * @return the median of the {@code y} coordinates of the data points of this
-     *         time series
+     * @return the median of the y-coordinates of the data points in this time
+     *         series, or {@code Double.NaN} if the series contains no data points.
      */
     public double medianY() {
+
+        if (this.isEmpty())
+            return Double.NaN;
 
         double median = Double.NaN;
 
@@ -647,73 +675,82 @@ public class TimeSeries implements List<DataPoint>, Serializable {
         for (DataPoint dp : this)
             values.add(dp.getY());
 
-        if (!values.isEmpty()) {
+        values.sort(null);
+        int len = values.size();
+        int middle = len / 2; // zero-bazed indexing
 
-            values.sort(null);
-            int len = values.size();
-            int middle = len / 2; // zero-bazed indexing
+        if (len % 2 == 1)
+            median = values.get(middle);
 
-            if (len % 2 == 1)
-                median = values.get(middle);
-
-            else
-                median = (values.get(middle - 1) + values.get(middle)) / 2;
-
-        }
+        else
+            median = (values.get(middle - 1) + values.get(middle)) / 2;
 
         return median;
 
     }
 
     /**
-     * Returns the sample standard deviation of the {@code y} coordinates of the
-     * data points of this time series.
+     * Returns the sample standard deviation of the y-coordinates of the data points
+     * in this time series, or {@code Double.NaN} if the series contains no data
+     * points.
      * 
-     * @return the sample standard deviation of the {@code y} coordinates of the
-     *         data points of this time series
+     * @return the sample standard deviation of the y-coordinates of the data points
+     *         in this time series, or {@code Double.NaN} if the series contains no
+     *         data points
      */
     public double stdevY() {
         return Math.sqrt(varianceY());
     }
 
     /**
-     * Returns the population or sample standard deviation of the {@code y}
-     * coordinates of the data points of this time series.
+     * Returns the population or sample standard deviation of the y-coordinates of
+     * the data points in this time series, or {@code Double.NaN} if the series
+     * contains no data points.
      * 
-     * @param population {@code true} denotes population standard deviation,
-     *                   {@code false} denotes sample standard deviation
-     * @return the population or sample standard deviation of the {@code y}
-     *         coordinates of the data points of this time series
+     * @param population indicates whether to calculate population ({@code true}) od
+     *                   sample ({@code false}) standard deviation
+     * @return the population or sample standard deviation of the y-coordinates of
+     *         the data points in this time series, or {@code Double.NaN} if the
+     *         series contains no data points
      */
     public double stdevY(boolean population) {
         return Math.sqrt(varianceY(population));
     }
 
     /**
-     * Returns the sample variance of the {@code y} coordinates of the data points
-     * of this time series.
+     * Returns the sample variance of the y-coordinates of the data points in this
+     * time series, or {@code Double.NaN} if the series contains no data points.
      * 
-     * @return the sample variance of the {@code y} coordinates of the data points
-     *         of this time series
+     * @return the sample variance of the y-coordinates of the data points of this
+     *         time series, or {@code Double.NaN} if the series contains no data
+     *         points
      */
     public double varianceY() {
         return varianceY(false);
     }
 
     /**
-     * Returns the population or sample variance of the {@code y} coordinates of the
-     * data points of this time series.
+     * Returns the population or sample variance of the y-coordinates of the data
+     * points in this time series, or {@code Double.NaN} if the series contains no
+     * data points.
      * 
-     * @param population {@code true} denotes population variance, {@code false}
-     *                   denotes sample variance
-     * @return the population or sample variance of the {@code y} coordinates of the
-     *         data points of this time series
+     * @param population indicates whether to use population ({@code true}) od
+     *                   sample ({@code false}) standard deviation
+     * @return the population or sample variance of the y-coordinates of the data
+     *         points in this time series, or {@code Double.NaN} if the series
+     *         contains no data points
      */
     public double varianceY(boolean population) {
 
+        if (this.isEmpty())
+            return Double.NaN;
+        
         int n = size();
         if (!population)
             n--;
+        
+        if (n == 0)
+            return 0;
 
         double mean = meanY();
         double variance = 0;
@@ -728,34 +765,58 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     }
 
     /**
-     * Sorts the data points of this time series based on the time component, i.e.
-     * the {@code x} coordinate.
+     * Sorts the data points in this time series in ascending order by their
+     * x-coordinate.
      */
-    public void sort() {
-        Collections.sort(this);
+    public void sortByX() {
+        Collections.sort(list);
     }
 
     /**
-     * Returns an array containing the {@code y} coordinates of the data points of
-     * this time series.
+     * Returns an array containing the x-coordinates of the data points in this time
+     * series, or {@code null} if there are no data points.
      * 
-     * @return an array containing the {@code y} coordinates of the data points of
-     *         this series
+     * @return an array containing the x-coordinates of the data points in this
+     *         series, or {@code null} if there are no data points.
      */
-    public double[] yValues() {
-        return yValues(false);
+    public double[] getXValues() {
+
+        if (this.isEmpty())
+            return null;
+
+        int len = this.size();
+        double[] xValues = new double[len];
+
+        for (int i = 0; i < len; i++)
+            xValues[i] = this.getX(i);
+
+        return xValues;
+        
+    }
+    
+    /**
+     * Returns an array containing the y-coordinates of the data points in this time
+     * series, or {@code null} if there are no data points.
+     * 
+     * @return an array containing the y-coordinates of the data points in this
+     *         series, or {@code null} if there are no data points.
+     */
+    public double[] getYValues() {
+        return getYValues(false);
     }
 
     /**
-     * Returns an array containing the {@code y} coordinates of the data points of
-     * this time series.
+     * Returns an array containing the y-coordinates of the data points in this time
+     * series, or {@code null} if there are no data points.
      * 
-     * @param xsorted if {@code true}, data points are sorted by their {@code x}
-     *                coordinate
-     * @return an array containing the {@code y} coordinates of the data points of
-     *         this time series
+     * @param xsorted if {@code true}, data points are sorted by their x-coordinate
+     * @return an array containing the y-coordinates of the data points in this time
+     *         series, or {@code null} if there are no data points.
      */
-    public double[] yValues(boolean xsorted) {
+    public double[] getYValues(boolean xsorted) {
+        
+        if (this.isEmpty())
+            return null;
 
         List<DataPoint> points;
 
@@ -865,12 +926,12 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     }
 
     /**
-     * Returns the {@code y} coordinate of the data point at the specified position
-     * in this time series.
+     * Returns the y-coordinate of the data point at the specified position in this
+     * time series.
      * 
      * @param index index of the data point
-     * @return the {@code y} coordinate of the data point at the specified position
-     *         in this time series
+     * @return the y-coordinate of the data point at the specified position in this
+     *         time series
      * @throws IndexOutOfBoundsException if the index is out of range
      *                                   ({@code index < 0 || index >= size()})
      */
@@ -879,12 +940,12 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     }
 
     /**
-     * Returns the {@code x} coordinate of the data point at the specified position
-     * in this time series.
+     * Returns the x-coordinate of the data point at the specified position in this
+     * time series.
      * 
      * @param index index of the data point
-     * @return the {@code x} coordinate of the data point at the specified position
-     *         in this time series
+     * @return the x-coordinate of the data point at the specified position in this
+     *         time series
      * @throws IndexOutOfBoundsException if the index is out of range
      *                                   ({@code index < 0 || index >= size()})
      */
@@ -902,12 +963,12 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     }
     
     /**
-     * Sets the {@code y} coordinate of the data point at the specified position in
-     * this time series.
+     * Sets the y-coordinate of the data point at the specified position in this
+     * time series.
      * 
-     * @param index index of the data point whose {@code y} coordinate to replace
-     * @param y     the new value of the {@code y} coordinate of the data point at
-     *              the specified position
+     * @param index index of the data point whose y-coordinate to replace
+     * @param y     the new value of the y-coordinate of the data point at the
+     *              specified position
      * @throws IndexOutOfBoundsException if the index is out of range
      *                                   ({@code index < 0 || index >= size()})
      */
@@ -916,12 +977,23 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     }
     
     /**
-     * Sets the {@code x} coordinate of the data point at the specified position in
-     * this time series.
+     * Sets the y-coordinate of every data point in this time series to the
+     * specified value.
      * 
-     * @param index index of the data point whose {@code y} coordinate to replace
-     * @param x     the new value of the {@code x} coordinate of the data point at
-     *              the specified position
+     * @param y the value to assign to the y-coordinate of each data point
+     */
+    public void setY(double y) {
+        for (DataPoint dp : this)
+            dp.setY(y);
+    }
+    
+    /**
+     * Sets the x-coordinate of the data point at the specified position in this
+     * time series.
+     * 
+     * @param index index of the data point whose x-coordinate to replace
+     * @param x     the new value of the x-coordinate of the data point at the
+     *              specified position
      * @throws IndexOutOfBoundsException if the index is out of range
      *                                   ({@code index < 0 || index >= size()})
      */
@@ -930,14 +1002,14 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     }
     
     /**
-     * Sets the {@code x} and {@code y} coordinates of the data point at the
-     * specified position in this time series.
+     * Sets the x- and y-coordinates of the data point at the specified position in
+     * this time series.
      * 
-     * @param index index of the data point whose {@code y} coordinate to replace
-     * @param x     the new value of the {@code x} coordinate of the data point at
-     *              the specified position
-     * @param y     the new value of the {@code y} coordinate of the data point at
-     *              the specified position
+     * @param index index of the data point whose x- and y-coordinates to replace
+     * @param x     the new value of the x-coordinate of the data point at the
+     *              specified position
+     * @param y     the new value of the y-coordinate of the data point at the
+     *              specified position
      * @throws IndexOutOfBoundsException if the index is out of range
      *                                   ({@code index < 0 || index >= size()})
      */
@@ -957,17 +1029,17 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     }
     
     /**
-     * Inserts a new data point with the specified {@code x} and {@code y}
-     * coordinates at the specified position in this time series. Shifts the data
-     * point currently at that position (if any) and any subsequent data points to
-     * the right (adds one to their indices).
+     * Inserts a new data point with the specified x- and y-coordinates at the
+     * specified position in this time series. Shifts the data point currently at
+     * that position (if any) and any subsequent data points to the right (adds one
+     * to their indices).
      * 
      * <p>
      * The same as {@code add(index, new DataPoint(x, y))}.
      * 
      * @param index index at which the specified data point is to be inserted
-     * @param x     the value of the x coordinate
-     * @param y     the value of the y coordinate
+     * @param x     the value of the x-coordinate
+     * @param y     the value of the y-coordinate
      * @throws IndexOutOfBoundsException if the index is out of range
      *                                   ({@code index < 0 || index >= size()})
      */
@@ -1018,6 +1090,276 @@ public class TimeSeries implements List<DataPoint>, Serializable {
         return list.subList(fromIndex, toIndex);
     }
 
+    /**
+     * Shifts the x-coordinates of the data points in this time series by the given
+     * factor.
+     * 
+     * @param factor the factor to shift the x-coordinates of the data points
+     */
+    public void shiftX(double factor) {
+        for (DataPoint dp : this)
+            dp.shiftX(factor);
+    }
+    
+    /**
+     * Shifts the y-coordinates of the data points in this time series by the given
+     * factor.
+     * 
+     * @param factor the factor to shift the y-coordinates of the data points
+     */
+    public void shiftY(double factor) {
+        for (DataPoint dp : this)
+            dp.shiftY(factor);
+    }
+    
+    /**
+     * Shifts the coordinates of the data points in this time series by the given
+     * factors.
+     * 
+     * @param xFactor the factor to shift the x-coordinates of the data points
+     * @param yFactor the factor to shift the y-coordinates of the data points
+     */
+    public void shiftXY(double xFactor, double yFactor) {
+        for (DataPoint dp : this)
+            dp.shiftXY(xFactor, yFactor);
+    }
+
+    /**
+     * Scales the x-coordinates of the data points in this time series by the given
+     * factor.
+     * 
+     * @param factor the factor to scale the x-coordinates of the data points
+     */
+    public void scaleX(double factor) {
+        for (DataPoint dp : this)
+            dp.scaleX(factor);
+    }
+    
+    /**
+     * Scales the y-coordinates of the data points in this time series by the given
+     * factor.
+     * 
+     * @param factor the factor to scale the y-coordinates of the data points
+     */
+    public void scaleY(double factor) {
+        for (DataPoint dp : this)
+            dp.scaleY(factor);
+    }
+    
+    /**
+     * Scales the coordinates of the data points of this time series by the given factors.
+     * 
+     * @param xFactor the factor to scale the x-coordinates of the data points
+     * @param yFactor the factor to scale the y-coordinates of the data points
+     */
+    public void scaleXY(double xFactor, double yFactor) {
+        for (DataPoint dp : this)
+            dp.scaleXY(xFactor, yFactor);
+    }
+    
+    /**
+     * Divides the x-coordinates of the data points in this time series by the given
+     * factor.
+     * 
+     * @param factor the factor to divide the x-coordinates of the data points
+     */
+    public void divideX(double factor) {
+        for (DataPoint dp : this)
+            dp.divideX(factor);
+    }
+    
+    /**
+     * Divides the y-coordinates of the data points in this time series by the given
+     * factor.
+     * 
+     * @param factor the factor to divide the y-coordinates of the data points
+     */
+    public void divideY(double factor) {
+        for (DataPoint dp : this)
+            dp.divideY(factor);
+    }
+    
+    /**
+     * Divides the coordinates of the data points in this time series by the given
+     * factors.
+     * 
+     * @param xFactor the factor to divide the x-coordinates of the data points
+     * @param yFactor the factor to divide the y-coordinates of the data points
+     */
+    public void divideXY(double xFactor, double yFactor) {
+        for (DataPoint dp : this)
+            dp.divideXY(xFactor, yFactor);
+    }
+    
+    /**
+     * Normalizes the y-coordinates of this time series using the Z-score method:
+     * 
+     * <blockquote> <img src="doc-files/TimeSeries-zNorm.png"> </blockquote>
+     * 
+     * where <code>μ<sub>A</sub></code> is the mean value of {@code A}, and
+     * <code>σ<sub>A</sub></code> the sample standard deviation of {@code A}.
+     * 
+     * <p>
+     * <ul>
+     *  <li> if <code>σ<sub>A</sub> = 0</code>, the y-coordinate of each data point
+     *       will be set to 0 (zero).
+     * </ul>
+     */
+    public void normalizeYZScore() {
+        this.normalizeYZScore(false);
+    }
+    
+    /**
+     * Normalizes the y-coordinates of this time series using the Z-score method:
+     * 
+     * <blockquote> <img src="doc-files/TimeSeries-zNorm.png"> </blockquote>
+     * 
+     * where <code>μ<sub>A</sub></code> is the mean value of {@code A}, and
+     * <code>σ<sub>A</sub></code> the population or sample standard deviation of
+     * {@code A}, as indicated by the {@code population} parameter.
+     * 
+     * <p>
+     * <ul>
+     *  <li> if <code>σ<sub>A</sub> = 0</code>, the y-coordinate of each data point
+     *       will be set to 0 (zero).
+     * </ul>
+     *
+     * @param population indicates whether to use population ({@code true}) od
+     *                   sample ({@code false}) standard deviation
+     */
+    public void normalizeYZScore(boolean population) {
+        
+        if (this.isEmpty())
+            return;
+        
+        double stdev = this.stdevY(population);
+        
+        if (stdev != 0) {
+            
+            double mean = this.meanY();
+            
+            for (DataPoint dp : this)
+                dp.setY((dp.getY() - mean) / stdev);
+            
+        }
+        
+        else
+            this.setY(0);
+            
+    }
+    
+    
+    /**
+     * Normalizes the y-coordinates of this time series using the mean normalization
+     * method:
+     * 
+     * <blockquote> <img src="doc-files/TimeSeries-meanNorm.png"> </blockquote>
+     * 
+     * where <code>μ<sub>A</sub></code> is the mean value of {@code A}.
+     * 
+     * <p>
+     * <ul>
+     *  <li> if <code><i>max</i>(A) = <i>min</i>(A)</code>, the y-coordinate of each
+     *       data point will be set to 0 (zero).
+     * </ul>
+     * 
+     */
+    public void normalizeYMean() {
+        
+        double mean = this.meanY();
+        double range = this.maxY() - this.minY();
+        
+        if (range != 0)
+            for (DataPoint dp : this)
+                dp.setY((dp.getY() - mean) / range);
+        
+        else
+            this.setY(0);
+        
+    }
+    
+    /**
+     * Normalizes the y-coordinates of this time series using the min-max method:
+     * 
+     * <blockquote> <img src="doc-files/TimeSeries-minmaxNorm-1.png"> </blockquote>
+     * 
+     * <p>
+     * <ul>
+     *  <li> if <code><i>max</i>(A) = <i>min</i>(A)</code>, the y-coordinate of each
+     *       data point will be set to 0 (zero).
+     * </ul>
+     * 
+     * <p>
+     * The same as {@code normalizeYMinMax(0, 1)}.
+     * 
+     */
+    public void normalizeYMinMax() {
+        this.normalizeYMinMax(0, 1);
+    }
+    
+    /**
+     * Normalizes the y-coordinates of this time series using the min-max method:
+     * 
+     * <blockquote> <img src="doc-files/TimeSeries-minmaxNorm-2.png"> </blockquote>
+     * 
+     * <p>
+     * <ul>
+     *  <li> if <code><i>max</i>(A) = <i>min</i>(A)</code>, the y-coordinate of each
+     *       data point will be set to <code><i>min</i></code>.
+     * </ul>
+     * 
+     * @param min the lower bound
+     * @param max the upper bound
+     */
+    public void normalizeYMinMax(double min, double max) {
+        
+        double miny = this.minY();
+        double range = this.maxY() - this.minY();
+        double delta = max - min;
+        
+        if (delta == 0 || range == 0)
+            this.setY(min);
+        
+        else
+            for (DataPoint dp : this)
+                dp.setY(min + ((dp.getY() - miny) / range) * delta);
+        
+    }
+    
+    /**
+     * Normalizes the y-coordinates of this time series using the maximum absolute scaling method:
+     * 
+     * <blockquote> <img src="doc-files/TimeSeries-maxabsNorm.png"> </blockquote>
+     * <p>
+     */
+    public void normalizeYMaxAbs() {
+        
+        double maxAbs = this.maxAbsY();
+        
+        if (maxAbs > 0)
+            this.divideY(maxAbs);
+        
+    }
+    
+    /**
+     * Normalizes the y-coordinates of this time series using the decimal scaling method:
+     *
+     * <blockquote> <img src="doc-files/TimeSeries-decimalScaling.png">, </blockquote>
+     * 
+     * where {@code d} is the number of digits in the integer part of <code>max(|A|)</code>.
+     * <p>
+     * 
+     */
+    public void normalizeYDecimalScaling() {
+
+        int k = Long.toString((long)this.maxAbsY()).length();
+
+        double tenp = Math.pow(10, k);
+        
+        this.divideY(tenp);
+        
+    }
+    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("index=" + getIndex() + ", label=" + getLabel() + ", data=(");
@@ -1030,34 +1372,34 @@ public class TimeSeries implements List<DataPoint>, Serializable {
     }
 
     /**
-     * Returns a new time series containing the specified {@code y} values utilizing
-     * an {@code ArrayList} for storing data points, with default {@link #label} and
-     * {@link #index} values.
+     * Returns a new time series containing the specified {@code yVvalues} as
+     * y-coordinates utilizing an {@code ArrayList} for storing data points, with
+     * default {@link #label} and {@link #index} values.
      * 
      * <p>
-     * The {@code x} coordinate of the first point will be zero (0), and for each
-     * subsequent point it will increase by one (1).
+     * The x-coordinate of the first point will be zero (0), and for each subsequent
+     * point it will increase by one (1).
      * 
-     * @param yValues the {@code y} coordinates of the data points
-     * @return a new time series containing the specified {@code y} values
+     * @param yValues the y-coordinates of the data points
+     * @return a new time series containing the specified y-values
      */
     public static TimeSeries of(double... yValues) {
         return of(false, yValues);
     }
 
     /**
-     * Returns a new time series containing the specified {@code y} values utilizing
-     * an {@code ArrayList} or a {@code LinkedList} for storing data points,
-     * depending on the {@code linkedList} parameter; with default {@link #label}
-     * and {@link #index} values.
+     * Returns a new time series containing the specified {@code yValues} as
+     * y-coordinates utilizing an {@code ArrayList} or a {@code LinkedList} for
+     * storing data points, depending on the {@code linkedList} parameter; with
+     * default {@link #label} and {@link #index} values.
      * 
      * <p>
-     * The {@code x} coordinate of the first point will be zero (0), and for each
-     * subsequent point it will increase by one (1).
+     * The x-coordinate of the first point will be zero (0), and for each subsequent
+     * point it will increase by one (1).
      * 
      * @param linkedList
-     * @param yValues    the {@code y} coordinates of the data points
-     * @return a new time series containing the specified {@code y} values
+     * @param yValues    the y-coordinates of the data points
+     * @return a new time series containing the specified y-values
      */
     public static TimeSeries of(boolean linkedList, double... yValues) {
 
@@ -1076,6 +1418,71 @@ public class TimeSeries implements List<DataPoint>, Serializable {
 
         return ts;
 
+    }
+    
+    private static void print(double... array) {
+        if (array != null)
+            System.out.println(Arrays.toString(array));
+        else
+            System.out.println("null");
+    }
+    
+    public static void main(String[] args) {
+        TimeSeries a = TimeSeries.of(-2, 3, 4);
+        TimeSeries ts = new TimeSeries(a);
+        System.out.println("max      = " + ts.maxY());
+        System.out.println("min      = " + ts.minY());
+        System.out.println("range    = " + ts.rangeY());
+        System.out.println("maxAbs   = " + ts.maxAbsY());
+        System.out.println("minAbs   = " + ts.minAbsY());
+        System.out.println("mean     = " + ts.meanY());
+        System.out.println("variance = " + ts.varianceY());
+        System.out.println("var_pop  = " + ts.varianceY(true));
+        System.out.println("stdev    = " + ts.stdevY());
+        System.out.println("std_pop  = " + ts.stdevY(true));
+        System.out.println("median   = " + ts.medianY());
+
+        ts.normalizeYZScore();
+        System.out.println();
+        System.out.println("ZScore");
+        print(ts.getYValues());
+        
+        ts = new TimeSeries(a);
+        ts.normalizeYZScore(true);
+        System.out.println();
+        System.out.println("ZScore(true)");
+        print(ts.getYValues());
+        
+        ts = new TimeSeries(a);
+        ts.normalizeYMean();
+        System.out.println();
+        System.out.println("Mean");
+        print(ts.getYValues());
+        
+        ts = new TimeSeries(a);
+        ts.normalizeYMinMax();;
+        System.out.println();
+        System.out.println("MinMax");
+        print(ts.getYValues());
+
+        ts = new TimeSeries(a);
+        ts.normalizeYMinMax(5, 8);
+        System.out.println();
+        System.out.println("MinMax(5, 8)");
+        print(ts.getYValues());
+        
+        ts = new TimeSeries(a);
+        ts.normalizeYMaxAbs();
+        System.out.println();
+        System.out.println("MaxAbs");
+        print(ts.getYValues());
+        
+        ts = new TimeSeries(a);
+        ts.normalizeYDecimalScaling();
+        System.out.println();
+        System.out.println("DecimalScaling");
+        print(ts.getYValues());
+        
     }
 
 }

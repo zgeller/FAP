@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,9 @@ package fap.classifier.nn;
 import java.util.List;
 
 import fap.classifier.nn.util.DistanceNode;
-import fap.core.data.Dataset;
-import fap.core.data.TimeSeries;
-import fap.core.distance.Distance;
+import fap.data.Dataset;
+import fap.data.TimeSeries;
+import fap.distance.Distance;
 import fap.exception.EmptyDatasetException;
 import fap.exception.IncomparableTimeSeriesException;
 import fap.util.ThreadUtils;

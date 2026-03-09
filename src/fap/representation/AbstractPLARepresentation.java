@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Miklós Kálózi, Zoltán Gellér, Brankica Bratić
+ * Copyright 2024-2026 Miklós Kálózi, Zoltán Gellér, Brankica Bratić
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//import fap.core.console.Console;
-import fap.core.data.DataPoint;
-import fap.core.data.TimeSeries;
-import fap.core.data.Representation;
+import fap.data.DataPoint;
+import fap.data.Representation;
+import fap.data.TimeSeries;
 import fap.util.ExplicitLine;
 
 /**
@@ -72,7 +71,7 @@ public abstract class AbstractPLARepresentation<SegmentType> implements Represen
      * @param algorithm type of the algorithm
      */
     public AbstractPLARepresentation(final TimeSeries series, double maxError, int algorithm) {
-        this(series.yValues(), maxError, algorithm);
+        this(series.getYValues(), maxError, algorithm);
     }
 	
     /**

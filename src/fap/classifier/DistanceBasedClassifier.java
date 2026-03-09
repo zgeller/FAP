@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,31 @@
  * limitations under the License.
  */
 
-package fap.core.exception;
+package fap.classifier;
+
+import fap.distance.Distance;
 
 /**
- * General fap exception.
+ * Declares common methods for distance-based classifiers.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.11.
- * @see Exception
+ * @version 2024.09.08.
+ * @see Classifier
  */
-public class CoreException extends Exception {
-
-    private static final long serialVersionUID = 1L;
+public interface DistanceBasedClassifier extends Classifier {
 
     /**
-     * Constructs a new core exception with {@code null} as its message.
-     */
-    public CoreException() {
-    }
-
-    /**
-     * Constructs a new core exception with the specified message.
+     * Sets the distance measure. It can be ignored by non distance-based classifiers.
      * 
-     * @param msg the message
+     * @param distance the distance measure to set
      */
-    public CoreException(String msg) {
-        super(msg);
-    }
+    public void setDistance(Distance distance);
 
+    /**
+     * Returns the distance measure. It can be ignored by non distance-based classifiers.
+     * 
+     * @return the distance measure
+     */
+    public Distance getDistance();
+    
 }

@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Aleksa Todorović, Zoltán Gellér
+ * Copyright 2024-2026 Aleksa Todorović, Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package fap.core.distance;
+package fap.distance;
 
 import java.io.Serializable;
 
-import fap.core.data.TimeSeries;
+import fap.data.TimeSeries;
 
 /**
  * Declares common methods for distance measures.

@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Aleksa Todorović
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,31 +14,32 @@
  * limitations under the License.
  */
 
-package fap.core.input;
-
-import fap.core.data.DataPoint;
+package fap.exception;
 
 /**
- * Generic interface for classes which produce data points.
+ * General fap exception.
  * 
- * @author Aleksa Todorović
- * @version 1.0
+ * @author Zoltán Gellér
+ * @version 2024.09.11.
+ * @see Exception
  */
-public interface DataPointFactory {
+public class CoreException extends Exception {
+
+    private static final long serialVersionUID = 1L;
 
     /**
-     * Evaluator if there is another data point which can be read.
-     * 
-     * @return {@code true} if there is data point available, {@code false}
-     *         otherwise
+     * Constructs a new core exception with {@code null} as its message.
      */
-    public boolean hasNextPoint() throws IllegalArgumentException;
+    public CoreException() {
+    }
 
     /**
-     * Returns next available data point.
+     * Constructs a new core exception with the specified message.
      * 
-     * @return next available data point.
+     * @param msg the message
      */
-    public DataPoint nextPoint();
+    public CoreException(String msg) {
+        super(msg);
+    }
 
 }

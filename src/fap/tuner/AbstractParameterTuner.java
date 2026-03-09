@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,11 +26,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 import fap.callback.Callback;
 import fap.callback.Callbackable;
-import fap.core.classifier.Classifier;
-import fap.core.data.Dataset;
-import fap.core.evaluator.Evaluator;
-import fap.core.tuner.AbstractTuner;
-import fap.core.tuner.Tuner;
+import fap.classifier.Classifier;
+import fap.data.Dataset;
+import fap.evaluator.Evaluator;
 import fap.exception.EmptyDatasetException;
 import fap.util.Copier;
 import fap.util.Copyable;

@@ -1,5 +1,5 @@
 /*   
- * Copyright 2013 Miklós Kálózi, Zoltán Gellér
+ * Copyright 2013-2026 Miklós Kálózi, Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package fap.util;
 
-import fap.core.data.DataPoint;
+import fap.data.DataPoint;
 
 /**
  * Line representation class.

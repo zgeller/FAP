@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Miklós Kálózi, Zoltán Gellér, Brankica Bratić
+ * Copyright 2024-2026 Miklós Kálózi, Zoltán Gellér, Brankica Bratić
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ package fap.representation;
 import java.util.ArrayList;
 import java.util.List;
 
-import fap.core.data.TimeSeries;
-import fap.core.data.Representation;
+import fap.data.Representation;
+import fap.data.TimeSeries;
 import fap.util.ExplicitLine;
 import fap.util.MathUtils;
 

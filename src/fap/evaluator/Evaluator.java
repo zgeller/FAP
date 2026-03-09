@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package fap.core.evaluator;
+package fap.evaluator;
 
 import java.io.Serializable;
 
-import fap.core.classifier.Classifier;
-import fap.core.data.Dataset;
-import fap.core.tuner.Tuner;
+import fap.classifier.Classifier;
+import fap.data.Dataset;
+import fap.tuner.Tuner;
 
 /**
  * Declares basic methods for evaluating the performance of classifiers.

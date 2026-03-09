@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Miklós Kálózi, Zoltán Gellér, Brankica Bratić
+ * Copyright 2024-2026 Miklós Kálózi, Zoltán Gellér, Brankica Bratić
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import fap.core.data.TimeSeries;
-import fap.core.data.Representation;
+import fap.data.Representation;
+import fap.data.TimeSeries;
 
 /**
  * Symbolic Aggregate Approximation (SAX)
@@ -124,7 +124,7 @@ public class SAXRepresentation implements Representation {
      *                     {@code [2..maxAlphabetSize]}
      */
     public SAXRepresentation(final TimeSeries series, int d, int alphabetSize) {
-        this(series.yValues(), d, alphabetSize);
+        this(series.getYValues(), d, alphabetSize);
 	}
 	
     /**
@@ -138,7 +138,7 @@ public class SAXRepresentation implements Representation {
      *                 {@code [2..maxAlphabetSize]}
      */
     public SAXRepresentation(final TimeSeries series, int d, char alphabet[]) {
-        this(series.yValues(), d, alphabet);
+        this(series.getYValues(), d, alphabet);
     }
 	
     /**

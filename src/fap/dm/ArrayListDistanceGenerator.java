@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import fap.callback.Callback;
-import fap.core.data.Dataset;
-import fap.core.data.TimeSeries;
-import fap.core.distance.CallableDistance;
-import fap.core.distance.Distance;
+import fap.data.Dataset;
+import fap.data.TimeSeries;
+import fap.distance.CallableDistance;
+import fap.distance.Distance;
 import fap.util.ThreadUtils;
 
 /**

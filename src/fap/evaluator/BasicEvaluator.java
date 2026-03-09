@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,11 +23,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 import fap.callback.Callback;
 import fap.callback.Callbackable;
-import fap.core.classifier.Classifier;
-import fap.core.data.Dataset;
-import fap.core.data.TimeSeries;
-import fap.core.tuner.Tuner;
+import fap.classifier.Classifier;
+import fap.data.Dataset;
+import fap.data.TimeSeries;
 import fap.exception.EmptyDatasetException;
+import fap.tuner.Tuner;
 import fap.util.Copyable;
 import fap.util.Multithreaded;
 import fap.util.Resumable;
@@ -35,7 +35,7 @@ import fap.util.ThreadUtils;
 
 /**
  * A basic classifier evaluator that does not implements the
- * {@link fap.core.evaluator.Evaluator Evaluator} interface.
+ * {@link fap.evaluator.Evaluator Evaluator} interface.
  * 
  * <p>
  * It evaluates a classifier based on the specified test and train sets.

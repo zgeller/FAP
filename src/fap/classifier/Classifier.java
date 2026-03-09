@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package fap.core.classifier;
+package fap.classifier;
 
 import java.io.Serializable;
 
-import fap.core.data.Dataset;
-import fap.core.data.TimeSeries;
+import fap.data.Dataset;
+import fap.data.TimeSeries;
 
 /**
  * Declares common methods for classifiers.
@@ -35,7 +35,7 @@ public interface Classifier extends Serializable {
      * 
      * <p>
      * <b>It is not intended for tuning the hyperparameters of the classifier. An
-     * appropriate {@link fap.core.tuner.Tuner Tuner} should be used for
+     * appropriate {@link fap.tuner.Tuner Tuner} should be used for
      * tuning.</b>
      * 
      * @param trainset the training dataset

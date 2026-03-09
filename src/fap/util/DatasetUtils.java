@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import fap.core.data.Dataset;
-import fap.core.data.TimeSeries;
+import fap.data.Dataset;
+import fap.data.TimeSeries;
 import fap.io.TimeSeriesTextFileReader;
 import fap.io.TimeSeriesTextFileWriter;
 

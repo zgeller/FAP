@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import fap.core.data.DataPoint;
-import fap.core.data.Dataset;
-import fap.core.data.TimeSeries;
-import fap.core.input.CSVDataPointFactory;
-import fap.core.input.CSVParser;
+import fap.data.DataPoint;
+import fap.data.Dataset;
+import fap.data.TimeSeries;
 
 /**
  * Reads time series from a text file.

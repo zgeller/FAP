@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Zoltán Gellér
+ * Copyright 2024-2026 Aleksa Todorović, Zoltan Gellr
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,31 +14,31 @@
  * limitations under the License.
  */
 
-package fap.core.classifier;
+package fap.io;
 
-import fap.core.distance.Distance;
+import fap.data.DataPoint;
 
 /**
- * Declares common methods for distance-based classifiers.
+ * Generic interface for classes which produce data points.
  * 
- * @author Zoltán Gellér
- * @version 2024.09.08.
- * @see Classifier
+ * @author Aleksa Todorović
+ * @version 1.0
  */
-public interface DistanceBasedClassifier extends Classifier {
+public interface DataPointFactory {
 
     /**
-     * Sets the distance measure. It can be ignored by non distance-based classifiers.
+     * Evaluator if there is another data point which can be read.
      * 
-     * @param distance the distance measure to set
+     * @return {@code true} if there is data point available, {@code false}
+     *         otherwise
      */
-    public void setDistance(Distance distance);
+    public boolean hasNextPoint() throws IllegalArgumentException;
 
     /**
-     * Returns the distance measure. It can be ignored by non distance-based classifiers.
+     * Returns next available data point.
      * 
-     * @return the distance measure
+     * @return next available data point.
      */
-    public Distance getDistance();
-    
+    public DataPoint nextPoint();
+
 }

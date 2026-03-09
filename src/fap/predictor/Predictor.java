@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Aleksa Todorović, Zoltán Gellér
+ * Copyright 2024-2026 Aleksa Todorović, Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package fap.core.predictor;
+package fap.predictor;
 
 import java.io.Serializable;
 
-import fap.core.data.DataPoint;
-import fap.core.data.Representation;
+import fap.data.DataPoint;
+import fap.data.Representation;
 
 /**
  * Predictor is object used to predict some point or value of unknown series.

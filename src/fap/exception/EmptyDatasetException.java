@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
 
 package fap.exception;
 
-import fap.core.data.Dataset;
-import fap.core.exception.CoreRuntimeException;
+import fap.data.Dataset;
 
 /**
  * Runtime exception thrown when the specified dataset cannot be empty but it is empty.

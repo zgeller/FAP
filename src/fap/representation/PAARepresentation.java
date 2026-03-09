@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Miklós Kálózi, Zoltán Gellér, Brankica Bratić
+ * Copyright 2024-2026 Miklós Kálózi, Zoltán Gellér, Brankica Bratić
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ package fap.representation;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import fap.core.data.TimeSeries;
-import fap.core.data.Representation;
+import fap.data.Representation;
+import fap.data.TimeSeries;
 
 /**
  * Piecewise Aggregate Approximation (PAA)
@@ -78,7 +78,7 @@ public class PAARepresentation implements Representation {
      *               dimensionality)
      */
     public PAARepresentation(final TimeSeries series, int d) {
-        this(series.yValues(), d);
+        this(series.getYValues(), d);
     }
 	
     /**

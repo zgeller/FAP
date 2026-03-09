@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 package fap.tuner;
 
+import fap.classifier.Classifier;
+import fap.classifier.DistanceBasedClassifier;
 import fap.classifier.nn.KNNClassifier;
 import fap.classifier.nn.MacleodKNNClassifier;
 import fap.classifier.nn.ZavrelKNNClassifier;
-import fap.core.classifier.Classifier;
-import fap.core.classifier.DistanceBasedClassifier;
-import fap.core.distance.Distance;
+import fap.distance.Distance;
 import fap.distance.MinkowskiDistance;
 import fap.distance.ThresholdDistance;
 import fap.distance.elastic.ConstrainedDistance;

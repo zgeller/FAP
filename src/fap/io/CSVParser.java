@@ -1,5 +1,5 @@
 /*   
- * Copyright 2013-2024 Aleksa Todorović, Zoltán Gellér
+ * Copyright 2013-2026 Aleksa Todorović, Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fap.core.input;
+package fap.io;
 
 /**
  * Parses comma (or any other character)-separated values and produces values.

@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package fap.distance;
 
-import fap.core.data.TimeSeries;
+import fap.data.TimeSeries;
 import fap.exception.IncomparableTimeSeriesException;
 import fap.util.MathUtils;
 
@@ -27,14 +27,18 @@ import fap.util.MathUtils;
  * <blockquote> <img src="doc-files/AdditiveSymmetricChiSquareDistance-1.png"> </blockquote>
  * 
  * <ul>
- *  <li> {@code 0/0} is treated as {@code 0} (see [1]).
+ *  <li> {@code 0/0} is treated as {@code 0} (see [2]).
  *  <li> Zero denominator is replaced by {@link MathUtils#getZeroDenominator()} 
- *       (see [1]).
+ *       (see [2]).
  * </ul>
  * 
  * <p>
  * References:
- * <ol>
+ * <ol> 
+ *  <li> P. Kumar, I.J. Taneja, Generalized relative J-divergence measure and
+ *       properties, Int. J. Contemp. Math. Sci. (2006) 597–609. 
+ *       <a href="https://doi.org/10.12988/ijcms.2006.06063">
+ *          https://doi.org/10.12988/ijcms.2006.06063</a>.
  *  <li> S.-H. Cha, Comprehensive Survey on Distance/Similarity Measures between
  *       Probability Density Functions, Int. J. Math. Model. Methods Appl. Sci. 1
  *       (2007) 300–307. 
@@ -97,7 +101,7 @@ public class AdditiveSymmetricChiSquareDistance extends AbstractCopyableDistance
             double sum = y1 + y2;
             double denominator = y1 * y2;
             
-            // 0/0 is treated as 0 (see [1])
+            // 0/0 is treated as 0 (see [2])
             if (denominator != 0)
                 distance += diff * diff * sum / denominator;
             

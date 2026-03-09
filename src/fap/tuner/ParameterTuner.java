@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,8 @@ package fap.tuner;
 
 import java.util.List;
 
-import fap.core.classifier.Classifier;
-import fap.core.evaluator.Evaluator;
-import fap.core.tuner.Tuner;
+import fap.classifier.Classifier;
+import fap.evaluator.Evaluator;
 
 /**
  * Declares common methods for classifier hyperparameter tuners that tune a single parameter.

@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fap.core.data;
+package fap.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import java.util.Set;
  * used to store the time series is determined at instantiation.
  * 
  * @author Zoltán Gellér
- * @version 2025.03.07.
+ * @version 2025.08.14.
  * @see TimeSeries
  * @see List
  * @see Serializable
@@ -801,13 +801,12 @@ public class Dataset implements List<TimeSeries>, Serializable {
     }
 
     /**
-     * Sorts the time series of this dataset.
+     * Sorts the time series in this dataset in ascending order by their
+     * x-coordinate.
      */
-    public void sortTimeSeries() {
-
+    public void sortTimeSeriesByX() {
         for (TimeSeries ts : this)
-            ts.sort();
-
+            ts.sortByX();
     }
 
     /**

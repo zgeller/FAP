@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,16 @@ package fap.classifier.nn;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
 
+import fap.classifier.AbstractDistanceBasedClassifier;
 import fap.classifier.nn.util.SortedList;
-import fap.core.classifier.AbstractDistanceBasedClassifier;
-import fap.core.data.Dataset;
-import fap.core.data.TimeSeries;
-import fap.core.distance.AbstractDistance;
-import fap.core.distance.Distance;
+import fap.data.Dataset;
+import fap.data.TimeSeries;
+import fap.distance.AbstractDistance;
+import fap.distance.Distance;
 import fap.util.Copyable;
 import fap.util.Multithreaded;
 import fap.util.ThreadUtils;
@@ -34,7 +36,7 @@ import fap.util.ThreadUtils;
  * Defines common methods and fields for (multithreaded) NN classifiers.
  * 
  * @author Zoltán Gellér
- * @version 2025.08.12.
+ * @version 2025.04.17.
  * @see AbstractDistanceBasedClassifier
  * @see Multithreaded
  * @see Copyable
@@ -50,15 +52,15 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
 
     /**
      * The neighborhood matrix (sorted by the distance in ascending order). The
-     * elements of the matrix are the indices of the time series' neighbours:
+     * elements of the matrix are the indices of the time series' neighbors:
      * 
      * <ul>
      * <li>it must apply to the entire dataset, not just the training set
-     * <li>{@code neighbours[n][m]} is the index of the m-th nearest neighbour of
+     * <li>{@code neighbours[n][m]} is the index of the m-th nearest neighbor of
      * the time series whose index is n.
      * </ul>
      */
-    protected transient int[][] neighbours;
+    protected transient int[][] neighbors;
 
     /**
      * The matrix of distances between time series.
@@ -75,7 +77,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
      * The list of sorted lists of k nearest neighbors (and their distances):
      * 
      * <ul>
-     * <li>{@code kNeighbours[n]} is a (sorted) list of the k nearest neighbours
+     * <li>{@code kNeighbours[n]} is a (sorted) list of the k nearest neighbors
      * (and their distances) of the time series whose index is n.
      * </ul>
      * <p>
@@ -90,7 +92,13 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
     /**
      * The executor service used for implementing multithreaded classification.
      */
-    protected transient ThreadPoolExecutor executor;
+    protected transient ForkJoinPool executor;
+    
+    /**
+     * Indicates whether the common pool should be used for parallelization. Default
+     * value is {@code false}.
+     */
+    protected boolean useCommonPool = false;
 
     /**
      * Empty constructor.
@@ -108,7 +116,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
     }
     
     /**
-     * Constructor with a distnace measure ({@code distance}).
+     * Constructor with a distance measure ({@code distance}).
      * 
      * @param distance distance measure
      */
@@ -117,7 +125,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
     }
     
     /**
-     * Constructor with a distnace measure ({@code distance}), and number of threads
+     * Constructor with a distance measure ({@code distance}), and number of threads
      * ({@code tnumber}).
      * 
      * @param distance distance measure
@@ -129,9 +137,28 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
     }
     
     /**
+     * Indicates whether the common pool should be used for parallelization.
+     * 
+     * @param useCommonPool indicates whether the common pool should be used for
+     *                      parallelization
+     */
+    public void setUseCommonPool(boolean useCommonPool) {
+        this.useCommonPool = useCommonPool;
+    }
+    
+    /**
+     * Returns {@code true} if the common pool should be used for parallelization.
+     * 
+     * @return {@code true} if the common pool should be used for parallelization
+     */
+    public boolean isUseCommonPool() {
+        return useCommonPool;
+    }
+    
+    /**
      * Populates {@link #kNeighbours kNeighbours[index]} with up to {@code k}
-     * nearest neighbours of the time series with the given {@code index} among the
-     * given {@code list} of time series relying on the {@link #neighbours} and
+     * nearest neighbors of the time series with the given {@code index} among the
+     * given {@code list} of time series relying on the {@link #neighbors} and
      * {@link #distances} matrices.
      * 
      * <ul>
@@ -142,16 +169,16 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
      * </ul>
      * 
      * @param index index of the time series whose list of {@code k} nearest
-     *              neighbours is to be found
+     *              neighbors is to be found
      * @param list  an array of time series among which the {@code k} nearest
-     *              neighbours of the time series with the given {@code index}
+     *              neighbors of the time series with the given {@code index}
      *              should be found
-     * @param k     the number of nearest neighbours to be found
+     * @param k     the number of nearest neighbors to be found
      */
     private void findKNeighbours(int index, TimeSeries[] list, int k) {
 
         /*
-         * For each member of the neighbours[index] array with index nIndex, the
+         * For each member of the neighbors[index] array with index nIndex, the
          * algorithm checks whether list[nIndex] contains the time series or is null. If
          * it contains a time series, it is added to kNeighbors[index] (along with its
          * distance obtained from the distances matrix).
@@ -161,28 +188,28 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
 
         int nIndex = 0;
 
-        int len = neighbours[index].length;
+        int len = neighbors[index].length;
 
         while (k > 0 && nIndex < len) {
 
-            int neighbour = neighbours[index][nIndex];
+            int neighbor = neighbors[index][nIndex];
 
-            if (list[neighbour] != null) {
+            if (list[neighbor] != null) {
 
                 k--;
                 nIndex++;
 
                 double distance;
-                if (neighbour < distances[index].length)
-                    distance = distances[index][neighbour];
+                if (neighbor < distances[index].length)
+                    distance = distances[index][neighbor];
                 else
-                    distance = distances[neighbour][index];
+                    distance = distances[neighbor][index];
 
-                // appending is possible because the elements of neighbours[index] are sorted by
+                // appending is possible because the elements of neighbors[index] are sorted by
                 // distance in ascending order
-                // i.e. neighbours[index][nIndex] is at a smaller distance than
-                // neighbours[index][nIndex + i], i>0
-                kNeighbours.get(index).add(list[neighbour], distance);
+                // i.e. Neighbors[index][nIndex] is at a smaller distance than
+                // Neighbors[index][nIndex + i], i>0
+                kNeighbours.get(index).add(list[neighbor], distance);
 
             } else
                 nIndex++;
@@ -191,23 +218,23 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
     }
 
     /**
-     * Populates {@link #kNeighbours} with up to {@code k} nearest neighbours of
+     * Populates {@link #kNeighbours} with up to {@code k} nearest neighbors of
      * every time series in the whole dataset among the training set
-     * ({@code trainset}) relying on the {@link #neighbours} and {@link #distances}
+     * ({@code trainset}) relying on the {@link #neighbors} and {@link #distances}
      * matrices.
      * 
      * <p>
      * It should be invoked only within the
-     * {@link fap.core.classifier.Classifier#fit(Dataset) fit} method.
+     * {@link fap.classifier.Classifier#fit(Dataset) fit} method.
      * 
      * @param trainset the training dataset
-     * @param k        number of neighbours
+     * @param k        number of neighbors
      */
     protected void findKNeighbours(Dataset trainset, int k) {
 
-        if (neighbours != null && distances != null) {
+        if (neighbors != null && distances != null) {
 
-            int nlen = neighbours.length;
+            int nlen = neighbors.length;
             int dsSize = trainset.size();
 
             TimeSeries[] list = new TimeSeries[nlen];
@@ -238,22 +265,22 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
     }
 
     /**
-     * Sets the matrix of neighbours. Must be invoked before the {@link #fit}
+     * Sets the matrix of neighbors. Must be invoked before the {@link #fit}
      * method.
      * 
-     * @param neighbours the matrix of neighbours to set
+     * @param neighbours the matrix of neighbors to set
      */
     public void setNeighbours(int[][] neighbours) {
-        this.neighbours = neighbours;
+        this.neighbors = neighbours;
     }
 
     /**
-     * Returns the matrix of neighbours.
+     * Returns the matrix of neighbors.
      * 
-     * @return the matrix of neighbours
+     * @return the matrix of neighbors
      */
     public int[][] getNeighbours() {
-        return this.neighbours;
+        return this.neighbors;
     }
 
     /**
@@ -295,59 +322,64 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
     public int getNumberOfThreads() {
         return this.numberOfThreads;
     }
-
+    
     /**
-     * A {@link Runnable} class that calculates the distances between a given time series and the elements of the specified dataset.
+     * Calculates the distances between {@code series} and the elements of
+     * {@code dataset} and adds them to the {@code distances} list.
+     * 
+     * @param distances the list to which the calculated distances should be added
+     * @param series    the time series whose distances are to be calculated
+     * @param dataset   the time series whose distances from {@code series} are to
+     *                  be calculated
+     * @param tnumber   number of threads
+     * @throws Exception if an error occurs
      */
-    protected class DistanceTask implements Runnable {
+    private void addDistances(List<Double> distances, TimeSeries series, Dataset dataset, int tnumber) throws Exception {
         
-        static TimeSeries series;
-        
-        private Dataset dataset;
-        
-        private List<Double> distances;
+        try {
 
-        public DistanceTask(Dataset dataset) {
-            this.dataset = dataset;
-            this.distances = new ArrayList<>(dataset.size());
-        }
-
-        @Override
-        public void run() {
-            
-            for (TimeSeries ts: dataset) {
-                
-                if (Thread.currentThread().isInterrupted())
-                    throw new RuntimeException(new InterruptedException());
-                
-                distances.add(distance.distance(series, ts));
+            if (useCommonPool) {
+                for (Double d: dataset.parallelStream().mapToDouble(ts -> distance.distance(series, ts)).toArray())
+                    distances.add(d);
             }
-
+            else {
+                this.initExecutor(tnumber);
+                for (Double d: executor.submit(() -> dataset.parallelStream().mapToDouble(ts -> distance.distance(series, ts)).toArray()).get())
+                    distances.add(d);
+            }
+            
+        } catch (ExecutionException | CancellationException | InterruptedException e) {
+            
+            ThreadUtils.shutdown(executor);
+            throw e;
+            
         }
-
+        
     }
+    
     
     /**
      * Finds the distances between the specified time series ({@code series}) and
      * the elements of the given training set ({@code trainset}) relying on
      * {@code tnumber} of threads.
      * 
-     * @param series   the time series to be classified
-     * @param trainset the training set
-     * @param tnumber  number of threads
+     * @param series  the time series whose distances are to be calculated
+     * @param dataset the time series whose distances from {@code series} are to be
+     *                calculated
+     * @param tnumber number of threads
      * @return the list of distances
      * @throws InterruptedException if the thread has been interrupted
      * @throws Exception            if an error occurs
      */
-    protected List<Double> findDistances(TimeSeries series, Dataset trainset, int tnumber) throws Exception {
+    protected List<Double> findDistances(TimeSeries series, Dataset dataset, int tnumber) throws Exception {
 
-        final int tsize = trainset.size(); 
+        final int tsize = dataset.size(); 
         
         List<Double> distances = new ArrayList<>(tsize);
         
         // if the trainset contains only one time series
-        if (trainset.size() == 1)
-            distances.add(distance.distance(series, trainset.get(0)));
+        if (dataset.size() == 1)
+            distances.add(distance.distance(series, dataset.get(0)));
         
         // if the trainset contains more than one time series
         else {
@@ -356,15 +388,15 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
             if (distance instanceof AbstractDistance dist && dist.isStoring()) {
 
                 // time series whose distances must be calculated
-                Dataset dataset = new Dataset();
+                Dataset newDataset = new Dataset();
 
                 // indices of time series whose distance must be calculated
                 List<Integer> indices = new ArrayList<>();
 
-                // finding time series whose dinstance has not yet been calculated
+                // finding time series whose distance has not yet been calculated
                 for (int i = 0; i < tsize; i++) {
 
-                    TimeSeries ts = trainset.get(i);
+                    TimeSeries ts = dataset.get(i);
 
                     Double recall = dist.recall(series, ts);
 
@@ -377,74 +409,31 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
 
                 }
 
-                final int dsize = dataset.size();
+                final int dsize = newDataset.size();
 
                 // if we have only one distance to calculate
                 if (dsize == 1)
-                    distances.set(indices.get(0), distance.distance(series, dataset.get(0)));
+                    distances.set(indices.get(0), distance.distance(series, newDataset.get(0)));
 
                 // if we have more than one distance to calculate
                 else if (dsize > 1) {
 
-                    DistanceTask.series = series;
-
-                    this.initExecutor(tnumber);
-
-                    // if there are more threads than time series
-                    if (tnumber > dsize)
-                        tnumber = dsize;
+                    List<Double> newDistances = new ArrayList<>(dsize);
                     
-                    // splitting the dataset
-                    List<Dataset> list = dataset.split(tnumber, false);
-
-                    // creating tasks
-                    List<DistanceTask> tasks = new ArrayList<>();
-                    for (Dataset ds : list)
-                        tasks.add(new DistanceTask(ds));
-
-                    // calucalting distances
-                    ThreadUtils.startRunnables(executor, tasks);
-
-                    // merging results
-                    List<Double> results = new ArrayList<>(dsize);
-                    for (DistanceTask task : tasks)
-                        results.addAll(task.distances);
+                    addDistances(newDistances, series, newDataset, tnumber);
 
                     // merging distances
                     for (int i = 0; i < dsize; i++)
-                        distances.set(indices.get(i), results.get(i));
+                        distances.set(indices.get(i), newDistances.get(i));
 
                 }
 
             }
 
             // if storing distances is not enabled, we need to calculate all the distances
-            else {
+            else 
+                addDistances(distances, series, dataset, tnumber);
 
-                DistanceTask.series = series;
-
-                this.initExecutor(tnumber);
-                
-                // if there are more threads than time series
-                if (tnumber > tsize)
-                    tnumber = tsize;
-
-                // splitting the dataset
-                List<Dataset> list = trainset.split(tnumber, false);
-
-                // creating tasks
-                List<DistanceTask> tasks = new ArrayList<>();
-                for (Dataset ds : list)
-                    tasks.add(new DistanceTask(ds));
-
-                // calucalting distances
-                ThreadUtils.startRunnables(executor, tasks);
-
-                // updating distances
-                for (DistanceTask task : tasks)
-                    distances.addAll(task.distances);
-
-            }
 
         }
 
@@ -463,6 +452,8 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
     protected void init(AbstractNNClassifier copy, boolean deep) throws ClassCastException {
 
         super.init(copy, deep);
+        
+        copy.setUseCommonPool(useCommonPool);
 
         if (!deep) {
             copy.setDistances(this.getDistances());            

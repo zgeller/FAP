@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Aleksa Todorović, Vladimir Kurbalija, Zoltán Gellér
+ * Copyright 2024-2026 Aleksa Todorović, Vladimir Kurbalija, Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package fap.distance;
 
-import fap.core.data.TimeSeries;
+import fap.data.TimeSeries;
 import fap.exception.IncomparableTimeSeriesException;
 import fap.representation.SplineRepresentation;
 import fap.util.Polynomial;

@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ import java.util.Map;
 
 import fap.classifier.nn.util.LinkedDistanceNode;
 import fap.classifier.nn.util.SortedList;
-import fap.core.data.TimeSeries;
-import fap.core.distance.Distance;
+import fap.data.TimeSeries;
+import fap.distance.Distance;
 
 /**
  * Weighted kNN classifier utilizing the Fibonacci weighting function. The class

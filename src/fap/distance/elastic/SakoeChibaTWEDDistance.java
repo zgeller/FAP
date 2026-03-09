@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package fap.distance.elastic;
 
-import fap.core.data.DataPoint;
-import fap.core.data.TimeSeries;
+import fap.data.DataPoint;
+import fap.data.TimeSeries;
 import fap.distance.util.ConstraintUtils;
 import fap.exception.IncomparableTimeSeriesException;
 

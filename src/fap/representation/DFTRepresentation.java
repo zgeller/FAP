@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Brankica Bratić, Zoltán Gellér
+ * Copyright 2024-2026 Brankica Bratić, Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ package fap.representation;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import fap.core.data.TimeSeries;
-import fap.core.data.Representation;
+import fap.data.Representation;
+import fap.data.TimeSeries;
 
 /**
  * Discrete Fourier Transform (DFT) representation.
@@ -81,7 +81,7 @@ public class DFTRepresentation implements Representation {
      * @param d      representation dimensionality (must be even)
      */
     public DFTRepresentation(final TimeSeries series, int d) {
-        this(series.yValues(), d);
+        this(series.getYValues(), d);
     }
 
     /**

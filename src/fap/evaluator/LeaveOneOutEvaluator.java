@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import fap.core.classifier.Classifier;
-import fap.core.data.Dataset;
-import fap.core.data.TimeSeries;
-import fap.core.tuner.Tuner;
+import fap.classifier.Classifier;
+import fap.data.Dataset;
+import fap.data.TimeSeries;
 import fap.exception.EmptyDatasetException;
+import fap.tuner.Tuner;
 import fap.util.Copyable;
 import fap.util.Copier;
 import fap.util.Resumable;

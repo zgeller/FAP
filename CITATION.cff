@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Gellér"
+  given-names: "Zoltán"
+  orcid: "https://orcid.org/0000-0003-1853-4740"
+title: "Framework for Analysis and Prediction (FAP)"
+version: 2026.3.9
+url: "https://github.com/zgeller/FAP"
+preferred-citation:
+  type: article
+  authors:
+  - family-names: "Gellér"
+    given-names: "Zoltán"
+    orcid: "https://orcid.org/0000-0003-1853-4740"
+  - family-names: "Kurbalija"
+    given-names: "Vladimir"
+    orcid: "https://orcid.org/0000-0002-9599-4495"
+  - family-names: "Ivanović"
+    given-names: "Mirjana"
+    orcid: "https://orcid.org/0000-0003-1946-0384"
+  doi: "10.2298/CSIS240910029G"
+  journal: "Computer Science and Information Systems"
+  start: 1379 # First page number
+  end: 1403 # Last page number
+  title: "FAP: A time series analysis and mining framework for scientific and practical applications"
+  issue: 4
+  volume: 22
+  year: 2025

@@ -29,9 +29,18 @@ import java.util.ListIterator;
 import java.util.Map;
 
 /**
- * A time series in in the form of an {@link ArrayList} or a {@link LinkedList}
- * of {@link DataPoint data points}. Which list type will be used to store the
+ * A time series is in the form of an {@link ArrayList} or a {@link LinkedList}
+ * of {@link DataPoint data points}. The specific list type used to store the
  * time series is determined at instantiation.
+ * 
+ * <p>
+ * Each time series may optionally be assigned a class label, a unique index,
+ * and a collection of representations. The index serves as a unique identifier
+ * within the dataset scope, though ensuring its uniqueness is the user’s
+ * responsibility. When provided, this index allows distance measures to cache
+ * results—an optional feature that avoids redundant computations and
+ * accelerates execution. However, providing this index is mandatory when using
+ * distance and neighbor matrices, as kNN classifiers rely on them for mapping.
  * 
  * @author Zoltán Gellér
  * @version 2025.08.14.

@@ -115,7 +115,7 @@ public final class Modifiers {
     
     /**
      * A modifier for setting the relative warping (editing) window width of
-     * constrained distance measures.
+     * constrained elastic distance measures.
      * 
      * @see ConstrainedDistance
      */
@@ -131,7 +131,7 @@ public final class Modifiers {
     
     /**
      * A modifier for setting the absolute warping (editing) window width of
-     * constrained distance measures.
+     * constrained elastic distance measures.
      * 
      * @see ConstrainedDistance
      */

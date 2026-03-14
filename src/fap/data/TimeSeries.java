@@ -1406,7 +1406,9 @@ public class TimeSeries implements List<DataPoint>, Serializable {
      * The x-coordinate of the first point will be zero (0), and for each subsequent
      * point it will increase by one (1).
      * 
-     * @param linkedList
+     * @param linkedList determines whether a {@code LinkedList} ({@code true}) or
+     *                   an {@code ArrayList} ({@code false}) should be used to
+     *                   store the data points
      * @param yValues    the y-coordinates of the data points
      * @return a new time series containing the specified y-values
      */
@@ -1450,7 +1452,7 @@ public class TimeSeries implements List<DataPoint>, Serializable {
         System.out.println("stdev    = " + ts.stdevY());
         System.out.println("std_pop  = " + ts.stdevY(true));
         System.out.println("median   = " + ts.medianY());
-
+        
         ts.normalizeYZScore();
         System.out.println();
         System.out.println("ZScore");

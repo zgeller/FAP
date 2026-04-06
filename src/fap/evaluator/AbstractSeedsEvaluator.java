@@ -661,7 +661,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
                 classifiers[iteration] = classifier;
                 classified[iteration] = new boolean[result.testset.size()];
                 
-                // reseting the trainger
+                // reseting the trainer
                 if (tuner instanceof Resumable rt)
                     rt.reset();
                 

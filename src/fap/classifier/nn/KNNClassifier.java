@@ -58,7 +58,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.04.17.
+ * @version 2026.04.16.
  * @see AbstractNNClassifier
  */
 public class KNNClassifier extends AbstractNNClassifier {
@@ -72,7 +72,7 @@ public class KNNClassifier extends AbstractNNClassifier {
     
     /**
      * Indicates how many of the nearest neighbors should be excluded from
-     * consideration. Must be {@code >= 0} and {@code < k}.
+     * consideration. Must be {@code >= 0} and {@code < k}. Default value is {@code 0}.
      */
     protected int exclude = 0;
 
@@ -157,12 +157,15 @@ public class KNNClassifier extends AbstractNNClassifier {
      * Sets the number of nearest neighbors to consider {@code k}. Must be
      * {@code >= 1}.
      * 
+     * <p>
+     * If {@code k <= exclude}, {@link #exclude} defaults to {@code 0}.
+     * 
      * @param k number of nearest neighbors, must be {@code >= 1}
      * @throws IllegalArgumentException if {@code k < 1}
      */
     public void setK(int k) {
         if (k < 1)
-            throw new IllegalArgumentException("k must be > 0.");
+            throw new IllegalArgumentException("Invalid k: " + k + " (must be >= 1)");
         if (k <= exclude)
             exclude = 0;
         this.k = k;
@@ -188,9 +191,9 @@ public class KNNClassifier extends AbstractNNClassifier {
      */
     public void setExclude(int exclude) throws IllegalArgumentException {
         if (exclude < 0)
-            throw new IllegalArgumentException("Exclude must be >= 0.");
+            throw new IllegalArgumentException("Invalid exclude: " + exclude + " (must be >= 0)");
         if (exclude >= k)
-            throw new IllegalArgumentException("Exclude must be < k.");
+            throw new IllegalArgumentException("Invalid exclude: " + exclude + " (must be < k=" + k + ")");
         this.exclude = exclude;
     }
     
@@ -300,7 +303,6 @@ public class KNNClassifier extends AbstractNNClassifier {
         return list;
 
     }
-    
     
     /**
      * @throws EmptyDatasetException           if the training set is empty

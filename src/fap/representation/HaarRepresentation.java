@@ -266,8 +266,8 @@ public class HaarRepresentation implements Representation {
             d = originalTimeSeriesLength;
 
         if (d < 1 || d > originalTimeSeriesLength)
-            throw new IllegalArgumentException("Invalid representational dimensionality (d): " + d + 
-                                               " (must be in [1, " + originalTimeSeriesLength + "])");
+            throw new IllegalArgumentException("Representational dimensionality (d) out of range " + 
+                                                "[1, " + originalTimeSeriesLength + "]): " + d);
 
         List<Double> coefficients = new ArrayList<Double>(originalTimeSeriesLength);
         List<Double> currentValues = new ArrayList<Double>(originalTimeSeriesLength);

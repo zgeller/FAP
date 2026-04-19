@@ -22,7 +22,7 @@ import fap.distance.AbstractCopyableDistance;
  * Defines basic methods for constrained elastic distance measures.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.17.
+ * @version 2026.04.19.
  * @see AbstractCopyableDistance
  * @see ConstrainedDistance
  */
@@ -91,15 +91,14 @@ public abstract class AbstractConstrainedDistance extends AbstractCopyableDistan
      * The absolute width is set to -1 (i.e. {@link #w} {@code = -1}).
      * 
      * @param r the relative width of the warping (editing) window (as a percentage
-     *          of the length of the time series), must be in range {@code [0..100]}
-     * @throws IllegalArgumentException if {@code r} is not in the range
-     *                                  {@code [0..100]}
+     *          of the length of the time series); must be in {@code [0..100]}
+     * @throws IllegalArgumentException if {@code r} is not in {@code [0..100]}
      */
     @Override
     public void setR(double r) {
 
         if (r < 0 || r > 100)
-            throw new IllegalArgumentException("r must be in the range [0..100]");
+            throw new IllegalArgumentException("r out of range [0..100]: " + r);
         
         if (this.r != r) {
             this.clearStorage();
@@ -122,10 +121,10 @@ public abstract class AbstractConstrainedDistance extends AbstractCopyableDistan
 
     /**
      * Sets the absolute width of the warping (editing) window. Must be
-     * {@code w >= 0}. The relative width is set to -1 (i.e. {@link #r}
-     * {@code = -1}).
+     * {@code w >= 0}. The relative width is set to -1 (i.e. <code>{@link #r}
+     *  = -1</code>).
      * 
-     * @param w the absolute width of the warping (editing) window, must be
+     * @param w the absolute width of the warping (editing) window; must be
      *          {@code >= 0}
      * @throws IllegalArgumentException if {@code w < 0}
      */
@@ -133,7 +132,7 @@ public abstract class AbstractConstrainedDistance extends AbstractCopyableDistan
     public void setW(int w) {
 
         if (w < 0)
-            throw new IllegalArgumentException("Must be w >= 0.");
+            throw new IllegalArgumentException("Invalid w: " + w + "(must be >= 0)");
 
         if (this.w != w) {
             this.clearStorage();

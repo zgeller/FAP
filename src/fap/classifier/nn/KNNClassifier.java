@@ -58,7 +58,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.04.16.
+ * @version 2026.04.19.
  * @see AbstractNNClassifier
  */
 public class KNNClassifier extends AbstractNNClassifier {
@@ -182,18 +182,15 @@ public class KNNClassifier extends AbstractNNClassifier {
 
     /**
      * Sets the number of nearest neighbors to be excluded from consideration. Must
-     * be {@code >= 0} and {@code < k}.
+     * be {@code >= 0} and {@code < } {@link #k}.
      * 
      * @param exclude the number of nearest neighbors to be excluded from
-     *                consideration, must be {@code >= 0} and {@code < k}
-     * @throws IllegalArgumentException if {@code exclude < 0} or
-     *                                  {@code exclude >= k}
+     *                consideration; must be in {@code [0, k)}
+     * @throws IllegalArgumentException if {@code exclude } not it {@code [0, k)}
      */
     public void setExclude(int exclude) throws IllegalArgumentException {
-        if (exclude < 0)
-            throw new IllegalArgumentException("Invalid exclude: " + exclude + " (must be >= 0)");
-        if (exclude >= k)
-            throw new IllegalArgumentException("Invalid exclude: " + exclude + " (must be < k=" + k + ")");
+        if (exclude < 0 || exclude >= k)
+            throw new IllegalArgumentException("exclude out of range [0, " + k + "): " + exclude);
         this.exclude = exclude;
     }
     

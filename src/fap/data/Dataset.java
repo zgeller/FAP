@@ -36,7 +36,7 @@ import java.util.Set;
  * used to store the time series is determined at instantiation.
  * 
  * @author Zoltán Gellér
- * @version 2025.08.14.
+ * @version 2026.04.19.
  * @see TimeSeries
  * @see List
  * @see Serializable
@@ -444,17 +444,16 @@ public class Dataset implements List<TimeSeries>, Serializable {
     /**
      * Splits this dataset into {@code k} subsets of approximately equal sizes.
      * 
-     * @param k          the number of subsets, must be in the range
-     *                   {@code [2..size()]}
+     * @param k the number of subsets; must be in {@code [2, size()]}
      * @return list of {@code k} subsets of this dataset
-     * @throws IllegalArgumentException if {@code k < 2} or {@code k > size()}
+     * @throws IllegalArgumentException if {@code k} is not in {@code [2, size()]}
      */
     private List<Dataset> getSimpleSplit(int k) throws IllegalArgumentException {
         
         final int dsize = this.size();
         
-        if (k < 1 || k > dsize)
-            throw new IllegalArgumentException("k must be in the range [1..size()]");
+        if (k < 2 || k > dsize)
+            throw new IllegalArgumentException("k out of range [2, " + dsize + "]: " + k);
         
         List<Dataset> list = new ArrayList<>(k); 
         for (int i = 0; i < k; i++)
@@ -500,17 +499,17 @@ public class Dataset implements List<TimeSeries>, Serializable {
      * Randomly divides this dataset into {@code k} subsets of approximately equal
      * sizes using the given random number generator.
      * 
-     * @param k   the number of subsets, must be in the range {@code [1..size()]}
+     * @param k   the number of subsets; must be in {@code [2, size()]}
      * @param rnd a random number generator
      * @return list of subsets
-     * @throws IllegalArgumentException if {@code k < 1} or {@code k > size()}
+     * @throws IllegalArgumentException if {@code k} is not in {@code [2, size()]}
      */
     private List<Dataset> getRandomSplit(int k, Random rnd) throws IllegalArgumentException {
 
         final int dsize = this.size();
 
-        if (k < 1 || k > dsize)
-            throw new IllegalArgumentException("k must be in the range [1..size()]");
+        if (k < 2 || k > dsize)
+            throw new IllegalArgumentException("k out of range [2, " + dsize + "]: " + k);
 
         List<Dataset> list = new ArrayList<>(k);
 
@@ -567,15 +566,15 @@ public class Dataset implements List<TimeSeries>, Serializable {
      * each group of time series which belong to the same class before splitting the
      * dataset.
      * 
-     * @param k   the number of subsets, must be in the range {@code [2..size()]}
+     * @param k   the number of subsets; must be in {@code [2, size()]}
      * @param rnd a random number generator
      * @return list of stratified subsets
-     * @throws IllegalArgumentException if {@code k < 2} or {@code k > size()}
+     * @throws IllegalArgumentException if {@code k} is not in {@code [2, size()]}
      */
     private List<Dataset> getStratifiedSplit(int k, Random rnd) throws IllegalArgumentException {
 
         if (k < 2 || k > this.size())
-            throw new IllegalArgumentException("k must be in the range [2..size()].");
+            throw new IllegalArgumentException("k out of range [2, " + this.size() + "]: " + k);
 
         List<Dataset> list = new ArrayList<Dataset>(k);
         for (int i = 0; i < k; i++)
@@ -675,16 +674,16 @@ public class Dataset implements List<TimeSeries>, Serializable {
      * the time series.
      * 
      * @param percentage the percentage of time series that are to be included in
-     *                   the first subset, must be in the range {@code [0..100]}
+     *                   the first subset, must be in the range {@code [0, 100]}
      * @param rnd        a random number generator
      * @return list of subsets
-     * @throws IllegalArgumentException if {@code percentage < 0} or
-     *                                  {@code percentage > 100}
+     * @throws IllegalArgumentException if {@code percentage} not in
+     *                                  {@code [0, 100]}
      */
     private List<Dataset> getPercentageSplit(double percentage, Random rnd) throws IllegalArgumentException {
 
         if (percentage < 0 || percentage > 100)
-            throw new IllegalArgumentException("Percentage must be in the range [0..100].");
+            throw new IllegalArgumentException("percentage out of range [0, 100]: " + percentage);
 
         List<Dataset> list = new ArrayList<Dataset>(2);
 
@@ -723,17 +722,17 @@ public class Dataset implements List<TimeSeries>, Serializable {
      * which belong to the same class before splitting.
      * 
      * @param percentage the percentage of time series that are to be included in
-     *                   the first subset, must be in the range {@code [0..100]}
+     *                   the first subset, must be in the range {@code [0, 100]}
      * @param rnd        a random number generator
      * @return list of stratified subsets
-     * @throws IllegalArgumentException if {@code percentage < 0} or
-     *                                  {@code percentage > 100}
+     * @throws IllegalArgumentException if {@code percentage} not in
+     *                                  {@code [0, 100]}
      */
     private List<Dataset> getStratifiedPercentageSplit(double percentage, Random rnd)
             throws IllegalArgumentException {
 
         if (percentage < 0 || percentage > 100)
-            throw new IllegalArgumentException("Percentage must be in the range [0..100].");
+            throw new IllegalArgumentException("percentage out of range [0, 100]: " + percentage);
 
         List<Dataset> list = new ArrayList<Dataset>(2);
 

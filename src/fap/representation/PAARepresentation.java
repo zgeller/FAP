@@ -51,7 +51,7 @@ import fap.data.TimeSeries;
  * </ol>
  * 
  * @author Miklós Kálózi, Zoltán Gellér, Brankica Bratić
- * @version 2024.09.14.
+ * @version 2026.04.19.
  * @see Representation
  */
 public class PAARepresentation implements Representation {
@@ -184,8 +184,8 @@ public class PAARepresentation implements Representation {
     private void createPAA(final double[] values, int d) {
         
         if (d < 1 || d > values.length)
-            throw new IllegalArgumentException(
-                    "Representation dimensionality must be between 1 and " + values.length + ".");
+            throw new IllegalArgumentException("Invalid representational dimensionality (d): " + d + 
+                                               " (must be in [1, " + values.length + "])");
 
         originalSize = values.length;
         

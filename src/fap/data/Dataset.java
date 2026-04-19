@@ -673,8 +673,8 @@ public class Dataset implements List<TimeSeries>, Serializable {
      * the time series of the dataset and the second one will contain the rest of
      * the time series.
      * 
-     * @param percentage the percentage of time series that are to be included in
-     *                   the first subset, must be in the range {@code [0, 100]}
+     * @param percentage the percentage of time series to be included in the first
+     *                   subset; must be in {@code [0, 100]}
      * @param rnd        a random number generator
      * @return list of subsets
      * @throws IllegalArgumentException if {@code percentage} not in
@@ -721,8 +721,8 @@ public class Dataset implements List<TimeSeries>, Serializable {
      * generator is not {@code null}, it will shuffle the groups of time series
      * which belong to the same class before splitting.
      * 
-     * @param percentage the percentage of time series that are to be included in
-     *                   the first subset, must be in the range {@code [0, 100]}
+     * @param percentage the percentage of time series to be included in the first
+     *                   subset; must be in {@code [0, 100]}
      * @param rnd        a random number generator
      * @return list of stratified subsets
      * @throws IllegalArgumentException if {@code percentage} not in

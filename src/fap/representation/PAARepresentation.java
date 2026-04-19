@@ -184,8 +184,8 @@ public class PAARepresentation implements Representation {
     private void createPAA(final double[] values, int d) {
         
         if (d < 1 || d > values.length)
-            throw new IllegalArgumentException("Invalid representational dimensionality (d): " + d + 
-                                               " (must be in [1, " + values.length + "])");
+            throw new IllegalArgumentException("Representational dimensionality (d) out of range " + 
+                                               "[1, " + values.length + "]): " + d);
 
         originalSize = values.length;
         

@@ -48,7 +48,7 @@ import fap.data.TimeSeries;
  * </ol>
  * 
  * @author Miklós Kálózi, Zoltán Gellér, Brankica Bratić
- * @version 2025.03.05.
+ * @version 2026.04.19.
  * @see Representation
  */
 public class SAXRepresentation implements Representation {
@@ -282,19 +282,18 @@ public class SAXRepresentation implements Representation {
      * 
      * @param data         data point series
      * @param d            number of segments, must be in range
-     *                     {@code [1..number of data points]} (representation
+     *                     {@code [1, number of data points]} (representation
      *                     dimensionality)
      * @param alphabetSize the size of the alphabet, must be in range
-     *                     {@code [2..maxAlphabetSize]}
+     *                     {@code [2, maxAlphabetSize]}
      */
     private void initialize(final double[] values, int d, int alphabetSize) {
         
         if (d < 1 || d > values.length)
-            throw new IllegalArgumentException(
-                    "Representation dimensionality must be between 1 and " + values.length + ".");
+            throw new IllegalArgumentException("Representational dimensionality (d) out of range [1, " + values.length + "]: " + d); 
         
         if (alphabetSize < 2 || alphabetSize > maxAlphabetSize)
-            throw new IllegalArgumentException("AlphabetSize must be in range [2.." + maxAlphabetSize + "].");
+            throw new IllegalArgumentException("alphabetSize out of range [2, " + maxAlphabetSize + "]: " + alphabetSize);
         
         this.alphabetSize = alphabetSize;
         
@@ -394,7 +393,7 @@ public class SAXRepresentation implements Representation {
     public char getSAXValue(double x) {
 
         if (x < 0 || x >= originalSize)
-            throw new IllegalArgumentException("x must be in range [0," + originalSize + ").");
+            throw new IllegalArgumentException("x out of range [0, " + originalSize + "): " + x);
 
         int segmentSize = getSegmentSize();
         int segment = (int) (x / segmentSize);

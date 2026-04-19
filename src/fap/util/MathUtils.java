@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024-2025 Zoltán Gellér, Brankica Bratić
+ * Copyright 2024-2026 Zoltán Gellér, Brankica Bratić
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import java.util.List;
  * Math utilities.
  * 
  * @author Zoltán Gellér, Brankica Bratić
- * @version 2025.03.06.
+ * @version 2026.04.19.
  */
 public final class MathUtils {
 
@@ -87,7 +87,7 @@ public final class MathUtils {
     public static double mean(List<Double> values) throws IllegalArgumentException {
 
         if (values == null || values.isEmpty())
-            throw new IllegalArgumentException("The list must not be null, and must have at least one element.");
+            throw new IllegalArgumentException("values must not be null or empty");
 
         double sum = 0;
         for (double value : values)
@@ -165,15 +165,15 @@ public final class MathUtils {
     public static double std(List<Double> values, double mean, boolean population) throws IllegalArgumentException {
 
         if (values == null)
-            throw new IllegalArgumentException("The list must not be null.");
+            throw new IllegalArgumentException("values must not be null");
 
         int n = values.size();
         if (!population) {
             n--;
             if (n == 0)
-                throw new IllegalArgumentException("The list must contain at least two elements.");
+                throw new IllegalArgumentException("values must contain at least two elements");
         } else if (n == 0)
-            throw new IllegalArgumentException("The list must contain at least one element.");
+            throw new IllegalArgumentException("values must contain at least one element");
 
         double sum = 0;
         for (double value : values)
@@ -196,12 +196,12 @@ public final class MathUtils {
      */
     public static double correlation(List<Double> xValues, List<Double> yValues) {
 
-        if (xValues == null || yValues == null)
-            throw new IllegalArgumentException("The lists cannot be null.");
-
+        if (xValues == null) throw new IllegalArgumentException("xValues must not be null");
+        if (yValues == null) throw new IllegalArgumentException("yValues must not be null");
+        
         if (xValues.size() != yValues.size())
-            throw new IllegalArgumentException("The lists must be of the same size.");
-
+            throw new IllegalArgumentException("size mismatch: xValues=" + xValues.size() + ", yValues=" + yValues.size());
+        
         double sx = 0.0;
         double sy = 0.0;
         double sxx = 0.0;

@@ -121,7 +121,7 @@ public abstract class AbstractConstrainedThresholdDistance extends AbstractConst
     public void setEpsilon(double epsilon) {
 
         if (epsilon < 0)
-            throw new IllegalArgumentException("Invalid epsilon: " + epsilon + "(must be >= 0)");
+            throw new IllegalArgumentException("Invalid epsilon: " + epsilon + " (must be >= 0)");
         
         if (this.epsilon != epsilon) {
             this.clearStorage();

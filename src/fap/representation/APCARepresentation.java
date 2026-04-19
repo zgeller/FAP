@@ -39,7 +39,7 @@ import fap.data.TimeSeries;
  * </ol>
  * 
  * @author Miklós Kálózi, Zoltán Gellér, Brankica Bratić
- * @version 2025.03.05.
+ * @version 2026.04.19.
  * @see Representation
  */
 public class APCARepresentation implements Representation {
@@ -299,8 +299,7 @@ public class APCARepresentation implements Representation {
     private void createAPCA(final double[] values, int d) {
         
         if (d < 1 || d > 2 * values.length)
-            throw new IllegalArgumentException(
-                    "Representation dimensionality must be between 1 and " + (2 * values.length) + ".");
+            throw new IllegalArgumentException("Invalid representational dimensionality (d): " + d + " (must be in [1, " + 2 * values.length + "])");
 
         if (d % 2 != 0)
             throw new IllegalArgumentException("Representation dimensionality must be even.");

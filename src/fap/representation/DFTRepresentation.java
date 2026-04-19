@@ -57,7 +57,7 @@ import fap.data.TimeSeries;
  * </ol>
  * 
  * @author Brankica Bratić, Zoltán Gellér
- * @version 2025.03.05.
+ * @version 2026.04.19.
  * @see Representation
  */
 public class DFTRepresentation implements Representation {
@@ -307,8 +307,8 @@ public class DFTRepresentation implements Representation {
     private void createDFT(final double[] values, int d) {
         
         if (d < 1 || d > values.length) {
-            throw new IllegalArgumentException(
-                    "Representation dimensionality must be between 1 and " + values.length + ".");
+            throw new IllegalArgumentException("Invalid representational dimensionality (d): " + d + 
+                                               " (must be in [1, " + 2 * values.length + "])");
         }
 
         if (d % 2 != 0)

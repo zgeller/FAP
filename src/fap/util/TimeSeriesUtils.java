@@ -23,7 +23,7 @@ import fap.data.TimeSeries;
  * Time series utilities.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.30.
+ * @version 2026.04.19.
  */
 public final class TimeSeriesUtils {
 
@@ -491,7 +491,7 @@ public final class TimeSeriesUtils {
     public static TimeSeries getLinearlyEquiscaled(TimeSeries series, int desiredLength, boolean keepx) {
         
         if (desiredLength < 2)
-            throw new IllegalArgumentException("The desired length must be >= 2.");
+            throw new IllegalArgumentException("Invalid desiredLength: " + desiredLength + " (must be >= 2)");
         
         if (series.length() < 2)
             return null;

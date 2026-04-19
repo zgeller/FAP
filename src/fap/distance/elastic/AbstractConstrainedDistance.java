@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,7 +132,7 @@ public abstract class AbstractConstrainedDistance extends AbstractCopyableDistan
     public void setW(int w) {
 
         if (w < 0)
-            throw new IllegalArgumentException("Invalid w: " + w + "(must be >= 0)");
+            throw new IllegalArgumentException("Invalid w: " + w + " (must be >= 0)");
 
         if (this.w != w) {
             this.clearStorage();

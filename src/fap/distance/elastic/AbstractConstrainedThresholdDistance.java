@@ -1,5 +1,5 @@
 /*   
- * Copyright 2024 Zoltán Gellér
+ * Copyright 2024-2026 Zoltán Gellér
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import fap.util.TimeSeriesUtils;
  * parallelogram and with start threshold parameter.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.17.
+ * @version 2026.04.19.
  * @see AbstractConstrainedDistance
  * @see ConstrainedThresholdDistance
  */
@@ -113,7 +113,7 @@ public abstract class AbstractConstrainedThresholdDistance extends AbstractConst
      * match if their distance is not greater than the matching threshold. Must be
      * {@code epsilon >= 0}.
      * 
-     * @param epsilon the new value of the matching threshold, it must be
+     * @param epsilon the new value of the matching threshold; must be
      *                {@code >= 0}
      * @throws IllegalArgumentException if {@code epsilon < 0}
      */
@@ -121,7 +121,7 @@ public abstract class AbstractConstrainedThresholdDistance extends AbstractConst
     public void setEpsilon(double epsilon) {
 
         if (epsilon < 0)
-            throw new IllegalArgumentException("Must be epsilon >= 0.");
+            throw new IllegalArgumentException("Invalid epsilon: " + epsilon + "(must be >= 0)");
         
         if (this.epsilon != epsilon) {
             this.clearStorage();

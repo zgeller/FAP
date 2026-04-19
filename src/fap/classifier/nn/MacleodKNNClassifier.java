@@ -244,7 +244,7 @@ public class MacleodKNNClassifier extends KNNClassifier {
      */
     public void setAlpha(double alpha) {
         if (alpha < 0)
-            throw new IllegalArgumentException("Invalid alpha: " + alpha + "(must be >= 0)");
+            throw new IllegalArgumentException("Invalid alpha: " + alpha + " (must be >= 0)");
         this.alpha = alpha;
     }
 

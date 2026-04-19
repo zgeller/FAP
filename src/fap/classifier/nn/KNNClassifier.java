@@ -72,7 +72,7 @@ public class KNNClassifier extends AbstractNNClassifier {
     
     /**
      * Indicates how many of the nearest neighbors should be excluded from
-     * consideration. Must be {@code >= 0} and {@code < k}. Default value is {@code 0}.
+     * consideration. Must be in <code>[0, {@link #k})</code>. Default value is {@code 0}.
      */
     protected int exclude = 0;
 
@@ -182,7 +182,7 @@ public class KNNClassifier extends AbstractNNClassifier {
 
     /**
      * Sets the number of nearest neighbors to be excluded from consideration. Must
-     * be {@code >= 0} and {@code < } {@link #k}.
+     * be in <code>[0, {@link #k})</code>.
      * 
      * @param exclude the number of nearest neighbors to be excluded from
      *                consideration; must be in {@code [0, k)}

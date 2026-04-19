@@ -59,7 +59,7 @@ import fap.util.Copyable;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.04.22.
+ * @version 2026.04.19.
  * @see AbstractExtendedEvaluator
  */
 public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements Copyable {
@@ -316,14 +316,14 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
     }
     
     /**
-     * Sets the number of folds. Must be {@code fnumber>1}.
+     * Sets the number of folds. Must be {@code fnumber > 1}.
      * 
-     * @param fnumber the number of folds, must be {@code > 1}
+     * @param fnumber the number of folds; must be {@code > 1}
      * @throws IllegalArgumentException if {@code fnumber <= 1}
      */
     public void setNumberOfFolds(int fnumber) {
         if (fnumber < 2)
-            throw new IllegalArgumentException("The number of folds must be greater than 1.");
+            throw new IllegalArgumentException("Invalid fnumber: " + fnumber + " (must be > 1)");
         this.fnumber = fnumber;
     }
 

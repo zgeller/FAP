@@ -306,10 +306,9 @@ public class DFTRepresentation implements Representation {
      */
     private void createDFT(final double[] values, int d) {
         
-        if (d < 1 || d > values.length) {
-            throw new IllegalArgumentException("Invalid representational dimensionality (d): " + d + 
-                                               " (must be in [1, " + 2 * values.length + "])");
-        }
+        if (d < 1 || d > values.length)
+            throw new IllegalArgumentException("Representational dimensionality (d) out of range " + 
+                                               "[1, " + 2 * values.length + "]): " + d);
 
         if (d % 2 != 0)
             throw new IllegalArgumentException("Representation dimensionality must be even.");

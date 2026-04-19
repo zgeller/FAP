@@ -212,8 +212,8 @@ public class IPLARepresentation implements Representation {
     private void createIPLA(final double[] values, int d) {
 
         if (d < 1 || d > 2 * values.length)
-            throw new IllegalArgumentException("Invalid representational dimensionality (d): " + d + 
-                                               " (must be in [1, " + 2 * values.length + "])");
+            throw new IllegalArgumentException("Representational dimensionality (d) out of range " + 
+                                               "[1, " + 2 * values.length + "]): " + d);
 
         if (d % 2 != 0)
             throw new IllegalArgumentException("Representation dimensionality must be even");

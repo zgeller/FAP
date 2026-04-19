@@ -60,7 +60,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.04.17.
+ * @version 2026.04.19.
  * @see KNNClassifier
  */
 public class MacleodKNNClassifier extends KNNClassifier {
@@ -244,7 +244,7 @@ public class MacleodKNNClassifier extends KNNClassifier {
      */
     public void setAlpha(double alpha) {
         if (alpha < 0)
-            throw new IllegalArgumentException("alpha must be >= 0");
+            throw new IllegalArgumentException("Invalid alpha: " + alpha + "(must be >= 0)");
         this.alpha = alpha;
     }
 

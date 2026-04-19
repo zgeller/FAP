@@ -35,7 +35,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.08.12.
+ * @version 2026.04.19.
  * @see AbstractConstrainedDistance
  * @see TWEDParameters
  * @see TWEDDistance
@@ -155,7 +155,7 @@ public class ItakuraTWEDDistance extends AbstractConstrainedDistance implements 
     public void setNu(double nu) throws IllegalArgumentException {
         
         if (nu < 0)
-            throw new IllegalArgumentException("Must be nu >= 0.");
+            throw new IllegalArgumentException("Invalid nu: " + nu + " (must be >= 0)");
         
         if (this.nu != nu) {
             this.clearStorage();
@@ -176,7 +176,7 @@ public class ItakuraTWEDDistance extends AbstractConstrainedDistance implements 
     public void setLambda(double lambda) throws IllegalArgumentException {
         
         if (lambda < 0)
-            throw new IllegalArgumentException("Must be lambda >= 0.");
+            throw new IllegalArgumentException("Invalid lambda: " + lambda + " (must be >= 0)");
         
         if (this.lambda != lambda) {
             this.clearStorage();

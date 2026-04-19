@@ -45,7 +45,7 @@ import fap.util.ThreadUtils;
  *            the {@link Comparable} interface
  * 
  * @author Zoltán Gellér
- * @version 2025.08.03.
+ * @version 2026.04.19.
  * @see AbstractTuner
  * @see ParameterTuner
  * @see Callbackable
@@ -418,7 +418,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
     @Override
     public void setValues(T first, T last) throws IllegalArgumentException {
         if (first.compareTo(last) > 0)
-            throw new IllegalArgumentException("Must be first <= last.");
+            throw new IllegalArgumentException("Invalid range: first > last (first=" + first + ", last=" + last + ")");
     }
 
     /**
@@ -429,7 +429,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
     @Override
     public void setValues(T first, T last, T increment) throws IllegalArgumentException {
         if (first.compareTo(last) > 0)
-            throw new IllegalArgumentException("Must be first <= last.");
+            throw new IllegalArgumentException("Invalid range: first > last (first=" + first + ", last=" + last + ")");
     }
 
     @Override

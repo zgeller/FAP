@@ -24,7 +24,7 @@ import fap.util.MathUtils;
  * {@link InverseSquaredKNNClassifier} classes.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.06.
+ * @version 2026.04.19.
  * @see KNNClassifier
  */
 public class AbstractInverseKNNClassifier extends KNNClassifier {
@@ -175,7 +175,7 @@ public class AbstractInverseKNNClassifier extends KNNClassifier {
      */
     public void setEpsilon(double epsilon) {
         if (epsilon < 0)
-            throw new IllegalArgumentException("epsilon must be >= 0");
+            throw new IllegalArgumentException("Invalid epsilon: " + epsilon + " (must be >= 0)");
         this.epsilon = epsilon;
     }
 

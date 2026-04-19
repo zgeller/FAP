@@ -53,7 +53,7 @@ import fap.util.Copyable;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.04.22.
+ * @version 2026.04.19.
  * @see AbstractExtendedEvaluator
  */
 public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable {
@@ -372,20 +372,20 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
     
     /**
      * Sets the percentage of the dataset that makes up the training set. Must be in
-     * the range {@code [0..100]}.
+     * the range {@code [0, 100]}.
      * 
      * @param percentage the percentage of the dataset that makes up the training
-     *                   set, must be in the range {@code [0..100]}
-     * @throws IllegalArgumentException if {@code percentage < 0} or
-     *                                  {@code percentage > 100}
+     *                   set; must be in {@code [0, 100]}
+     * @throws IllegalArgumentException if {@code percentage} not in
+     *                                  {@code [0, 100]}
      */
     public void setPercentage(double percentage) throws IllegalArgumentException {
-        
+
         if (percentage < 0 || percentage > 100)
-            throw new IllegalArgumentException("Percentage must be in the range [0..100].");
-        
+            throw new IllegalArgumentException("percentage out of range [0, 100]: " + percentage);
+
         this.percentage = percentage;
-        
+
     }
 
     /**

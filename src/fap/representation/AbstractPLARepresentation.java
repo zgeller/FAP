@@ -49,7 +49,7 @@ import fap.util.ExplicitLine;
  * </ol>
  * 
  * @author Miklós Kálózi, Zoltán Gellér, Brankica Bratić
- * @version 2025.03.05.2
+ * @version 2026.04.19.
  * @see Representation
  */
 public abstract class AbstractPLARepresentation<SegmentType> implements Representation {
@@ -213,16 +213,16 @@ public abstract class AbstractPLARepresentation<SegmentType> implements Represen
     private void createPLA(final double[] values, double maxError, int algorithm) {
         
         if (maxError < 0) // maxError must be non-negative
-            throw new IllegalArgumentException("maxError must be >=0" + ".");
+            throw new IllegalArgumentException("Invalid maxError: " + maxError + " (must be >= 0)");
 
         List<AbstractSegment> pla;
         
         switch (algorithm) {
-        
+
         case SLIDING_WINDOW:
             pla = slidingWindow(values, maxError);
             break;
-            
+
         case TOP_DOWN:
             List<Double> xValues = new ArrayList<Double>(values.length);
             List<Double> yValues = new ArrayList<Double>(values.length);
@@ -232,16 +232,16 @@ public abstract class AbstractPLARepresentation<SegmentType> implements Represen
             }
             pla = topDown(xValues, yValues, maxError);
             break;
-            
+
         case BOTTOM_UP:
             if (values.length % 2 != 0)
                 throw new IllegalArgumentException("In case of bottom-up algorithm, time series length cannot be odd.");
             pla = bottomUp(values, maxError);
             break;
-            
+
         default:
-            throw new IllegalArgumentException("Algorithm type is invalid.");
-            
+            throw new IllegalArgumentException("Invalid algorithm: " + algorithm);
+
         }
 
         setPLA(pla);

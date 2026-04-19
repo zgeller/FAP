@@ -56,7 +56,7 @@ import fap.util.MathUtils;
  * </ol>
  * 
  * @author Zoltán Gellér, Brankica Bratić
- * @version 2025.03.05.
+ * @version 2026.04.19.
  * @see Representation
  */
 public class HaarRepresentation implements Representation {
@@ -266,8 +266,8 @@ public class HaarRepresentation implements Representation {
             d = originalTimeSeriesLength;
 
         if (d < 1 || d > originalTimeSeriesLength)
-            throw new IllegalArgumentException(
-                    "Representation dimensionality must be between 1 and " + values.length + ".");
+            throw new IllegalArgumentException("Invalid representational dimensionality (d): " + d + 
+                                               " (must be in [1, " + originalTimeSeriesLength + "])");
 
         List<Double> coefficients = new ArrayList<Double>(originalTimeSeriesLength);
         List<Double> currentValues = new ArrayList<Double>(originalTimeSeriesLength);

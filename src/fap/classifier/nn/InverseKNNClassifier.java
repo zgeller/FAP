@@ -86,7 +86,7 @@ import fap.distance.Distance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.03.05.
+ * @version 2026.04.21.
  * @see AbstractInverseKNNClassifier
  */
 public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
@@ -252,9 +252,7 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
             double label = node.obj.getLabel();
             double weight = 1 / (node.distance + epsilon);
 
-            if (neighbours.containsKey(label))
-                weight += neighbours.get(label);
-            neighbours.put(label, weight);
+            weight = neighbours.merge(label, weight, Double::sum);
 
             if (weight > bestWeight) {
                 bestLabel = label;
@@ -262,9 +260,11 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
             }
 
             node = node.next;
+            
         }
 
         return bestLabel;
+        
     }
 
     @Override

@@ -42,7 +42,7 @@ import fap.distance.Distance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.03.05.
+ * @version 2026.04.21.
  * @see KNNClassifier
  */
 public class UniformKNNClassifier extends KNNClassifier {
@@ -143,10 +143,8 @@ public class UniformKNNClassifier extends KNNClassifier {
             double label = node.obj.getLabel();
             double weight = 1.0d / index;
 
-            if (neighbours.containsKey(label))
-                weight += neighbours.get(label);
-            neighbours.put(label, weight);
-
+            weight = neighbours.merge(label, weight, Double::sum);
+            
             if (weight > bestWeight) {
                 bestLabel = label;
                 bestWeight = weight;
@@ -154,9 +152,11 @@ public class UniformKNNClassifier extends KNNClassifier {
 
             node = node.next;
             index++;
+            
         }
 
         return bestLabel;
+        
     }
     
     @Override

@@ -58,7 +58,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.04.19.
+ * @version 2026.04.21.
  * @see AbstractNNClassifier
  */
 public class KNNClassifier extends AbstractNNClassifier {
@@ -205,7 +205,7 @@ public class KNNClassifier extends AbstractNNClassifier {
 
         LinkedDistanceNode<TimeSeries> node = list.getFirst();
 
-        Map<Double, Integer> neighbours = new HashMap<Double, Integer>();
+        Map<Double, Integer> neighbours = new HashMap<>();
 
         double bestLabel = node.obj.getLabel();
         int bestWeight = 1;
@@ -216,12 +216,8 @@ public class KNNClassifier extends AbstractNNClassifier {
         while (node != null) {
 
             double label = node.obj.getLabel();
-            int weight = 1;
-
-            if (neighbours.containsKey(label))
-                weight += neighbours.get(label);
-
-            neighbours.put(label, weight);
+            
+            int weight = neighbours.merge(label, 1, Integer::sum);
 
             if (weight > bestWeight) {
                 bestLabel = label;
@@ -229,6 +225,7 @@ public class KNNClassifier extends AbstractNNClassifier {
             }
 
             node = node.next;
+            
         }
 
         return bestLabel;
@@ -345,6 +342,7 @@ public class KNNClassifier extends AbstractNNClassifier {
             label = list.getFirst().obj.getLabel();
         
         return label;
+        
     }
 
     /**
@@ -425,6 +423,7 @@ public class KNNClassifier extends AbstractNNClassifier {
         }
 
         return list;
+        
     }
 
     /**

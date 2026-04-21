@@ -43,7 +43,7 @@ import fap.distance.Distance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.03.05.
+ * @version 2026.04.21.
  * @see KNNClassifier
  */
 public class DualUniformKNNClassifier extends KNNClassifier {
@@ -151,18 +151,16 @@ public class DualUniformKNNClassifier extends KNNClassifier {
 			while (node != null) {
 
 				double label = node.obj.getLabel();
-				int weight = 1;
-
-				if (neighbours.containsKey(label))
-					weight += neighbours.get(label);
-				neighbours.put(label, weight);
-
+				
+				int weight = neighbours.merge(label, 1, Integer::sum);
+				
 				if (weight > bestWeight) {
 					bestLabel = label;
 					bestWeight = weight;
 				}
 
 				node = node.next;
+				
 			}
 
 		}
@@ -185,10 +183,8 @@ public class DualUniformKNNClassifier extends KNNClassifier {
 				double label = node.obj.getLabel();
 				double weight = (lastDist - node.distance) / (index * diff);
 
-				if (neighbours.containsKey(label))
-					weight += neighbours.get(label);
-				neighbours.put(label, weight);
-
+				weight = neighbours.merge(label, weight, Double::sum);
+				
 				if (weight > bestWeight) {
 					bestLabel = label;
 					bestWeight = weight;
@@ -196,10 +192,13 @@ public class DualUniformKNNClassifier extends KNNClassifier {
 
 				node = node.next;
 				index++;
+				
 			}
+			
 		}
 
 		return bestLabel;
+		
 	}
 
     @Override

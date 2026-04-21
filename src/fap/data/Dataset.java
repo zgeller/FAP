@@ -36,7 +36,7 @@ import java.util.Set;
  * used to store the time series is determined at instantiation.
  * 
  * @author Zoltán Gellér
- * @version 2026.04.19.
+ * @version 2026.04.21.
  * @see TimeSeries
  * @see List
  * @see Serializable
@@ -228,11 +228,8 @@ public class Dataset implements List<TimeSeries>, Serializable {
         for (Double d : labels)
             map.put(d, 0);
         
-        for (TimeSeries ts : this) {
-            double label = ts.getLabel();
-            if (map.containsKey(label))
-                map.put(label, map.get(label) + 1);
-        }
+        for (TimeSeries ts : this)
+            map.computeIfPresent(ts.getLabel(), (_, v) -> v + 1);
 
         return new ArrayList<Integer>(map.values());
 

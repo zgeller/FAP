@@ -51,7 +51,7 @@ import fap.distance.Distance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.03.05.
+ * @version 2026.04.21.
  * @see KNNClassifier
  */
 public class ZavrelKNNClassifier extends KNNClassifier {
@@ -273,16 +273,15 @@ public class ZavrelKNNClassifier extends KNNClassifier {
             double label = node.obj.getLabel();
             double weight = Math.exp(-alpha * Math.pow(node.distance, beta));
 
-            if (neighbours.containsKey(label))
-                weight += neighbours.get(label);
-            neighbours.put(label, weight);
-
+            weight = neighbours.merge(label, weight, Double::sum);
+            
             if (weight > bestWeight) {
                 bestLabel = label;
                 bestWeight = weight;
             }
 
             node = node.next;
+            
         }
 
         return bestLabel;

@@ -50,7 +50,7 @@ import fap.distance.Distance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.03.05.
+ * @version 2026.04.21.
  * @see KNNClassifier
  */
 public class RankKNNClassifier extends KNNClassifier {
@@ -148,11 +148,8 @@ public class RankKNNClassifier extends KNNClassifier {
         while (node != null) {
 
             double label = node.obj.getLabel();
-            int weight = rank;
 
-            if (neighbours.containsKey(label))
-                weight += neighbours.get(label);
-            neighbours.put(label, weight);
+            int weight = neighbours.merge(label, rank, Integer::sum);
 
             if (weight > bestWeight) {
                 bestLabel = label;
@@ -161,6 +158,7 @@ public class RankKNNClassifier extends KNNClassifier {
 
             node = node.next;
             rank--;
+            
         }
 
         return bestLabel;

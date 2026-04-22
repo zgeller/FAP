@@ -282,7 +282,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * @return the random seeds used to shuffle the dataset
      */
     public long[] getSeeds() {
-        return seeds;
+        return seeds != null ? seeds.clone() : null;
     }
 
     /**
@@ -291,7 +291,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * @param the random seeds to be used to shuffle the dataset
      */
     public void setSeeds(long[] seeds) {
-        this.seeds = seeds;
+        this.seeds = seeds != null ? seeds.clone() : null;
     }
     
     /**

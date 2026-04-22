@@ -24,10 +24,10 @@ import fap.util.MathUtils;
  * {@link InverseSquaredKNNClassifier} classes.
  * 
  * @author Zoltán Gellér
- * @version 2026.04.19.
+ * @version 2026.04.22.
  * @see KNNClassifier
  */
-public class AbstractInverseKNNClassifier extends KNNClassifier {
+public abstract class AbstractInverseKNNClassifier extends KNNClassifier {
 
     private static final long serialVersionUID = 1L;
 

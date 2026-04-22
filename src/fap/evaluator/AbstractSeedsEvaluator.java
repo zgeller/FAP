@@ -824,7 +824,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      */
     protected void init(AbstractSeedsEvaluator copy, boolean deep) {
         copy.setStratified(this.isStratified());
-        copy.setSeeds(this.getSeeds()); // consider making a copy
+        copy.setSeeds(this.seeds);
     }
     
 }

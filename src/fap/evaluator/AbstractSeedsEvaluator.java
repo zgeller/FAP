@@ -70,7 +70,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     /**
      * Indicates whether to apply parallel tuning and evaluating the classifier
      * which requires that both the tuner and the classifier implement the
-     * {@link Copyable} interface (or that there is no tuner). It they do not
+     * {@link Copyable} interface (or that there is no tuner). If they do not
      * implement it, the algorithm will revert to sequential tuning (and parallel
      * evaluation). Default value is {@code true}.
      */

@@ -552,9 +552,9 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
         /**
          * Constructs a new classification task.
          * 
-         * @param run run index
-         * @param ts  index of the time series to be classified within the test set of
-         *            the specified {@code run}
+         * @param run     run index
+         * @param tsIndex index of the time series to be classified within the test set
+         *                of the specified {@code run}
          */
         public ClassifyTask(int iteration, int tsIndex) {
             this.iteration = iteration;

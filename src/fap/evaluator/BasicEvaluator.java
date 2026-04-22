@@ -325,7 +325,6 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
             }
             
         }
-
         
     }
 
@@ -372,7 +371,6 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
             if (classifier instanceof Multithreaded mc && tnumber > 1)
                 mc.setNumberOfThreads(ctnumber);
         }
-        
         
     }
 

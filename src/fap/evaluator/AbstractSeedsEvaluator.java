@@ -88,7 +88,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     protected ConcurrentLinkedQueue<Tuner> tuners;
     
     /**
-     * A tuned classifier for each run.
+     * A tuned classifier for each iteration.
      */
     protected Classifier[] classifiers;
     
@@ -98,7 +98,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     protected boolean[][] classified;
     
     /**
-     * The number of the classified time series within each run.
+     * The number of the classified time series within each iteration.
      */
     protected int[] classifiedCount;
     
@@ -545,16 +545,16 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
         
         /**
          * Index of the time series to be classified within the test set of the
-         * specified {@code run}.
+         * specified {@code iteration}.
          */
         int tsIndex;
         
         /**
          * Constructs a new classification task.
          * 
-         * @param run     run index
-         * @param tsIndex index of the time series to be classified within the test set
-         *                of the specified {@code run}
+         * @param iteration iteration index
+         * @param tsIndex   index of the time series to be classified within the test
+         *                  set of the specified {@code iteration}
          */
         public ClassifyTask(int iteration, int tsIndex) {
             this.iteration = iteration;

@@ -18,7 +18,6 @@ package fap.util;
 
 import java.util.Collection;
 
-import fap.callback.Callbackable;
 import fap.classifier.Classifier;
 import fap.evaluator.Evaluator;
 import fap.tuner.Tuner;
@@ -37,15 +36,6 @@ public final class Copier {
     /**
      * Makes {@code n} copies of the specified {@code tuner} and {@code classifier}
      * and adds them to the {@code tuners} and {@code classifiers} lists.
-     * 
-     * <p>
-     * If the {@code tuner} ({@code classifier}) implements the
-     * {@link Multithreaded} interface, sets the number of threads of the copies to
-     * 1.
-     * 
-     * <p>
-     * If the {@code tuner} ({@code classifier}) implements the {@link Callbackable}
-     * interface, initializes the callback of the copies to {@code null}.
      * 
      * <p>
      * If the tuner does not affect the distance measure, the copies of the
@@ -82,14 +72,6 @@ public final class Copier {
      * Makes {@code n} copies of the specified {@code tuner} and adds them to the
      * {@code tuners} list.
      * 
-     * <p>
-     * If the {@code tuner} implements the {@link Multithreaded} interface, sets
-     * the number of threads of the copies to 1.
-     * 
-     * <p>
-     * If the {@code tuner} implements the {@link Callbackable} interface,
-     * initializes the callback of the copies to {@code null}.
-     * 
      * @param tuner  the tuner whose copies should be made
      * @param tuners the list to which the copies of the {@code tuner} should be
      *                 added
@@ -110,14 +92,6 @@ public final class Copier {
     /**
      * Makes {@code n} copies of the specified {@code classifier} and adds them to
      * the {@code classifiers} list.
-     * 
-     * <p>
-     * If the {@code classifier} implements the {@link Multithreaded} interface,
-     * sets the number of threads of the copies to 1.
-     * 
-     * <p>
-     * If the {@code classifier} implements the {@link Callbackable} interface,
-     * initializes the callback of the copies to {@code null}.
      * 
      * @param classifier  the classifier whose copies should be made
      * @param classifiers the list to which the copies of the {@code classifier}
@@ -140,14 +114,6 @@ public final class Copier {
     /**
      * Makes {@code n} copies of the specified {@code evaluator} and adds them to
      * the {@code evaluators} list.
-     * 
-     * <p>
-     * If the {@code evaluator} implements the {@link Multithreaded} interface, sets
-     * the number of threads of the copies to 1.
-     * 
-     * <p>
-     * If the {@code evaluator} implements the {@link Callbackable} interface,
-     * initializes the callback of the copies to {@code null}.
      * 
      * @param evaluator  the evaluator whose copies should be made
      * @param evaluators the list to which the copies of the {@code evaluator}

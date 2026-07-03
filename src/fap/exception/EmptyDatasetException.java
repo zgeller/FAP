@@ -22,7 +22,7 @@ import fap.data.Dataset;
  * Runtime exception thrown when the specified dataset cannot be empty but it is empty.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.11.
+ * @version 2026.07.03.
  * @see CoreRuntimeException
  */
 public class EmptyDatasetException extends CoreRuntimeException {
@@ -48,13 +48,25 @@ public class EmptyDatasetException extends CoreRuntimeException {
      * Checks if the specified {@code dataset} is empty and throws an
      * {@code EmptyDataset} exception if it is empty.
      * 
+     * @param dataset the dataset to be checked
      * @throws EmptyDatasetException if the {@code dataset} is empty
      */
     public static void check(Dataset dataset) {
-        
         if (dataset.isEmpty())
             throw new EmptyDatasetException("The dataset cannot be empty.");
-        
+    }
+
+    /**
+     * Checks if the specified {@code dataset} is empty and throws an
+     * {@code EmptyDataset} exception if it is empty.
+     * 
+     * @param dataset the dataset to be checked
+     * @param dsname  the name of of the dataset
+     * @throws EmptyDatasetException if the {@code dataset} is empty
+     */
+    public static void check(Dataset dataset, String dsname) {
+        if (dataset.isEmpty())
+            throw new EmptyDatasetException("The " + dsname + " dataset cannot be empty.");
     }
 
 }

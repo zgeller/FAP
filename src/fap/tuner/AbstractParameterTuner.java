@@ -490,9 +490,10 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * 
      * @param classifier the classifier whose hyperparameters are to be tuned
      * @param dataset    the dataset
-     * @throws NullPointerException if the classifier or dataset is {@code null}
+     * @throws NullPointerException  if the classifier or dataset is {@code null}
      * @throws EmptyDatasetException if the dataset is empty
-     * @throws IllegalStateException if both the subtuner and evaluator are {@code null}
+     * @throws IllegalStateException if both the subtuner and evaluator are
+     *                               {@code null}
      */
     protected void checkConditions(Classifier classifier, Dataset dataset) {
 

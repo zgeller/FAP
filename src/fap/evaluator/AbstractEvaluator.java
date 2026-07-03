@@ -16,11 +16,17 @@
 
 package fap.evaluator;
 
+import java.util.Objects;
+
+import fap.classifier.Classifier;
+import fap.data.Dataset;
+import fap.exception.EmptyDatasetException;
+
 /**
  * Defines common methods and fields for classifier evaluators.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.17.
+ * @version 2026.07.03.
  * @see Evaluator
  */
 public abstract class AbstractEvaluator implements Evaluator {
@@ -41,6 +47,20 @@ public abstract class AbstractEvaluator implements Evaluator {
      * Empty constructor.
      */
     public AbstractEvaluator() {
+    }
+    
+    /**
+     * Checks if conditions are met for evaluating.
+     * 
+     * @param classifier the classifier that is to be evaluated
+     * @param dataset    the dataset to be used for evaluating the classifier
+     * @throws NullPointerException  if the classifier or dataset is {@code null}
+     * @throws EmptyDatasetException if the dataset is empty
+     */
+    protected void checkConditions(Classifier classifier, Dataset dataset) {
+        Objects.requireNonNull(classifier, "The classifier cannot be null.");
+        Objects.requireNonNull(dataset, "The dataset cannot be null.");
+        EmptyDatasetException.check(dataset);
     }
     
     @Override

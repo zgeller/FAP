@@ -23,7 +23,6 @@ import java.util.Random;
 
 import fap.classifier.Classifier;
 import fap.data.Dataset;
-import fap.exception.EmptyDatasetException;
 import fap.tuner.Tuner;
 import fap.util.Copyable;
 
@@ -53,7 +52,7 @@ import fap.util.Copyable;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.04.19.
+ * @version 2026.07.03.
  * @see AbstractExtendedEvaluator
  */
 public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable {
@@ -403,10 +402,9 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
     @Override
     public double evaluate(Tuner tuner, Classifier classifier, Dataset dataset) throws Exception {
 
-        if (done)
-            return error;
-
-        EmptyDatasetException.check(dataset);
+        checkConditions(classifier, dataset);
+        
+        done = false;
 
         // determining the size of the test set
         if (tsize < 0) {

@@ -19,6 +19,7 @@ package fap.evaluator;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import fap.callback.Callback;
@@ -41,7 +42,7 @@ import fap.util.ThreadUtils;
  * It evaluates a classifier based on the specified test and train sets.
  * 
  * @author Zoltán Gellér
- * @version 2025.04.22.
+ * @version 2026.07.03.
  * @see Serializable
  * @see Callbackable
  * @see Resumable
@@ -150,14 +151,13 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
      */
     public double evaluate(Tuner tuner, Classifier classifier, Dataset testset, Dataset trainset) throws Exception {
 
-        if (done)
-            return error;
+        Objects.requireNonNull(classifier, "The classifier cannot be null.");
+        Objects.requireNonNull(testset, "The test set cannot be null.");
+        Objects.requireNonNull(trainset, "The training set cannot be null.");
+        EmptyDatasetException.check(testset, "test");
+        EmptyDatasetException.check(trainset, "training");
 
-        if (testset.isEmpty())
-            throw new EmptyDatasetException("The test set cannot be empty.");
-
-        if (trainset.isEmpty())
-            throw new EmptyDatasetException("The train set cannot be empty.");
+        done = false;
 
         final int tsize = testset.size();
 

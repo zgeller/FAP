@@ -23,10 +23,9 @@ import java.util.List;
 import fap.classifier.Classifier;
 import fap.data.Dataset;
 import fap.data.TimeSeries;
-import fap.exception.EmptyDatasetException;
 import fap.tuner.Tuner;
-import fap.util.Copyable;
 import fap.util.Copier;
+import fap.util.Copyable;
 import fap.util.Resumable;
 import fap.util.ThreadUtils;
 
@@ -53,7 +52,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.04.22.
+ * @version 2026.07.03.
  * @see AbstractExtendedEvaluator
  */
 public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements Copyable {
@@ -130,10 +129,9 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
     @Override
     public double evaluate(Tuner tuner, Classifier classifier, Dataset dataset) throws Exception {
         
-        if (done)
-            return error;
+        checkConditions(classifier, dataset);
         
-        EmptyDatasetException.check(dataset);
+        done = false;
         
         final int dsize = dataset.size();
 

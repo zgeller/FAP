@@ -20,7 +20,7 @@ package fap.tuner;
  * Defines common methods and fields for classifier hyperparameter tuners.
  * 
  * @author Zoltán Gellér
- * @version 2025.04.21.
+ * @version 2026.07.03.
  * @see Tuner
  */
 public abstract class AbstractTuner implements Tuner {
@@ -33,9 +33,9 @@ public abstract class AbstractTuner implements Tuner {
     protected boolean affectsDistance;
 
     /**
-     * The expected error rate. Default value is {@code Double.POSITIVE_INFINITY}.
+     * The expected error rate. Default value is {@link Tuner#DEFAULT_EXPECTED_ERROR DEFAULT_EXPECTED_ERROR}.
      */
-    protected double expectedError = Double.POSITIVE_INFINITY;
+    protected double expectedError = DEFAULT_EXPECTED_ERROR;
 
     /**
      * Empty constructor.

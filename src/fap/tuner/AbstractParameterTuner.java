@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -45,7 +46,7 @@ import fap.util.ThreadUtils;
  *            the {@link Comparable} interface
  * 
  * @author Zoltán Gellér
- * @version 2026.04.19.
+ * @version 2026.07.03.
  * @see AbstractTuner
  * @see ParameterTuner
  * @see Callbackable
@@ -469,7 +470,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
 
     // initialization
     protected void initLoop() {
-        expectedError = Double.POSITIVE_INFINITY;
+        expectedError = DEFAULT_EXPECTED_ERROR;
         progress = -1;
         steps = 0;
         if (callback != null)
@@ -483,18 +484,37 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
         for (int i = 0; i < len; i++)
             tunedParameters.add(null);
     }
+    
+    /**
+     * Checks if conditions are met for tuning.
+     * 
+     * @param classifier the classifier whose hyperparameters are to be tuned
+     * @param dataset    the dataset
+     * @throws NullPointerException if the classifier or dataset is {@code null}
+     * @throws EmptyDatasetException if the dataset is empty
+     * @throws IllegalStateException if both the subtuner and evaluator are {@code null}
+     */
+    protected void checkConditions(Classifier classifier, Dataset dataset) {
+
+        Objects.requireNonNull(classifier, "The classifier cannot be null.");
+        Objects.requireNonNull(dataset, "The dataset cannot be null.");
+
+        EmptyDatasetException.check(dataset);
+        
+        if ((subtuner == null) && (evaluator == null))
+            throw new IllegalStateException("Both subtuner and evaluator cannot be null at the same time.");
+        
+    }
 
     @Override
     public double tune(Classifier classifier, Dataset dataset) throws Exception {
 
-        if (done || ((subtuner == null) && (evaluator == null)))
-            return expectedError;
-
-        if (dataset.isEmpty())
-            throw new EmptyDatasetException("The dataset cannot be empty.");
+        checkConditions(classifier, dataset);
+        
+        done = false;
 
         final int len = values.size();
-
+        
         // callback initialization
         if (callback != null) {
             stepSize = (double) callback.getDesiredCallbackNumber() / len;
@@ -515,7 +535,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
         boolean parallelTuning = (tnumber > 1) && 
                                  ((subtuner == null) || (subtuner instanceof Copyable)) && 
                                  (classifier instanceof Copyable);
-        
+
         if (parallelTuning)
             tuneParallel(classifier, dataset, tnumber);
         else
@@ -565,7 +585,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
             if (subtuner != null) {
 
                 error = subtuner.tune(classifier, dataset);
-
+                
                 if (subtuner instanceof Resumable rst)
                     rst.reset();
 
@@ -715,7 +735,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * @throws Exception if an error occurs
      */
     protected void tuneParallel(Classifier classifier, Dataset dataset, int tnumber) throws Exception {
-        
+
         // making copies of this tuner
         tuners = new ConcurrentLinkedQueue<>();
         Copier.makeCopies(this, tuners, tnumber);

@@ -25,11 +25,16 @@ import fap.data.Dataset;
  * Declares common methods for classifier hyperparameter tuners.
  * 
  * @author Zoltán Gellér
- * @version 2025.04.21.
+ * @version 2026.07.03.
  * @see Serializable
  */
 public interface Tuner extends Serializable  {
 
+    /**
+     * Default expected error rate.
+     */
+    public static final double DEFAULT_EXPECTED_ERROR = Double.POSITIVE_INFINITY;
+    
     /**
      * Tunes the hyperparameters of the specified classifier using the given
      * dataset. It should return the expected error rate.

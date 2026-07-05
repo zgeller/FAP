@@ -44,7 +44,7 @@ import fap.exception.IncomparableTimeSeriesException;
  *          http://www.gly.fsu.edu/~parker/geostats/Cha.pdf</a>.
  *  <li> A. Levy, B.R. Shalom, M. Chalamish, A guide to similarity measures and
  *       their data science applications, J. Big Data. 12 (2025) 188. 
- *       <a href=* "https://doi.org/10.1186/s40537-025-01227-1">
+ *       <a href="https://doi.org/10.1186/s40537-025-01227-1">
  *          https://doi.org/10.1186/s40537-025-01227-1</a>.
  * </ol>
  * 

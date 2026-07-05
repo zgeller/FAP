@@ -21,7 +21,7 @@ import fap.exception.IncomparableTimeSeriesException;
 import fap.util.MathUtils;
 
 /**
- * Sørensen (Bray-Curtis) distance measure. Time series must be the same length (n)
+ * Sørensen (Bray-Curtis, Czekanowski) distance measure. Time series must be the same length (n)
  * and they should be non-negative:
  * 
  * <blockquote> <img src="doc-files/SorensenDistance-1.png"> </blockquote>

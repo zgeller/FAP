@@ -108,10 +108,13 @@ public class SoergelDistance extends AbstractCopyableDistance {
         }
 
         double distance;
+        
         if (sumAbs == 0 && sumMax == 0)
             distance = 0;
+        
         else if (sumMax == 0)
             distance = sumAbs / MathUtils.getZeroDenominator();
+        
         else
             distance = sumAbs / sumMax;
         

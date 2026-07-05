@@ -21,7 +21,7 @@ import fap.exception.IncomparableTimeSeriesException;
 import fap.util.MathUtils;
 
 /**
- * Soergel (Jaccard) distance measure. Time series must be the same length (n)
+ * Soergel (generalized Jaccard, Ruzicka) distance measure. Time series must be the same length (n)
  * and they should be non-negative:
  *
  * <blockquote> <img src="doc-files/SoergelDistance-1.png"> </blockquote>

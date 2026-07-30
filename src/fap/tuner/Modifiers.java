@@ -32,7 +32,7 @@ import fap.distance.elastic.TWEDParameters;
  * Auxiliary class that defines common modifiers.
  *
  * @author Zoltán Gellér
- * @version 2024.09.24.
+ * @version 2026.07.30.
  * @see ClassifierModifier
  * @see DistanceModifier
  * @see Modifier
@@ -135,7 +135,7 @@ public final class Modifiers {
      * 
      * @see ConstrainedDistance
      */
-    public static final DistanceModifier<Integer> ABSOLUT_ELASTICITY = new DistanceModifier<>() {
+    public static final DistanceModifier<Integer> ABSOLUTE_ELASTICITY = new DistanceModifier<>() {
 
         @Override
         public void set(Classifier classifier, Integer value) {

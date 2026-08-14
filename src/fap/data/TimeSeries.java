@@ -18,7 +18,6 @@ package fap.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,7 +42,7 @@ import java.util.Map;
  * distance and neighbor matrices, as kNN classifiers rely on them for mapping.
  * 
  * @author Zoltán Gellér
- * @version 2025.08.14.
+ * @version 2026.08.14.
  * @see DataPoint
  * @see List
  * @see Serializable
@@ -232,7 +231,7 @@ public class TimeSeries implements List<DataPoint>, Serializable {
      */
     public TimeSeries(boolean linkedList, double label) {
         this(linkedList);
-        this.setLabel(label);
+        this.label = label;
     }
 
     /**
@@ -248,7 +247,7 @@ public class TimeSeries implements List<DataPoint>, Serializable {
      */
     public TimeSeries(boolean linkedList, double label, int index) {
         this(linkedList, label);
-        this.setIndex(index);
+        this.index = index;
     }
 
     /***
@@ -283,7 +282,7 @@ public class TimeSeries implements List<DataPoint>, Serializable {
      */
     public TimeSeries(boolean linkedList, double label, DataPoint[] points) {
         this(linkedList, points);
-        this.setLabel(label);
+        this.label = label;
     }
 
     /**
@@ -301,7 +300,7 @@ public class TimeSeries implements List<DataPoint>, Serializable {
      */
     public TimeSeries(boolean linkedList, double label, int index, DataPoint[] points) {
         this(linkedList, label, points);
-        this.setIndex(index);
+        this.index = index;
     }
 
     /**
@@ -348,7 +347,7 @@ public class TimeSeries implements List<DataPoint>, Serializable {
      */
     public TimeSeries(boolean linkedList, double label, int index, double... yValues) {
         this(linkedList, label, yValues);
-        this.setIndex(index);
+        this.index = index;
     }
 
     /**
@@ -388,8 +387,8 @@ public class TimeSeries implements List<DataPoint>, Serializable {
 
             // label and index
             if (c instanceof TimeSeries cts) {
-                this.setLabel(cts.getLabel());
-                this.setIndex(cts.getIndex());
+                this.label = cts.getLabel();
+                this.index = cts.getIndex();
             }
 
         }
@@ -1429,71 +1428,6 @@ public class TimeSeries implements List<DataPoint>, Serializable {
 
         return ts;
 
-    }
-    
-    private static void print(double... array) {
-        if (array != null)
-            System.out.println(Arrays.toString(array));
-        else
-            System.out.println("null");
-    }
-    
-    public static void main(String[] args) {
-        TimeSeries a = TimeSeries.of(-2, 3, 4);
-        TimeSeries ts = new TimeSeries(a);
-        System.out.println("max      = " + ts.maxY());
-        System.out.println("min      = " + ts.minY());
-        System.out.println("range    = " + ts.rangeY());
-        System.out.println("maxAbs   = " + ts.maxAbsY());
-        System.out.println("minAbs   = " + ts.minAbsY());
-        System.out.println("mean     = " + ts.meanY());
-        System.out.println("variance = " + ts.varianceY());
-        System.out.println("var_pop  = " + ts.varianceY(true));
-        System.out.println("stdev    = " + ts.stdevY());
-        System.out.println("std_pop  = " + ts.stdevY(true));
-        System.out.println("median   = " + ts.medianY());
-        
-        ts.normalizeYZScore();
-        System.out.println();
-        System.out.println("ZScore");
-        print(ts.getYValues());
-        
-        ts = new TimeSeries(a);
-        ts.normalizeYZScore(true);
-        System.out.println();
-        System.out.println("ZScore(true)");
-        print(ts.getYValues());
-        
-        ts = new TimeSeries(a);
-        ts.normalizeYMean();
-        System.out.println();
-        System.out.println("Mean");
-        print(ts.getYValues());
-        
-        ts = new TimeSeries(a);
-        ts.normalizeYMinMax();;
-        System.out.println();
-        System.out.println("MinMax");
-        print(ts.getYValues());
-
-        ts = new TimeSeries(a);
-        ts.normalizeYMinMax(5, 8);
-        System.out.println();
-        System.out.println("MinMax(5, 8)");
-        print(ts.getYValues());
-        
-        ts = new TimeSeries(a);
-        ts.normalizeYMaxAbs();
-        System.out.println();
-        System.out.println("MaxAbs");
-        print(ts.getYValues());
-        
-        ts = new TimeSeries(a);
-        ts.normalizeYDecimalScaling();
-        System.out.println();
-        System.out.println("DecimalScaling");
-        print(ts.getYValues());
-        
     }
 
 }

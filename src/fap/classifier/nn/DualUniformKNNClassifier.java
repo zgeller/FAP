@@ -43,7 +43,7 @@ import fap.distance.Distance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.04.21.
+ * @version 2026.08.14.
  * @see KNNClassifier
  */
 public class DualUniformKNNClassifier extends KNNClassifier {
@@ -140,7 +140,7 @@ public class DualUniformKNNClassifier extends KNNClassifier {
 
 			LinkedDistanceNode<TimeSeries> node = firstNode;
 
-			Map<Double, Integer> neighbours = new HashMap<Double, Integer>();
+			Map<Double, Integer> neighbours = new HashMap<>();
 
 			bestLabel = node.obj.getLabel();
 			int bestWeight = 1;
@@ -169,7 +169,7 @@ public class DualUniformKNNClassifier extends KNNClassifier {
 
 			LinkedDistanceNode<TimeSeries> node = firstNode;
 
-			Map<Double, Double> neighbours = new HashMap<Double, Double>();
+			Map<Double, Double> neighbours = new HashMap<>();
 
 			bestLabel = firstNode.obj.getLabel();
 			double bestWeight = (lastDist - node.distance) / diff;

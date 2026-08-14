@@ -61,7 +61,7 @@ import fap.distance.Distance;
  * <p>
  * Then:<br>
  * <blockquote> <code> 
- *  w<sub>p</sub> = 1000 <
+ *  w<sub>p</sub> = 1000 &lt;
  *  w<sub>q</sub> + w<sub>r</sub> +
  *  w<sub>s</sub> = 999.001 + 996.016 + 991.080 = 2986.097</code>, 
  * </blockquote> 
@@ -85,7 +85,7 @@ import fap.distance.Distance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.04.21.
+ * @version 2026.08.14.
  * @see AbstractInverseKNNClassifier
  */
 public class InverseSquaredKNNClassifier extends AbstractInverseKNNClassifier {
@@ -236,7 +236,7 @@ public class InverseSquaredKNNClassifier extends AbstractInverseKNNClassifier {
 
         LinkedDistanceNode<TimeSeries> node = list.getFirst();
 
-        Map<Double, Double> neighbours = new HashMap<Double, Double>();
+        Map<Double, Double> neighbours = new HashMap<>();
 
         double epsilon = this.getEpsilon();
 

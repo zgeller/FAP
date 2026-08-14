@@ -51,7 +51,7 @@ import fap.distance.Distance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.04.21.
+ * @version 2026.08.14.
  * @see KNNClassifier
  */
 public class ZavrelKNNClassifier extends KNNClassifier {
@@ -257,7 +257,7 @@ public class ZavrelKNNClassifier extends KNNClassifier {
 
         LinkedDistanceNode<TimeSeries> node = list.getFirst();
 
-        Map<Double, Double> neighbours = new HashMap<Double, Double>();
+        Map<Double, Double> neighbours = new HashMap<>();
         
         double alpha = this.getAlpha();
         double beta = this.getBeta();

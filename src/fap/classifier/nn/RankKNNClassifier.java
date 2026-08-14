@@ -50,7 +50,7 @@ import fap.distance.Distance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.04.21.
+ * @version 2026.08.14.
  * @see KNNClassifier
  */
 public class RankKNNClassifier extends KNNClassifier {
@@ -135,7 +135,7 @@ public class RankKNNClassifier extends KNNClassifier {
 
         LinkedDistanceNode<TimeSeries> node = list.getFirst();
 
-        Map<Double, Integer> neighbours = new HashMap<Double, Integer>();
+        Map<Double, Integer> neighbours = new HashMap<>();
 
         double bestLabel = node.obj.getLabel();
         int rank = list.getCount();

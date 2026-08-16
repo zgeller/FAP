@@ -66,16 +66,19 @@ public class JeffreysDistance extends AbstractCopyableDistance {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructs a new Jeffreys distance measure.
+     * Constructs a new Jeffreys (Jeffreys divergence, J-divergence) distance
+     * measure.
      */
     public JeffreysDistance() {
     }
 
     /**
-     * Constructs a new Jeffreys distance measure and sets whether to store
-     * distances.
+     * Constructs a new Jeffreys (Jeffreys divergence, J-divergence) distance
+     * measure, specifying whether calculated distances should be stored in memory
+     * for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public JeffreysDistance(boolean storing) {
         super(storing);

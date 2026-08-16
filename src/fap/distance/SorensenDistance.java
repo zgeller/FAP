@@ -61,16 +61,17 @@ public class SorensenDistance extends AbstractCopyableDistance {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructs a new Sorensen distance measure.
+     * Constructs a new Sorensen (Bray-Curtis, Czekanowski) distance measure.
      */
     public SorensenDistance() {
     }
 
     /**
-     * Constructs a new Sorensen distance measure and sets whether to store
-     * distances.
+     * Constructs a new Sorensen (Bray-Curtis, Czekanowski) distance measure,
+     * specifying whether calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public SorensenDistance(boolean storing) {
         super(storing);

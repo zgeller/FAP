@@ -63,16 +63,17 @@ public class JensenDifferenceDistance extends AbstractCopyableDistance {
     private static final long serialVersionUID = 1L;
     
     /**
-     * Constructs a new Jensen difference distance measure.
+     * Constructs a new Jensen difference (information radius) distance measure.
      */
     public JensenDifferenceDistance() {
     }
 
     /**
-     * Constructs a new Jensen difference distance measure and sets whether to store
-     * distances.
+     * Constructs a new Jensen difference (information radius) distance measure,
+     * specifying whether calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public JensenDifferenceDistance(boolean storing) {
         super(storing);

@@ -40,10 +40,11 @@ public class ManhattanDistance extends AbstractCopyableDistance {
     }
     
     /**
-     * Constructs a new Manhattan (L1, city block) distance measure and
-     * sets whether to store distances.
+     * Constructs a new Manhattan (L1, city block) distance measure, specifying
+     * whether calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public ManhattanDistance(boolean storing) {
         super(storing);

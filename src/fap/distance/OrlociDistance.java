@@ -62,15 +62,17 @@ public class OrlociDistance extends AbstractCopyableDistance {
     private static final long serialVersionUID = 1L;
     
     /**
-     * Constructs a new Orloci distance measure.
+     * Constructs a new Orloci (chord) distance measure.
      */
     public OrlociDistance() {
     }
 
     /**
-     * Constructs a new Orloci distance measure and sets whether to store distances.
+     * Constructs a new Orloci (chord) distance measure, specifying whether
+     * calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public OrlociDistance(boolean storing) {
         super(storing);

@@ -44,17 +44,17 @@ public class MinkowskiDistance extends AbstractCopyableDistance {
     private double p = 2;
 
     /**
-     * Constructs a new Minkowski (Lp) distance measure with the default value of
-     * {@link #p}.
+     * Constructs a default Minkowski (Lp) distance measure.
      */
     public MinkowskiDistance() {
     }
 
     /**
-     * Constructs a new Minkowski (Lp) distance measure with the default value of
-     * {@link #p}, and sets whether to store distances.
+     * Constructs a default Minkowski (Lp) distance measure, specifying whether
+     * calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public MinkowskiDistance(boolean storing) {
         super(storing);

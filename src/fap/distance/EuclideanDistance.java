@@ -39,10 +39,11 @@ public class EuclideanDistance extends AbstractCopyableDistance {
     }
     
     /**
-     * Constructs a new Euclidean (L2) distance measure and sets whether to store
-     * distances.
+     * Constructs a new Euclidean (L2) distance measure, specifying whether
+     * calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public EuclideanDistance(boolean storing) {
         super(storing);

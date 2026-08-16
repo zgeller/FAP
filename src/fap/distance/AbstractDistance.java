@@ -36,7 +36,7 @@ import fap.data.TimeSeries;
  * </ul>
  * 
  * @author Zoltán Gellér
- * @version 2025.08.12.
+ * @version 2026.08.16.
  * @see Distance
  */
 public abstract class AbstractDistance implements Distance {
@@ -54,31 +54,36 @@ public abstract class AbstractDistance implements Distance {
     private boolean storing = false;
     
     /**
-     * Empty constructor.
+     * Constructs a default distance measure.
      */
-    public AbstractDistance() {
+    protected AbstractDistance() {
     }
     
     /**
-     * Constructor with the possibility to enable or disable storing distances.
+     * Constructs a new distance measure, specifying whether calculated distances
+     * should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
-    public AbstractDistance(boolean storing) {
-        this.setStoring(storing);
+    protected AbstractDistance(boolean storing) {
+        this.storing = storing;
     }
 
     /**
      * Clears the storage of distances.
      */
     public void clearStorage() {
+        if (storage.isEmpty())
+            return;
         storage.clear();
     }
 
     /**
-     * Enables or disables storing distances.
+     * Enables or disables storing distances in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public void setStoring(boolean storing) {
         this.storing = storing;
@@ -105,29 +110,30 @@ public abstract class AbstractDistance implements Distance {
      */
     public void store(TimeSeries series1, TimeSeries series2, double distance) {
         
-        if (!this.isStoring())
-            return;
-        
-        int index1 = series1.getIndex();
-        int index2 = series2.getIndex();
+        if (this.isStoring()) {
+            
+            int index1 = series1.getIndex();
+            int index2 = series2.getIndex();
 
-        if (index1 < 0 || index2 < 0)
-            return;
+            if (index1 < 0 || index2 < 0)
+                return;
 
-        if (index2 < index1) {
-            int tmp = index1;
-            index1 = index2;
-            index2 = tmp;
+            if (index2 < index1) {
+                int tmp = index1;
+                index1 = index2;
+                index2 = tmp;
+            }
+            
+            ConcurrentMap<Integer, Double> newData = new ConcurrentHashMap<Integer, Double>();
+            
+            ConcurrentMap<Integer, Double> oldData = storage.putIfAbsent(index1, newData);
+
+            if (oldData == null)
+                newData.put(index2, distance);
+            else
+                oldData.put(index2, distance);
+            
         }
-        
-        ConcurrentMap<Integer, Double> newData = new ConcurrentHashMap<Integer, Double>();
-        
-        ConcurrentMap<Integer, Double> oldData = storage.putIfAbsent(index1, newData);
-        
-        if (oldData != null)
-            oldData.put(index2, distance);
-        else
-            newData.put(index2, distance);
             
     }
 
@@ -155,7 +161,6 @@ public abstract class AbstractDistance implements Distance {
         return distance;
 
     }
-    
 
     /**
      * Returns the stored distance between the specified time series or
@@ -170,23 +175,26 @@ public abstract class AbstractDistance implements Distance {
      */
     public Double recall(TimeSeries series1, TimeSeries series2) {
 
-        if (!this.isStoring())
-            return null;
-        
-        int index1 = series1.getIndex();
-        int index2 = series2.getIndex();
-        
-        if (index1 < 0 || index2 < 0)
-            return null;
+        if (this.isStoring()) {
 
-        Double distance = null;
+            int index1 = series1.getIndex();
+            int index2 = series2.getIndex();
+            
+            if (index1 < 0 || index2 < 0)
+                return null;
+
+            Double distance = null;
+            
+            if (index1 < index2)
+                distance = getDistance(index1, index2);
+            else
+                distance = getDistance(index2, index1);
+            
+            return distance;
+            
+        }
         
-        if (index1 < index2)
-            distance = getDistance(index1, index2);
-        else
-            distance = getDistance(index2, index1);
-        
-        return distance;
+        return null;
 
     }
 

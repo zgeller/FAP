@@ -57,21 +57,21 @@ public class TanimotoDistance extends AbstractCopyableDistance {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructs a new Tanimoto distance measure.
+     * Constructs a new Tanimoto (extended Jaccard) distance measure.
      */
     public TanimotoDistance() {
     }
 
     /**
-     * Constructs a new Tanimoto distance measure and sets whether to store
-     * distances.
+     * Constructs a new Tanimoto (extended Jaccard) distance measure, specifying
+     * whether calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public TanimotoDistance(boolean storing) {
         super(storing);
     }
-
 
     /**
      * @throws IncomparableTimeSeriesException if the time series are not the same

@@ -23,7 +23,7 @@ import fap.util.TimeSeriesUtils;
  * threshold.
  * 
  * @author Zoltán Gellér
- * @version 2026.04.19.
+ * @version 2026.08.16.
  * @see AbstractCopyableDistance
  * @see ThresholdDistance
  */
@@ -39,40 +39,22 @@ public abstract class AbstractThresholdDistance extends AbstractCopyableDistance
     private double epsilon = TimeSeriesUtils.getMatchingThreshold();
     
     /**
-     * Empty constructor.
+     * Constructs a default threshold distance measure.
      */
-    public AbstractThresholdDistance() {
+    protected AbstractThresholdDistance() {
     }
     
     /**
-     * Constructor with the possibility to enable or disable storing distances.
+     * Constructs a new threshold distance measure, specifying whether calculated
+     * distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
-    public AbstractThresholdDistance(boolean storing) {
+    protected AbstractThresholdDistance(boolean storing) {
         super(storing);
     }
     
-    /**
-     * Constructor with a matching threshold.
-     * 
-     * @param epsilon the matching threshold
-     */
-    public AbstractThresholdDistance(double epsilon) {
-        this.setEpsilon(epsilon);
-    }
-    
-    /**
-     * Constructor with a matching threshold and the possibility to enable or disable storing distances.
-     * 
-     * @param epsilon the matching threshold
-     * @param storing {@code true} if storing distances should be enabled
-     */
-    public AbstractThresholdDistance(double epsilon, boolean storing) {
-        super(storing);
-        this.setEpsilon(epsilon);
-    }
-
     /**
      * Sets the value of the matching threshold. Two data points are considered to
      * match if their distance is not greater than the matching threshold. Must be

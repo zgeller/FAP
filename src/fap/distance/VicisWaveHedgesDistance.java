@@ -63,10 +63,11 @@ public class VicisWaveHedgesDistance extends AbstractCopyableDistance {
     }
 
     /**
-     * Constructs a new Vicis-Wave Hedges distance measure and sets whether to store
-     * distances.
+     * Constructs a new Vicis-Wave Hedges distance measure, specifying whether
+     * calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public VicisWaveHedgesDistance(boolean storing) {
         super(storing);

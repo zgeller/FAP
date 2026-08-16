@@ -63,10 +63,11 @@ public class MinSymmetricChiSquareDistance extends AbstractCopyableDistance {
     }
 
     /**
-     * Constructs a new min symmetric chi-square distance measure and sets
-     * whether to store distances.
+     * Constructs a new min symmetric chi-square distance measure, specifying
+     * whether calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public MinSymmetricChiSquareDistance(boolean storing) {
         super(storing);

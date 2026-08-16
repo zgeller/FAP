@@ -22,7 +22,7 @@ import fap.util.Copyable;
  * Defines common methods and fields for copyable distance measures.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.17.
+ * @version 2026.08.16.
  * @see AbstractDistance
  * @see Copyable
  */
@@ -31,17 +31,19 @@ public abstract class AbstractCopyableDistance extends AbstractDistance implemen
     private static final long serialVersionUID = 1L;
 
     /**
-     * Empty constructor.
+     * Constructs a default copyable distance measure.
      */
-    public AbstractCopyableDistance() {
+    protected AbstractCopyableDistance() {
     }
     
     /**
-     * Constructor with the possibility to enable or disable storing distances.
+     * Constructs a new copyable distance measure, specifying whether calculated
+     * distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
-    public AbstractCopyableDistance(boolean storing) {
+    protected AbstractCopyableDistance(boolean storing) {
         super(storing);
     }
     

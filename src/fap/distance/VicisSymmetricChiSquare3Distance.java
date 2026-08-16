@@ -63,10 +63,11 @@ public class VicisSymmetricChiSquare3Distance extends AbstractCopyableDistance {
     }
 
     /**
-     * Constructs a new vicis symmetric chi-square 3 distance measure and sets
-     * whether to store distances.
+     * Constructs a new vicis symmetric chi-square 3 distance measure, specifying
+     * whether calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public VicisSymmetricChiSquare3Distance(boolean storing) {
         super(storing);

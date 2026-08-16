@@ -58,15 +58,17 @@ public class CosineDistance extends AbstractCopyableDistance {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructs a new cosine distance measure.
+     * Constructs a new Cosine distance measure.
      */
     public CosineDistance() {
     }
 
     /**
-     * Constructs a new cosine distance measure and sets whether to store distances.
+     * Constructs a new Cosine distance measure, specifying whether calculated
+     * distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public CosineDistance(boolean storing) {
         super(storing);

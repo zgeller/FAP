@@ -35,7 +35,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.04.19.
+ * @version 2026.08.16.
  * @see AbstractConstrainedDistance
  * @see TWEDParameters
  * @see TWEDDistance
@@ -62,87 +62,45 @@ public class ItakuraTWEDDistance extends AbstractConstrainedDistance implements 
     private double lambda = 0;
 
     /**
-     * Constructs a new Itakura constrained TWED distance measure with the default
-     * warping-widnow width ({@link AbstractConstrainedDistance#r r}) and the
-     * default values of the parameters {@link #nu} and {@link #lambda}.
+     * Constructs a default Itakura constrained TWED distance measure.
      */
     public ItakuraTWEDDistance() {
     }
     
     /**
-     * Constructs a new Itakura constrained TWED distance measure, with the default
-     * warping-widnow width ({@link AbstractConstrainedDistance#r r}) and the
-     * default values of the parameters {@link #nu} and {@link #lambda}, and sets
-     * whether to store distances.
+     * Constructs a new Itakura constrained TWED distance measure, specifying whether
+     * calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public ItakuraTWEDDistance(boolean storing) {
         super(storing);
     }
 
     /**
-     * Constructs a new Itakura constrained TWED distance measure with the specified
-     * relative warping-window width and the default values of the parameters
-     * {@link #nu} and {@link #lambda}.
+     * Constructs a new Itakura constrained TWED distance measure with a
+     * specified time series length.
      * 
-     * @param r the relative width of the warping window (as a percentage of the
-     *          length of the time series)
+     * @param length the length of the time series
      */
-    public ItakuraTWEDDistance(double r) {
-        super(r);
+    public ItakuraTWEDDistance(int length) {
+        super(length);
     }
     
     /**
-     * Constructs a new Itakura constrained TWED distance measure with the specified
-     * relative warping-window width and the default values of the parameters
-     * {@link #nu} and {@link #lambda}, and sets whether to store distances.
+     * Constructs a new Itakura constrained TWED distance measure with a
+     * specified time series length and an indication of whether calculated
+     * distances should be stored in memory for reuse.
      * 
-     * @param r       the relative width of the warping window (as a percentage of
-     *                the length of the time series)
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
+     * @param length  the length of the time series
      */
-    public ItakuraTWEDDistance(double r, boolean storing) {
-        super(r, storing);
-    }
-
-    /**
-     * Constructs a new Itakura constrained TWED distance measure with the specified
-     * relative warping-window width and the specified values of {@link #nu} and
-     * {@link #lambda}.
-     * 
-     * @param r      the relative width of the warping window (as a percentage of
-     *               the length of the time series)
-     * @param nu     the value that is to be used to control the stiffness of the
-     *               measure
-     * @param lambda the value used to calculate penalties for insert and delete
-     *               operations
-     */
-    public ItakuraTWEDDistance(double r, double nu, double lambda) {
-        super(r);
-        this.setNu(nu);
-        this.setLambda(lambda);
+    public ItakuraTWEDDistance(boolean storing, int length) {
+        super(storing, length);
     }
     
-    /**
-     * Constructs a new Itakura constrained TWED distance measure with the specified
-     * relative warping-window width and the specified values of {@link #nu} and
-     * {@link #lambda}, and sets whether to store distances.
-     * 
-     * @param r       the relative width of the warping window (as a percentage of
-     *                the length of the time series)
-     * @param nu      the value that is to be used to control the stiffness of the
-     *                measure
-     * @param lambda  the value used to calculate penalties for insert and delete
-     *                operations
-     * @param storing {@code true} if storing distances should be enabled
-     */
-    public ItakuraTWEDDistance(int r, double nu, double lambda, boolean storing) {
-        super(r, storing);
-        this.setNu(nu);
-        this.setLambda(lambda);
-    }
-
     @Override
     public double getNu() {
         return nu;
@@ -340,14 +298,14 @@ public class ItakuraTWEDDistance extends AbstractConstrainedDistance implements 
 
     @Override
     public Object makeACopy(boolean deep) {
-        ItakuraTWEDDistance copy = new ItakuraTWEDDistance();
+        ItakuraTWEDDistance copy = new ItakuraTWEDDistance(this.getLength());
         init(copy, deep);
         return copy;
     }
     
     @Override
     public String toString() {
-        return super.toString() + ", nu=" + nu + ", lambda=" + lambda;
+        return super.toString() + ", nu=" + getNu() + ", lambda=" + getLambda();
     }
 
 }

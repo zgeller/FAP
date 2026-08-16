@@ -35,7 +35,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.04.19.
+ * @version 2026.08.16.
  * @see AbstractConstrainedDistance
  * @see TWEDParameters
  * @see TWEDDistance
@@ -57,87 +57,45 @@ public class SakoeChibaTWEDDistance extends AbstractConstrainedDistance implemen
     private double lambda = 0;
 
     /**
-     * Constructs a new Sakoe-Chiba constrained TWED distance measure with the default
-     * warping-widnow width ({@link AbstractConstrainedDistance#r r}) and the
-     * default values of the parameters {@link #nu} and {@link #lambda}.
+     * Constructs a default Sakoe-Chiba constrained TWED distance measure.
      */
     public SakoeChibaTWEDDistance() {
     }
     
     /**
-     * Constructs a new Sakoe-Chiba constrained TWED distance measure, with the default
-     * warping-widnow width ({@link AbstractConstrainedDistance#r r}) and the
-     * default values of the parameters {@link #nu} and {@link #lambda}, and sets
-     * whether to store distances.
+     * Constructs a new Sakoe-Chiba constrained TWED distance measure, specifying
+     * whether calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public SakoeChibaTWEDDistance(boolean storing) {
         super(storing);
     }
 
     /**
-     * Constructs a new Sakoe-Chiba constrained TWED distance measure with the specified
-     * relative warping-window width and the default values of the parameters
-     * {@link #nu} and {@link #lambda}.
+     * Constructs a new Sakoe-Chiba constrained TWED distance measure with a
+     * specified time series length.
      * 
-     * @param r the relative width of the warping window (as a percentage of the
-     *          length of the time series)
+     * @param length the length of the time series
      */
-    public SakoeChibaTWEDDistance(double r) {
-        super(r);
+    public SakoeChibaTWEDDistance(int length) {
+        super(length);
     }
     
     /**
-     * Constructs a new Sakoe-Chiba constrained TWED distance measure with the specified
-     * relative warping-window width and the default values of the parameters
-     * {@link #nu} and {@link #lambda}, and sets whether to store distances.
+     * Constructs a new Sakoe-Chiba constrained TWED distance measure with a
+     * specified time series length and an indication of whether calculated
+     * distances should be stored in memory for reuse.
      * 
-     * @param r       the relative width of the warping window (as a percentage of
-     *                the length of the time series)
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
+     * @param length  the length of the time series
      */
-    public SakoeChibaTWEDDistance(double r, boolean storing) {
-        super(r, storing);
-    }
-
-    /**
-     * Constructs a new Sakoe-Chiba constrained TWED distance measure with the specified
-     * relative warping-window width and the specified values of {@link #nu} and
-     * {@link #lambda}.
-     * 
-     * @param r      the relative width of the warping window (as a percentage of
-     *               the length of the time series)
-     * @param nu     the value that is to be used to control the stiffness of the
-     *               measure
-     * @param lambda the value used to calculate penalties for insert and delete
-     *               operations
-     */
-    public SakoeChibaTWEDDistance(double r, double nu, double lambda) {
-        super(r);
-        this.setNu(nu);
-        this.setLambda(lambda);
+    public SakoeChibaTWEDDistance(boolean storing, int length) {
+        super(storing, length);
     }
     
-    /**
-     * Constructs a new Sakoe-Chiba constrained TWED distance measure with the specified
-     * relative warping-window width and the specified values of {@link #nu} and
-     * {@link #lambda}, and sets whether to store distances.
-     * 
-     * @param r       the relative width of the warping window (as a percentage of
-     *                the length of the time series)
-     * @param nu      the value that is to be used to control the stiffness of the
-     *                measure
-     * @param lambda  the value used to calculate penalties for insert and delete
-     *                operations
-     * @param storing {@code true} if storing distances should be enabled
-     */
-    public SakoeChibaTWEDDistance(double r, double nu, double lambda, boolean storing) {
-        super(r, storing);
-        this.setNu(nu);
-        this.setLambda(lambda);
-    }
-
     @Override
     public double getNu() {
         return nu;
@@ -194,7 +152,7 @@ public class SakoeChibaTWEDDistance extends AbstractConstrainedDistance implemen
         
         // throws IncomparableTimeSeriesException if the time series are not the same
         // length
-        int scWidth = ConstraintUtils.getWarpingWindowWidth(series1, series2, getR(), getW());
+        int scWidth = this.getLength() > 0 ? this.getW() : ConstraintUtils.getWarpingWindowWidth(series1, series2, this.getR(), this.getW());
 
         int len = series1.length();
         
@@ -330,14 +288,14 @@ public class SakoeChibaTWEDDistance extends AbstractConstrainedDistance implemen
     
     @Override
     public Object makeACopy(boolean deep) {
-        SakoeChibaTWEDDistance copy = new SakoeChibaTWEDDistance();
+        SakoeChibaTWEDDistance copy = new SakoeChibaTWEDDistance(this.getLength());
         init(copy, deep);
         return copy;
     }
     
     @Override
     public String toString() {
-        return super.toString() + ", nu=" + nu + ", lambda=" + lambda;
+        return super.toString() + ", nu=" + getNu() + ", lambda=" + getLambda();
     }
 
 }

@@ -23,7 +23,7 @@ import fap.util.TimeSeriesUtils;
  * parallelogram and with start threshold parameter.
  * 
  * @author Zoltán Gellér
- * @version 2026.04.19.
+ * @version 2026.08.16.
  * @see AbstractConstrainedDistance
  * @see ConstrainedThresholdDistance
  */
@@ -40,74 +40,45 @@ public abstract class AbstractConstrainedThresholdDistance extends AbstractConst
     private double epsilon = TimeSeriesUtils.getMatchingThreshold();
     
     /**
-     * Empty constructor with default warping-window width
-     * ({@link AbstractConstrainedDistance#r r}) and default matching threshold
-     * ({@link #epsilon}).
+     * Constructs a default constrained threshold distance measure.
      */
-    public AbstractConstrainedThresholdDistance() {
+    protected AbstractConstrainedThresholdDistance() {
     }
     
     /**
-     * Constructor with the possibility to enable or disable storing distances, and
-     * default warping-window width ({@link AbstractConstrainedDistance#r r}) and
-     * default matching threshold ({@link #epsilon}).
+     * Constructs a new constrained threshold distance measure, specifying whether
+     * calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
-    public AbstractConstrainedThresholdDistance(boolean storing) {
+    protected AbstractConstrainedThresholdDistance(boolean storing) {
         super(storing);
     }
-    
-    /**
-     * Constructor with the relative warping-window width and default matching
-     * threshold ({@link #epsilon}).
-     * 
-     * @param r the relative width of the warping (editing) window (as a percentage
-     *          of the length of the time series)
-     */
-    public AbstractConstrainedThresholdDistance(double r) {
-        super(r);
-    }
-    
-    /**
-     * Constructor with the relative warping-window width, the possibility to enable
-     * or disable storing distances, and default matching threshold
-     * ({@link #epsilon}).
-     * 
-     * @param r       the relative width of the warping (editing) window (as a
-     *                percentage of the length of the time series)
-     * @param storing {@code true} if storing distances should be enabled
-     */
-    public AbstractConstrainedThresholdDistance(double r, boolean storing) {
-        super(r, storing);
-    }
-    
-    /**
-     * Constructor with the relative warping-window width, a matching threshold
-     * 
-     * @param r       the relative width of the warping (editing) window (as a
-     *                percentage of the length of the time series)
-     * @param epsilon matching threshold
-     */
-    public AbstractConstrainedThresholdDistance(double r, double epsilon) {
-        super(r);
-        this.setEpsilon(epsilon);
-    }
-    
-    /**
-     * Constructor with the relative warping-window width, a matching threshold, and
-     * the possibility to enable or disable storing distances.
-     * 
-     * @param r       the relative width of the warping (editing) window (as a
-     *                percentage of the length of the time series)
-     * @param epsilon matching threshold
-     * @param storing {@code true} if storing distances should be enabled
-     */
-    public AbstractConstrainedThresholdDistance(double r, double epsilon, boolean storing) {
-        super(r, storing);
-        this.setEpsilon(epsilon);
-    }
 
+    /**
+     * Constructs a new constrained threshold distance measure with a specified time
+     * series length.
+     * 
+     * @param length the length of the time series
+     */
+    protected AbstractConstrainedThresholdDistance(int length) {
+        super(length);
+    }
+    
+    /**
+     * Constructs a new constrained threshold distance measure with a specified time
+     * series length and an indication of whether calculated distances should be
+     * stored in memory for reuse.
+     * 
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
+     * @param length  the length of the time series
+     */
+    protected AbstractConstrainedThresholdDistance(boolean storing, int length) {
+        super(storing, length);
+    }
+    
     /**
      * Sets the value of the matching threshold. Two data points are considered to
      * match if their distance is not greater than the matching threshold. Must be

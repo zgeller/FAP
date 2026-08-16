@@ -48,7 +48,7 @@ import fap.distance.AbstractCopyableDistance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.08.12.
+ * @version 2026.08.16.
  * @see AbstractCopyableDistance
  */
 public class DTWDistance extends AbstractCopyableDistance {
@@ -62,9 +62,11 @@ public class DTWDistance extends AbstractCopyableDistance {
     }
     
     /**
-     * Constructs a new DTW distance measure and sets whether to store distances.
+     * Constructs a new DTW distance measure, specifying whether calculated
+     * distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public DTWDistance(boolean storing) {
         super(storing);

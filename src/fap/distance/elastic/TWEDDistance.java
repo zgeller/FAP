@@ -57,7 +57,7 @@ import fap.distance.AbstractCopyableDistance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.04.19.
+ * @version 2026.08.16.
  * @see AbstractCopyableDistance
  * @see TWEDParameters
  */
@@ -78,51 +78,20 @@ public class TWEDDistance extends AbstractCopyableDistance implements TWEDParame
     private double lambda = 0;
 
     /**
-     * Constructs a new TWED distance measure with the default values of the
-     * parameters {@link #nu} and {@link #lambda}.
+     * Constructs a default TWED distance measure.
      */
     public TWEDDistance() {
     }
     
     /**
-     * Constructs a new TWED distance measure and with the default values of the
-     * parameters {@link #nu} and {@link #lambda}, and sets whether to store
-     * distances.
+     * Constructs a new TWED distance measure, specifying whether calculated
+     * distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public TWEDDistance(boolean storing) {
         super(storing);
-    }
-
-    /***
-     * Constructs a new TWED distance measure with the specified values of
-     * {@link #nu} and {@link #lambda}.
-     * 
-     * @param nu     the value that is to be used to control the stiffness of the
-     *               measure
-     * @param lambda the value used to calculate penalties for insert and delete
-     *               operations
-     */
-    public TWEDDistance(double nu, double lambda) {
-        this.setNu(nu);
-        this.setLambda(lambda);
-    }
-    
-    /***
-     * Constructs a new TWED distance measure with the specified values of
-     * {@link #nu} and {@link #lambda}, and sets whether to store distances.
-     * 
-     * @param nu      the value that is to be used to control the stiffness of the
-     *                measure
-     * @param lambda  the value used to calculate penalties for insert and delete
-     *                operations
-     * @param storing {@code true} if storing distances should be enabled
-     */
-    public TWEDDistance(double nu, double lambda, boolean storing) {
-        super(storing);
-        this.setNu(nu);
-        this.setLambda(lambda);
     }
 
     @Override
@@ -315,7 +284,7 @@ public class TWEDDistance extends AbstractCopyableDistance implements TWEDParame
 
     /**
      * Initializes the specified distance measure with the common data structures of this
-     * distance.
+     * distance measure.
      * 
      * @param copy the distance measure whose data structures is to be initialized
      */

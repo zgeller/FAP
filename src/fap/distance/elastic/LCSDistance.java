@@ -47,7 +47,7 @@ import fap.distance.AbstractThresholdDistance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.08.12.
+ * @version 2026.08.16.
  * @see AbstractThresholdDistance
  */
 public class LCSDistance extends AbstractThresholdDistance {
@@ -55,42 +55,20 @@ public class LCSDistance extends AbstractThresholdDistance {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructs a new LCS distance measure with the default value of the matching threshold
-     * ({@link AbstractThresholdDistance#epsilon}).
+     * Constructs a default LCS distance measure.
      */
     public LCSDistance() {
     }
 
     /**
-     * Constructs a new LCS distance measure with the default value of the
-     * matching threshold ({@link AbstractThresholdDistance#epsilon}) and sets
-     * whether to store distances.
+     * Constructs a new LCS distance measure, specifying whether calculated
+     * distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public LCSDistance(boolean storing) {
         super(storing);
-    }
-    
-    /**
-     * Constructs a new LCS distance measure with the specified matching threshold
-     * value ({@code epsilon}).
-     * 
-     * @param epsilon the value of the matching threshold, it must be {@code >= 0}
-     */
-    public LCSDistance(double epsilon) {
-        setEpsilon(epsilon);
-    }
-    
-    /**
-     * Constructs a new LCS distance measure with the specified matching threshold
-     * value ({@code epsilon}) and sets whether to store distances.
-     * 
-     * @param epsilon the value of the matching threshold, it must be {@code >= 0}
-     * @param storing {@code true} if storing distances should be enabled
-     */
-    public LCSDistance(double epsilon, boolean storing) {
-        super(epsilon, storing);
     }
 
     @Override

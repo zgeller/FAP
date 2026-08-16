@@ -34,7 +34,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.08.12.
+ * @version 2026.08.16.
  * @see AbstractConstrainedDistance
  * @see ERPParameters
  * @see ERPDistance
@@ -55,79 +55,45 @@ public class ItakuraERPDistance extends AbstractConstrainedDistance implements E
 	private ItakuraParallelogram itPara = new ItakuraParallelogram();
 
     /**
-     * Constructs a new Itakura constrained ERP distance measure with the
-     * default width of the warping (editing) window
-     * ({@link AbstractConstrainedDistance#r r}) and the default value of
-     * {@link #g}.
+     * Constructs a default Itakura constrained ERP distance measure.
      */
 	public ItakuraERPDistance() {
 	}
 	
     /**
-     * Constructs a new Itakura constrained ERP distance measure with the, default
-     * width of the warping (editing) window ({@link AbstractConstrainedDistance#r
-     * r}) and the default value of {@link #g}, and sets whether to store distances.
+     * Constructs a new Itakura constrained ERP distance measure, specifying whether
+     * calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
 	public ItakuraERPDistance(boolean storing) {
 	    super(storing);
 	}
-	
+
     /**
-     * Constructs a new Itakura constrained ERP distance measure with the
-     * specified relative width of the warping (editing) window ({@code r}) and the
-     * default value of {@link #g}.
+     * Constructs a new Itakura constrained ERP distance measure with a
+     * specified time series length.
      * 
-     * @param r the relative width of the warping window (as a percentage of the
-     *          length of the time series)
+     * @param length the length of the time series
      */
-	public ItakuraERPDistance(double r) {
-	    super(r);
-	}
-	
-    /**
-     * Constructs a new Itakura constrained ERP distance measure with the specified
-     * relative width of the warping (editing) window ({@code r}) and the default
-     * value of {@link #g}, and sets whether to store distances.
-     * 
-     * @param r       the relative width of the warping window (as a percentage of
-     *                the length of the time series)
-     * @param storing {@code true} if storing distances should be enabled
-     */
-	public ItakuraERPDistance(double r, boolean storing) {
-	    super(r, storing);
-	}
-	
-    /**
-     * Constructs a new Itakura constrained ERP distance measure with the
-     * specified relative width of the warping (editing) window ({@code r}) and the
-     * value of {@link #g}.
-     * 
-     * @param r the relative width of the warping window (as a percentage of the
-     *          length of the time series)
-     * @param g the value that is to be used to calculate the penalty for gaps
-     */
-    public ItakuraERPDistance(int r, double g) {
-        super(r);
-        this.setG(g);
+    public ItakuraERPDistance(int length) {
+        super(length);
     }
     
     /**
-     * Constructs a new Itakura constrained ERP distance measure with the specified
-     * relative width of the warping (editing) window ({@code r}) and the value of
-     * {@link #g}, and sets whether to store distances.
+     * Constructs a new Itakura constrained ERP distance measure with a
+     * specified time series length and an indication of whether calculated
+     * distances should be stored in memory for reuse.
      * 
-     * @param r       the relative width of the warping window (as a percentage of
-     *                the length of the time series)
-     * @param g       the value that is to be used to calculate the penalty for gaps
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
+     * @param length  the length of the time series
      */
-    public ItakuraERPDistance(int r, double g, boolean storing) {
-        super(r, storing);
-        this.setG(g);
+    public ItakuraERPDistance(boolean storing, int length) {
+        super(storing, length);
     }
-
+	
     @Override
     public double getG() {
         return g;
@@ -221,7 +187,7 @@ public class ItakuraERPDistance extends AbstractConstrainedDistance implements E
 
     /**
      * Initializes the specified distance measure with the common data structures of this
-     * distance.
+     * distance measure.
      * 
      * @param copy the distance measure whose data structures is to be initialized
      */
@@ -232,9 +198,14 @@ public class ItakuraERPDistance extends AbstractConstrainedDistance implements E
 	
     @Override
     public Object makeACopy(boolean deep) {
-        ItakuraERPDistance copy = new ItakuraERPDistance();
+        ItakuraERPDistance copy = new ItakuraERPDistance(this.getLength());
         init(copy, deep);
         return copy;
+    }
+    
+    @Override
+    public String toString() {
+        return super.toString() + ", g=" + getG();
     }
 
 }

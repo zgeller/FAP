@@ -34,7 +34,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2028.08.12.
+ * @version 2026.08.16.
  * @see AbstractConstrainedDistance
  * @see ERPParameters
  * @see ERPDistance
@@ -50,79 +50,45 @@ public class SakoeChibaERPDistance extends AbstractConstrainedDistance implement
     private double g = 0;
     
     /**
-     * Constructs a new Sakoe-Chiba constrained ERP distance measure with the
-     * default width of the warping (editing) window
-     * ({@link AbstractConstrainedDistance#r r}) and the default value of
-     * {@link #g}.
+     * Constructs a default Sakoe-Chiba constrained ERP distance measure.
      */
     public SakoeChibaERPDistance() {
     }
     
     /**
-     * Constructs a new Sakoe-Chiba constrained ERP distance measure with the, default
-     * width of the warping (editing) window ({@link AbstractConstrainedDistance#r
-     * r}) and the default value of {@link #g}, and sets whether to store distances.
+     * Constructs a new Sakoe-Chiba constrained ERP distance measure, specifying
+     * whether calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public SakoeChibaERPDistance(boolean storing) {
         super(storing);
     }
-    
-    /**
-     * Constructs a new Sakoe-Chiba constrained ERP distance measure with the
-     * specified relative width of the warping (editing) window ({@code r}) and the
-     * default value of {@link #g}.
-     * 
-     * @param r the relative width of the warping window (as a percentage of the
-     *          length of the time series)
-     */
-    public SakoeChibaERPDistance(double r) {
-        super(r);
-    }
-    
-    /**
-     * Constructs a new Sakoe-Chiba constrained ERP distance measure with the specified
-     * relative width of the warping (editing) window ({@code r}) and the default
-     * value of {@link #g}, and sets whether to store distances.
-     * 
-     * @param r       the relative width of the warping window (as a percentage of
-     *                the length of the time series)
-     * @param storing {@code true} if storing distances should be enabled
-     */
-    public SakoeChibaERPDistance(double r, boolean storing) {
-        super(r, storing);
-    }
-    
-    /**
-     * Constructs a new Sakoe-Chiba constrained ERP distance measure with the
-     * specified relative width of the warping (editing) window ({@code r}) and the
-     * value of {@link #g}.
-     * 
-     * @param r the relative width of the warping window (as a percentage of the
-     *          length of the time series)
-     * @param g the value that is to be used to calculate the penalty for gaps
-     */
-    public SakoeChibaERPDistance(double r, double g) {
-        super(r);
-        this.setG(g);
-    }
-    
-    /**
-     * Constructs a new Sakoe-Chiba constrained ERP distance measure with the specified
-     * relative width of the warping (editing) window ({@code r}) and the value of
-     * {@link #g}, and sets whether to store distances.
-     * 
-     * @param r       the relative width of the warping window (as a percentage of
-     *                the length of the time series)
-     * @param g       the value that is to be used to calculate the penalty for gaps
-     * @param storing {@code true} if storing distances should be enabled
-     */
-    public SakoeChibaERPDistance(double r, double g, boolean storing) {
-        super(r, storing);
-        this.setG(g);
-    }
 
+    /**
+     * Constructs a new Sakoe-Chiba constrained ERP distance measure with a
+     * specified time series length.
+     * 
+     * @param length the length of the time series
+     */
+    public SakoeChibaERPDistance(int length) {
+        super(length);
+    }
+    
+    /**
+     * Constructs a new Sakoe-Chiba constrained ERP distance measure with a
+     * specified time series length and an indication of whether calculated
+     * distances should be stored in memory for reuse.
+     * 
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
+     * @param length  the length of the time series
+     */
+    public SakoeChibaERPDistance(boolean storing, int length) {
+        super(storing, length);
+    }
+    
     @Override
     public double getG() {
         return g;
@@ -152,7 +118,7 @@ public class SakoeChibaERPDistance extends AbstractConstrainedDistance implement
 
         // throws IncomparableTimeSeriesException if the time series are not the same
         // length
-        int scWidth = ConstraintUtils.getWarpingWindowWidth(series1, series2, this.getR(), this.getW()); 
+        int scWidth = this.getLength() > 0 ? this.getW() : ConstraintUtils.getWarpingWindowWidth(series1, series2, this.getR(), this.getW()); 
 
         int len = series1.length();
         
@@ -218,7 +184,7 @@ public class SakoeChibaERPDistance extends AbstractConstrainedDistance implement
     
     @Override
     public Object makeACopy(boolean deep) {
-        SakoeChibaERPDistance copy = new SakoeChibaERPDistance();
+        SakoeChibaERPDistance copy = new SakoeChibaERPDistance(this.getLength());
         init(copy, deep);
         return copy;
     }

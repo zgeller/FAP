@@ -45,7 +45,7 @@ import fap.distance.AbstractCopyableDistance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.08.12.
+ * @version 2026.08.16.
  * @see AbstractCopyableDistance
  * @see ERPParameters
  */
@@ -60,40 +60,20 @@ public class ERPDistance extends AbstractCopyableDistance implements ERPParamete
     private double g = 0;
 
     /**
-     * Constructs a new ERP distance measure with the default value of {@link #g}.
+     * Constructs a default ERP distance measure.
      */
     public ERPDistance() {
     }
     
     /**
-     * Constructs a new ERP distance measure with the default value of {@link #g}
-     * and sets whether to store distances.
+     * Constructs a new ERP distance measure, specifying whether calculated
+     * distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public ERPDistance(boolean storing) {
         super(storing);
-    }
-
-    /**
-     * Constructs a new ERP distance measure with the specified value of {@link #g}.
-     * 
-     * @param g the value that is to be used to calculate the penalty for gaps
-     */
-    public ERPDistance(double g) {
-        this.setG(g);
-    }
-    
-    /**
-     * Constructs a new ERP distance measure with the specified value of {@link #g}
-     * and sets whether to store distances.
-     * 
-     * @param g       the value that is to be used to calculate the penalty for gaps
-     * @param storing {@code true} if storing distances should be enabled
-     */
-    public ERPDistance(double g, boolean storing) {
-        super(storing);
-        this.setG(g);
     }
 
     @Override
@@ -187,7 +167,7 @@ public class ERPDistance extends AbstractCopyableDistance implements ERPParamete
     
     /**
      * Initializes the specified distance measure with the common data structures of this
-     * distance.
+     * distance measure.
      * 
      * @param copy the distance measure whose data structures is to be initialized
      */

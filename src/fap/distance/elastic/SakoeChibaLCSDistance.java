@@ -38,7 +38,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2024.08.12.
+ * @version 2026.08.16.
  * @see AbstractConstrainedThresholdDistance
  * @see LCSDistance
  */
@@ -47,82 +47,45 @@ public class SakoeChibaLCSDistance extends AbstractConstrainedThresholdDistance 
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructs a new Sakoe-Chiba constrained LCS distance measure with the default
-     * width of the warping (editing) window ({@link AbstractConstrainedDistance#r
-     * r}) and the default value of the matching threshold
-     * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}).
+     * Constructs a default Sakoe-Chiba constrained LCS distance measure.
      */
     public SakoeChibaLCSDistance() {
     }
     
     /**
-     * Constructs a new Sakoe-Chiba constrained LCS distance measure with the default
-     * width of the warping (editing) window ({@link AbstractConstrainedDistance#r
-     * r}) and the default value of the matching threshold
-     * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}), and sets
-     * whether to store distances.
+     * Constructs a new Sakoe-Chiba constrained LCS distance measure, specifying
+     * whether calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public SakoeChibaLCSDistance(boolean storing) {
         super(storing);
     }
 
     /**
-     * Constructs a new Sakoe-Chiba constrained LCS distance measure with the specified
-     * relative width of the warping (editing) window ({@code r}) and the default
-     * value of the matching threshold
-     * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}).
+     * Constructs a new Sakoe-Chiba constrained LCS distance measure with a
+     * specified time series length.
      * 
-     * @param r the relative width of the warping (editing) window (as a percentage
-     *          of the length of the time series)
+     * @param length the length of the time series
      */
-    public SakoeChibaLCSDistance(double r) {
-        super(r);
+    public SakoeChibaLCSDistance(int length) {
+        super(length);
     }
     
     /**
-     * Constructs a new Sakoe-Chiba constrained LCS distance measure with the specified
-     * relative width of the warping (editing) window ({@code r}) and the default
-     * value of the matching threshold
-     * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}), and sets
-     * whether to store distances.
+     * Constructs a new Sakoe-Chiba constrained LCS distance measure with a
+     * specified time series length and an indication of whether calculated
+     * distances should be stored in memory for reuse.
      * 
-     * @param r       the relative width of the warping (editing) window (as a
-     *                percentage of the length of the time series)
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
+     * @param length  the length of the time series
      */
-    public SakoeChibaLCSDistance(double r, boolean storing) {
-        super(r, storing);
+    public SakoeChibaLCSDistance(boolean storing, int length) {
+        super(storing, length);
     }
     
-    /**
-     * Constructs a new Sakoe-Chiba constrained LCS distance measure with the specified
-     * relative width of the warping (editing) window ({@code r}) and the matching
-     * threshold value ({@code epsilon}).
-     * 
-     * @param r       the relative width of the warping (editing) window (as a
-     *                percentage of the length of the time series)
-     * @param epsilon the value of the matching threshold, it must be {@code >= 0}
-     */
-    public SakoeChibaLCSDistance(double r, double epsilon) {
-        super(r, epsilon);
-    }
-    
-    /**
-     * Constructs a new Sakoe-Chiba constrained LCS distance measure with the specified
-     * relative width of the warping (editing) window ({@code r}) and the matching
-     * threshold value ({@code epsilon}), and sets whether to store distances.
-     * 
-     * @param r       the relative width of the warping (editing) window (as a
-     *                percentage of the length of the time series)
-     * @param epsilon the value of the matching threshold, it must be {@code >= 0}
-     * @param storing {@code true} if storing distances should be enabled
-     */
-    public SakoeChibaLCSDistance(double r, double epsilon, boolean storing) {
-        super(r, epsilon, storing);
-    }
-
     /**
      * @throws IncomparableTimeSeriesException if the time series are not the same
      *                                         length
@@ -137,7 +100,7 @@ public class SakoeChibaLCSDistance extends AbstractConstrainedThresholdDistance 
 
         // throws IncomparableTimeSeriesException if the time series are not the same
         // length
-        int scWidth = ConstraintUtils.getWarpingWindowWidth(series1, series2, this.getR(), this.getW()); 
+        int scWidth = this.getLength() > 0 ? this.getW() : ConstraintUtils.getWarpingWindowWidth(series1, series2, this.getR(), this.getW()); 
 
         int len = series1.length();
 
@@ -148,9 +111,9 @@ public class SakoeChibaLCSDistance extends AbstractConstrainedThresholdDistance 
 
         long tmp[];
 
-        // initialization - not necessary as arrays are initialized with default values (0.0d)
-//        for (int i = 0; i <= len; i++)
-//            prevRow[i] = 0;
+        // initialization is not necessary as arrays are initialized with default values (0.0d)
+        //  for (int i = 0; i <= len; i++)
+        //      prevRow[i] = 0;
 
         for (int i = 1; i <= len; i++) {
 
@@ -198,7 +161,7 @@ public class SakoeChibaLCSDistance extends AbstractConstrainedThresholdDistance 
 
     @Override
     public Object makeACopy(boolean deep) {
-        SakoeChibaLCSDistance copy = new SakoeChibaLCSDistance();
+        SakoeChibaLCSDistance copy = new SakoeChibaLCSDistance(this.getLength());
         init(copy, deep);
         return copy;
     }

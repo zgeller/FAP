@@ -38,7 +38,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.08.12.
+ * @version 2026.08.16.
  * @see AbstractConstrainedDistance
  * @see LCSDistance
  */
@@ -52,82 +52,45 @@ public class ItakuraLCSDistance extends AbstractConstrainedThresholdDistance {
     private ItakuraParallelogram itPara = new ItakuraParallelogram();
 
     /**
-     * Constructs a new Itakura constrained LCS distance measure with the default
-     * width of the warping (editing) window ({@link AbstractConstrainedDistance#r
-     * r}) and the default value of the matching threshold
-     * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}).
+     * Constructs a default Itakura constrained LCS distance measure.
      */
     public ItakuraLCSDistance() {
     }
     
     /**
-     * Constructs a new Itakura constrained LCS distance measure with the default
-     * width of the warping (editing) window ({@link AbstractConstrainedDistance#r
-     * r}) and the default value of the matching threshold
-     * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}), and sets
-     * whether to store distances.
+     * Constructs a new Itakura constrained LCS distance measure, specifying whether
+     * calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public ItakuraLCSDistance(boolean storing) {
         super(storing);
     }
 
     /**
-     * Constructs a new Itakura constrained LCS distance measure with the specified
-     * relative width of the warping (editing) window ({@code r}) and the default
-     * value of the matching threshold
-     * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}).
+     * Constructs a new Itakura constrained LCS distance measure with a
+     * specified time series length.
      * 
-     * @param r the relative width of the warping (editing) window (as a percentage
-     *          of the length of the time series)
+     * @param length the length of the time series
      */
-    public ItakuraLCSDistance(double r) {
-        super(r);
+    public ItakuraLCSDistance(int length) {
+        super(length);
     }
     
     /**
-     * Constructs a new Itakura constrained LCS distance measure with the specified
-     * relative width of the warping (editing) window ({@code r}) and the default
-     * value of the matching threshold
-     * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}), and sets
-     * whether to store distances.
+     * Constructs a new Itakura constrained LCS distance measure with a
+     * specified time series length and an indication of whether calculated
+     * distances should be stored in memory for reuse.
      * 
-     * @param r       the relative width of the warping (editing) window (as a
-     *                percentage of the length of the time series)
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
+     * @param length  the length of the time series
      */
-    public ItakuraLCSDistance(double r, boolean storing) {
-        super(r, storing);
+    public ItakuraLCSDistance(boolean storing, int length) {
+        super(storing, length);
     }
     
-    /**
-     * Constructs a new Itakura constrained LCS distance measure with the specified
-     * relative width of the warping (editing) window ({@code r}) and the matching
-     * threshold value ({@code epsilon}).
-     * 
-     * @param r       the relative width of the warping (editing) window (as a
-     *                percentage of the length of the time series)
-     * @param epsilon the value of the matching threshold, it must be {@code >= 0}
-     */
-    public ItakuraLCSDistance(double r, double epsilon) {
-        super(r, epsilon);
-    }
-    
-    /**
-     * Constructs a new Itakura constrained LCS distance measure with the specified
-     * relative width of the warping (editing) window ({@code r}) and the matching
-     * threshold value ({@code epsilon}), and sets whether to store distances.
-     * 
-     * @param r       the relative width of the warping (editing) window (as a
-     *                percentage of the length of the time series)
-     * @param epsilon the value of the matching threshold, it must be {@code >= 0}
-     * @param storing {@code true} if storing distances should be enabled
-     */
-    public ItakuraLCSDistance(double r, double epsilon, boolean storing) {
-        super(r, epsilon, storing);
-    }
-
     /**
      * @throws IncomparableTimeSeriesException if the time series are not the same
      *                                         length
@@ -210,7 +173,7 @@ public class ItakuraLCSDistance extends AbstractConstrainedThresholdDistance {
 
     @Override
     public Object makeACopy(boolean deep) {
-        ItakuraLCSDistance copy = new ItakuraLCSDistance();
+        ItakuraLCSDistance copy = new ItakuraLCSDistance(this.getLength());
         init(copy, deep);
         return copy;
     }

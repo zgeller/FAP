@@ -34,7 +34,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.08.12.
+ * @version 2026.08.16.
  * @see AbstractConstrainedDistance
  * @see DTWDistance
  */
@@ -48,46 +48,45 @@ public class ItakuraDTWDistance extends AbstractConstrainedDistance {
     private ItakuraParallelogram itPara = new ItakuraParallelogram();
 
     /**
-     * Constructs a new Itakura constrained DTW distance measure with the default
-     * warping-widnow width ({@link AbstractConstrainedDistance#r r}).
+     * Constructs a default Itakura constrained DTW distance measure.
      */
     public ItakuraDTWDistance() {
     }
     
     /**
-     * Constructs a new Itakura constrained DTW distance measure with the default
-     * warping-widnow width ({@link AbstractConstrainedDistance#r r}) and sets
-     * whether to store distances.
+     * Constructs a new Itakura constrained DTW distance measure, specifying whether
+     * calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public ItakuraDTWDistance(boolean storing) {
         super(storing);
     }
 
     /**
-     * Constructs a new Itakura constrained DTW distance measure with the specified
-     * relative warping-window width.
+     * Constructs a new Itakura constrained DTW distance measure with a
+     * specified time series length.
      * 
-     * @param r the relative width of the warping window (as a percentage of the
-     *          length of the time series)
+     * @param length the length of the time series
      */
-    public ItakuraDTWDistance(double r) {
-        super(r);
+    public ItakuraDTWDistance(int length) {
+        super(length);
     }
     
     /**
-     * Constructs a new Itakura constrained DTW distance measure with the specified
-     * relative warping-window width and whether to store distances.
+     * Constructs a new Itakura constrained DTW distance measure with a
+     * specified time series length and an indication of whether calculated
+     * distances should be stored in memory for reuse.
      * 
-     * @param r       the relative width of the warping window (as a percentage of
-     *                the length of the time series)
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
+     * @param length  the length of the time series
      */
-    public ItakuraDTWDistance(double r, boolean storing) {
-        super(r, storing);
+    public ItakuraDTWDistance(boolean storing, int length) {
+        super(storing, length);
     }
-
+    
     /**
      * @throws IncomparableTimeSeriesException if the time series are not the same
      *                                         length
@@ -164,7 +163,7 @@ public class ItakuraDTWDistance extends AbstractConstrainedDistance {
 
     @Override
     public Object makeACopy(boolean deep) {
-        ItakuraDTWDistance copy = new ItakuraDTWDistance();
+        ItakuraDTWDistance copy = new ItakuraDTWDistance(this.getLength());
         init(copy, deep);
         return copy;
     }

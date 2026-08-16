@@ -38,7 +38,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2028.08.12.
+ * @version 2026.08.16.
  * @see AbstractConstrainedThresholdDistance
  * @see EDRDistance
  */
@@ -47,82 +47,45 @@ public class SakoeChibaEDRDistance extends AbstractConstrainedThresholdDistance 
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructs a new Sakoe-Chiba constrained EDR distance measure with the default
-     * width of the warping (editing) window ({@link AbstractConstrainedDistance#r
-     * r}) and the default value of the matching threshold
-     * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}).
+     * Constructs a default Sakoe-Chiba constrained EDR distance measure.
      */
     public SakoeChibaEDRDistance() {
     }
     
     /**
-     * Constructs a new Sakoe-Chiba constrained EDR distance measure with the default
-     * width of the warping (editing) window ({@link AbstractConstrainedDistance#r
-     * r}) and the default value of the matching threshold
-     * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}), and sets
-     * whether to store distances.
+     * Constructs a new Sakoe-Chiba constrained EDR distance measure, specifying
+     * whether calculated distances should be stored in memory for reuse.
      * 
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
      */
     public SakoeChibaEDRDistance(boolean storing) {
         super(storing);
     }
 
     /**
-     * Constructs a new Sakoe-Chiba constrained EDR distance measure with the specified
-     * relative width of the warping (editing) window ({@code r}) and the default
-     * value of the matching threshold
-     * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}).
+     * Constructs a new Sakoe-Chiba constrained EDR distance measure with a
+     * specified time series length.
      * 
-     * @param r the relative width of the warping (editing) window (as a percentage
-     *          of the length of the time series)
+     * @param length the length of the time series
      */
-    public SakoeChibaEDRDistance(double r) {
-        super(r);
+    public SakoeChibaEDRDistance(int length) {
+        super(length);
     }
     
     /**
-     * Constructs a new Sakoe-Chiba constrained EDR distance measure with the specified
-     * relative width of the warping (editing) window ({@code r}) and the default
-     * value of the matching threshold
-     * ({@link AbstractConstrainedThresholdDistance#epsilon epsilon}), and sets
-     * whether to store distances.
+     * Constructs a new Sakoe-Chiba constrained EDR distance measure with a
+     * specified time series length and an indication of whether calculated
+     * distances should be stored in memory for reuse.
      * 
-     * @param r       the relative width of the warping (editing) window (as a
-     *                percentage of the length of the time series)
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
+     * @param length  the length of the time series
      */
-    public SakoeChibaEDRDistance(double r, boolean storing) {
-        super(r, storing);
+    public SakoeChibaEDRDistance(boolean storing, int length) {
+        super(storing, length);
     }
     
-    /**
-     * Constructs a new Sakoe-Chiba constrained EDR distance measure with the specified
-     * relative width of the warping (editing) window ({@code r}) and the matching
-     * threshold value ({@code epsilon}).
-     * 
-     * @param r       the relative width of the warping (editing) window (as a
-     *                percentage of the length of the time series)
-     * @param epsilon the value of the matching threshold, it must be {@code >= 0}
-     */
-    public SakoeChibaEDRDistance(double r, double epsilon) {
-        super(r, epsilon);
-    }
-    
-    /**
-     * Constructs a new Sakoe-Chiba constrained EDR distance measure with the specified
-     * relative width of the warping (editing) window ({@code r}) and the matching
-     * threshold value ({@code epsilon}), whether to store distances.
-     * 
-     * @param r       the relative width of the warping (editing) window (as a
-     *                percentage of the length of the time series)
-     * @param epsilon the value of the matching threshold, it must be {@code >= 0}
-     * @param storing {@code true} if storing distances should be enabled
-     */
-    public SakoeChibaEDRDistance(double r, double epsilon, boolean storing) {
-        super(r, epsilon, storing);
-    }
-
     /**
      * @throws IncomparableTimeSeriesException if the time series are not the same
      *                                         length
@@ -137,7 +100,7 @@ public class SakoeChibaEDRDistance extends AbstractConstrainedThresholdDistance 
         
         // throws IncomparableTimeSeriesException if the time series are not the same
         // length
-        int scWidth = ConstraintUtils.getWarpingWindowWidth(series1, series2, getR(), getW()); 
+        int scWidth = this.getLength() > 0 ? this.getW() : ConstraintUtils.getWarpingWindowWidth(series1, series2, this.getR(), this.getW());
 
         int len = series1.length();
 
@@ -194,7 +157,7 @@ public class SakoeChibaEDRDistance extends AbstractConstrainedThresholdDistance 
 
     @Override
     public Object makeACopy(boolean deep) {
-        SakoeChibaEDRDistance copy = new SakoeChibaEDRDistance();
+        SakoeChibaEDRDistance copy = new SakoeChibaEDRDistance(this.getLength());
         init(copy, deep);
         return copy;
     }

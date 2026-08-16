@@ -21,8 +21,14 @@ import fap.distance.AbstractCopyableDistance;
 /**
  * Defines basic methods for constrained elastic distance measures.
  * 
+ * <p>
+ * For fixed-length time series, specifying the length avoids converting the
+ * relative warping (editing) window width to an absolute value for every
+ * pairwise distance calculation (i.e., it only needs to be computed once when
+ * the relative width is modified).
+ * 
  * @author Zoltán Gellér
- * @version 2026.04.19.
+ * @version 2026.08.16.
  * @see AbstractCopyableDistance
  * @see ConstrainedDistance
  */
@@ -38,6 +44,11 @@ public abstract class AbstractConstrainedDistance extends AbstractCopyableDistan
     private double r = 100;
 
     /**
+     * The length of the time series processed by this distance measure.
+     */
+    private final int length;
+
+    /**
      * The absolute width of the warping (editing) window. A negative value
      * indicates that the relative width ({@link #r}) should be used. Default value
      * is {@code -1}.
@@ -45,50 +56,87 @@ public abstract class AbstractConstrainedDistance extends AbstractCopyableDistan
     private int w = -1;
     
     /**
-     * Empty constructor.
+     * Returns the default value {@code 0} of {@link #length}.
+     * 
+     * @return the default value {@code 0} of {@link #length}
      */
-    public AbstractConstrainedDistance() {
+    private int defaultLength() {
+        return 0;
     }
     
     /**
-     * Constructor with the possibility to enable or disable storing distances.
-     * 
-     * @param storing {@code true} if storing distances should be enabled
+     * Constructs a default constrained distance measure.
      */
-    public AbstractConstrainedDistance(boolean storing) {
+    protected AbstractConstrainedDistance() {
+        this.length = this.defaultLength();
+    }
+    
+    /**
+     * Constructs a new constrained distance measure, specifying whether calculated
+     * distances should be stored in memory for reuse.
+     * 
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
+     */
+    protected AbstractConstrainedDistance(boolean storing) {
         super(storing);
+        this.length = this.defaultLength();
     }
     
     /**
-     * Constructor with warping-window width.
+     * Constructs a new constrained distance measure with a specified time series
+     * length.
      * 
-     * @param r the relative width of the warping (editing) window (as a percentage
-     *          of the length of the time series)
+     * @param length the length of the time series
      */
-    public AbstractConstrainedDistance(double r) {
-        this.setR(r);
+    protected AbstractConstrainedDistance(int length) {
+        this.length = length;
     }
     
     /**
-     * Constructor with the warping-window width and the possibility to enable or
-     * disable storing distances.
+     * Constructs a new constrained distance measure with a specified time series
+     * length and an indication of whether calculated distances should be stored in
+     * memory for reuse.
      * 
-     * @param r       the relative width of the warping (editing) window (as a
-     *                percentage of the length of the time series)
-     * @param storing {@code true} if storing distances should be enabled
+     * @param storing {@code true} if calculated distances should be stored in
+     *                memory for reuse
+     * @param length  the length of the time series
      */
-    public AbstractConstrainedDistance(double r, boolean storing) {
+    protected AbstractConstrainedDistance(boolean storing, int length) {
         super(storing);
-        this.setR(r);
+        this.length = length;
     }
 
+    /**
+     * Returns the specified length of the time series processed by this distance
+     * measure.
+     * 
+     * <p>
+     * For fixed-length time series, specifying the length avoids converting the
+     * relative warping window width to an absolute value for every pairwise
+     * distance calculation (i.e., it only needs to be computed once when the
+     * relative width is modified).
+     * 
+     * @return the specified length of time series processed by this distance measure.
+     */
+    public int getLength() {
+        return this.length;
+    }
+    
     /**
      * Sets the relative width of the warping (editing) window (as a percentage of
      * the length of the time series). Must be in the range {@code [0..100]}.
      * Default value is 100.
      * 
      * <p>
-     * The absolute width is set to -1 (i.e. {@link #w} {@code = -1}).
+     * If the specified length of the time series is greater than {@code 0}, it
+     * calculates the absolute warping (editing) window width ({@link #w});
+     * otherwise, it sets it to {@code -1}.
+     * 
+     * <p>
+     * If the specified length of the time series is less than or equal to
+     * {@code 0}, it clears the stored distances (if enabled) when the new warping
+     * (editing) window width differs from the current one.
      * 
      * @param r the relative width of the warping (editing) window (as a percentage
      *          of the length of the time series); must be in {@code [0..100]}
@@ -100,12 +148,15 @@ public abstract class AbstractConstrainedDistance extends AbstractCopyableDistan
         if (r < 0 || r > 100)
             throw new IllegalArgumentException("r out of range [0..100]: " + r);
         
-        if (this.r != r) {
+        if (this.length > 0)
+            this.setW((int) (this.length * r / 100));
+        
+        else if (this.r != r) {
             this.clearStorage();
             this.r = r;
             this.w = -1;
         }
-
+        
     }
 
     /**
@@ -124,6 +175,14 @@ public abstract class AbstractConstrainedDistance extends AbstractCopyableDistan
      * {@code w >= 0}. The relative width is set to -1 (i.e. <code>{@link #r}
      *  = -1</code>).
      * 
+     * <p>
+     * Constrains the absolute width of the warping (editing) window based on the
+     * length of the time series, if specified.
+     * 
+     * <p>
+     * Clears the stored distances (if enabled) if the new warping (editing) window
+     * width differs from the current one.
+     * 
      * @param w the absolute width of the warping (editing) window; must be
      *          {@code >= 0}
      * @throws IllegalArgumentException if {@code w < 0}
@@ -133,6 +192,9 @@ public abstract class AbstractConstrainedDistance extends AbstractCopyableDistan
 
         if (w < 0)
             throw new IllegalArgumentException("Invalid w: " + w + " (must be >= 0)");
+        
+        if (this.length > 0 && w > this.length)
+            w = this.length;
 
         if (this.w != w) {
             this.clearStorage();
@@ -165,7 +227,7 @@ public abstract class AbstractConstrainedDistance extends AbstractCopyableDistan
 
     @Override
     public String toString() {
-        return super.toString() + ", r=" + getR() + ", w=" + getW();
+        return super.toString() + ", r=" + getR() + ", w=" + getW() + ", length=" + getLength();
     }
     
 }

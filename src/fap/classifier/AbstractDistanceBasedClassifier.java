@@ -23,7 +23,7 @@ import fap.util.Copyable;
  * Defines common methods and fields for distance-based classifiers.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.22.
+ * @version 2026.08.17.
  * @see Classifier
  */
 public abstract class AbstractDistanceBasedClassifier implements DistanceBasedClassifier {
@@ -38,7 +38,7 @@ public abstract class AbstractDistanceBasedClassifier implements DistanceBasedCl
     /**
      * Empty constructor.
      */
-    public AbstractDistanceBasedClassifier() {
+    protected AbstractDistanceBasedClassifier() {
     }
     
     /**
@@ -46,7 +46,7 @@ public abstract class AbstractDistanceBasedClassifier implements DistanceBasedCl
      * 
      * @param distance distance measure
      */
-    public AbstractDistanceBasedClassifier(Distance distance) {
+    protected AbstractDistanceBasedClassifier(Distance distance) {
         this.setDistance(distance);
     }
     

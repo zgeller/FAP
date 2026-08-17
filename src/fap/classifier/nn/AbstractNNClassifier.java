@@ -36,7 +36,7 @@ import fap.util.ThreadUtils;
  * Defines common methods and fields for (multithreaded) NN classifiers.
  * 
  * @author Zoltán Gellér
- * @version 2026.08.14.
+ * @version 2026.08.17.
  * @see AbstractDistanceBasedClassifier
  * @see Multithreaded
  * @see Copyable
@@ -103,7 +103,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
     /**
      * Empty constructor.
      */
-    public AbstractNNClassifier() {
+    protected AbstractNNClassifier() {
     }
     
     /**
@@ -111,7 +111,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
      * 
      * @param tnumber number of threads
      */
-    public AbstractNNClassifier(int tnumber) {
+    protected AbstractNNClassifier(int tnumber) {
         this.setNumberOfThreads(tnumber);
     }
     
@@ -120,7 +120,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
      * 
      * @param distance distance measure
      */
-    public AbstractNNClassifier(Distance distance) {
+    protected AbstractNNClassifier(Distance distance) {
         super(distance);
     }
     
@@ -131,7 +131,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
      * @param distance distance measure
      * @param tnumber  number of threads
      */
-    public AbstractNNClassifier(Distance distance, int tnumber) {
+    protected AbstractNNClassifier(Distance distance, int tnumber) {
         super(distance);
         this.setNumberOfThreads(tnumber);
     }

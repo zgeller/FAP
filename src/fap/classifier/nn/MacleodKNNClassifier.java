@@ -19,7 +19,6 @@ package fap.classifier.nn;
 import java.util.HashMap;
 import java.util.Map;
 
-import fap.classifier.nn.util.DistanceNode;
 import fap.classifier.nn.util.LinkedDistanceNode;
 import fap.classifier.nn.util.SortedList;
 import fap.data.Dataset;
@@ -60,7 +59,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.08.14.
+ * @version 2026.08.14.2
  * @see KNNClassifier
  */
 public class MacleodKNNClassifier extends KNNClassifier {
@@ -380,8 +379,9 @@ public class MacleodKNNClassifier extends KNNClassifier {
 
             if (tnumber < 2) {
                 list = new SortedList<TimeSeries>(max);
-                for (DistanceNode<TimeSeries> node : findDistances(series, trainset))
-                    list.add(node);
+                double[] dists = findDistances(series, trainset);
+                for (int i = 0; i < trainset.size(); i++)
+                    list.add(trainset.get(i), dists[i]);
             }
             else
                 list = findSortedDistancesMultithreaded(series, trainset, max, tnumber);

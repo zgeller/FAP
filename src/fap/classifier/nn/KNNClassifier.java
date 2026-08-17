@@ -18,10 +18,8 @@ package fap.classifier.nn;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import fap.classifier.nn.util.DistanceNode;
 import fap.classifier.nn.util.LinkedDistanceNode;
 import fap.classifier.nn.util.SortedList;
 import fap.data.Dataset;
@@ -58,7 +56,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.04.21.
+ * @version 2026.08.14.
  * @see AbstractNNClassifier
  */
 public class KNNClassifier extends AbstractNNClassifier {
@@ -189,14 +187,13 @@ public class KNNClassifier extends AbstractNNClassifier {
      * @throws IllegalArgumentException if {@code exclude } not it {@code [0, k)}
      */
     public void setExclude(int exclude) throws IllegalArgumentException {
-        if (exclude < 0 || exclude >= k)
-            throw new IllegalArgumentException("exclude out of range [0, " + k + "): " + exclude);
+//        if (exclude < 0 || exclude >= k)
+//            throw new IllegalArgumentException("exclude out of range [0, " + k + "): " + exclude);
         this.exclude = exclude;
     }
     
     /**
-     * Finds the best label among the nearest neighbors without weighting (with
-     * voting).
+     * Finds the best label among the nearest neighbors using unweighted voting.
      * 
      * @param list sorted list of the nearest neighbors
      * @return the best label
@@ -231,7 +228,7 @@ public class KNNClassifier extends AbstractNNClassifier {
         return bestLabel;
         
     }
-
+    
     @Override
     public void fit(Dataset trainset) throws Exception {
         super.fit(trainset);
@@ -245,26 +242,25 @@ public class KNNClassifier extends AbstractNNClassifier {
      * @param series   the time series against which the distances of the elements
      *                 of {@code trainset} should be found
      * @param trainset the training set
-     * @return list of {@link DistanceNode} objects containing the elements of
-     *         {@code trainset} and their distances from {@code series}
+     * @return the distances between {@code series} and the elements of {@code trainset}
      * @throws InterruptedException if the thread has been interrupted
      */
-    protected List<DistanceNode<TimeSeries>> findDistances(TimeSeries series, Dataset trainset)
+    protected double[] findDistances(TimeSeries series, Dataset trainset)
                                              throws InterruptedException {
 
-        List<DistanceNode<TimeSeries>> list = new ArrayList<>(trainset.size());
+        int len = trainset.size();
+        
+        double[] result = new double[len];
 
         // if the matrix of distances doesn't exists, we must use the distance measure
         if (distances == null)
 
-            for (TimeSeries ts : trainset) {
+            for (int i = 0; i < len; i++) {
 
                 if (Thread.currentThread().isInterrupted())
                     throw new InterruptedException();
 
-                double dist = distance.distance(series, ts); // might throw IncomparableTimeSeriesException
-
-                list.add(new DistanceNode<TimeSeries>(ts, dist));
+                result[i] = distance.distance(series, trainset.get(i)); // might throw IncomparableTimeSeriesException
 
             }
 
@@ -274,27 +270,23 @@ public class KNNClassifier extends AbstractNNClassifier {
 
             int sindex = series.getIndex();
 
-            for (TimeSeries ts : trainset) {
+            for (int i = 0; i < len; i++) {
 
                 if (Thread.currentThread().isInterrupted())
                     throw new InterruptedException();
 
-                double dist;
-
-                int tindex = ts.getIndex();
+                int tindex = trainset.get(i).getIndex();
 
                 if (tindex < distances[sindex].length)
-                    dist = distances[sindex][tindex];
+                    result[i] = distances[sindex][tindex];
                 else
-                    dist = distances[tindex][sindex];
-
-                list.add(new DistanceNode<TimeSeries>(ts, dist));
+                    result[i] = distances[tindex][sindex];
 
             }
 
         }
         
-        return list;
+        return result;
 
     }
     
@@ -333,10 +325,10 @@ public class KNNClassifier extends AbstractNNClassifier {
 
         }
 
-        int len = k - exclude;
-        list.remove(exclude);
+        // list.remove(exclude);
+        list.delete(exclude);
 
-        if (len > 1)
+        if (list.getCount() > 1)
             label = getBestLabel(list);
         else
             label = list.getFirst().obj.getLabel();
@@ -361,22 +353,27 @@ public class KNNClassifier extends AbstractNNClassifier {
      */
     protected SortedList<TimeSeries> findSortedDistances(TimeSeries series, Dataset trainset, int k) throws Exception {
         
-        List<DistanceNode<TimeSeries>> distNodes = findDistances(series, trainset);
+        double[] dists = findDistances(series, trainset);
         
         SortedList<TimeSeries> list = new SortedList<>(k);
         
+        int len = trainset.size();
+        
         if (k > 1)
-            for (DistanceNode<TimeSeries> node : distNodes)
-                list.add(node);
+            for (int i = 0; i < len; i++)
+                list.add(trainset.get(i), dists[i]);
         
         else {
-            DistanceNode<TimeSeries> bestNode = distNodes.get(0);
-            for (int i = 1; i < distNodes.size(); i++) {
-                DistanceNode<TimeSeries> node = distNodes.get(i);
-                if (node.distance < bestNode.distance)
-                    bestNode = node;
+            int bestIndex = 0;
+            double bestDist = dists[0];
+            for (int i = 0; i < len; i++) {
+                double dist = dists[i];
+                if (dist < bestDist) {
+                    bestIndex = i;
+                    bestDist = dist;
+                }
             }
-            list.add(bestNode);
+            list.add(trainset.get(bestIndex), dists[bestIndex]);
         }
             
         return list;
@@ -401,25 +398,17 @@ public class KNNClassifier extends AbstractNNClassifier {
      */
     protected SortedList<TimeSeries> findSortedDistancesMultithreaded(TimeSeries series, Dataset trainset, int k, int tnumber) throws Exception {
 
-        List<Double> distances = this.findDistances(series, trainset, tnumber);
+        double[] distances = this.findDistances(series, trainset, tnumber);
 
         SortedList<TimeSeries> list = new SortedList<>(k);
         
         if (k > 1)
-            for (int i = 0; i < distances.size(); i++)
-                list.add(new DistanceNode<TimeSeries>(trainset.get(i), distances.get(i)));
+            for (int i = 0; i < distances.length; i++)
+                list.add(trainset.get(i), distances[i]);
         
         else {
-            int bestIndex = 0;
-            double bestDistance = distances.get(0);
-            for (int i = 1; i < distances.size(); i++) {
-                double dist = distances.get(i);
-                if (dist < bestDistance) {
-                    bestDistance = dist;
-                    bestIndex = i;
-                }
-            }
-            list.add(new DistanceNode<TimeSeries>(trainset.get(bestIndex), bestDistance));
+            int index = getMinIndex(distances);
+            list.add(trainset.get(index), distances[index]);
         }
 
         return list;

@@ -16,9 +16,6 @@
 
 package fap.classifier.nn;
 
-import java.util.List;
-
-import fap.classifier.nn.util.DistanceNode;
 import fap.data.Dataset;
 import fap.data.TimeSeries;
 import fap.distance.Distance;
@@ -30,7 +27,7 @@ import fap.util.ThreadUtils;
  * 1NN (Nearest Neighbors) classifier.
  * 
  * @author Zoltán Gellér
- * @version 2025.04.17.
+ * @version 2026.08.14.
  * @see AbstractNNClassifier
  */
 public class NNClassifier extends AbstractNNClassifier {
@@ -80,37 +77,34 @@ public class NNClassifier extends AbstractNNClassifier {
     }
 
     /**
-     * Finds the the nearest neighbor (and its distance) of the specified time
-     * series ({@code series}) in the given training set ({@code trainset}).
+     * Finds the index of the nearest neighbor of {@code series} in
+     * {@code trainset}.
      * 
-     * @param series   the time series whose nearest neighbor (and its distance) is
-     *                 to be found
+     * @param series   the time series whose nearest neighbor is to be found
      * @param trainset the training set
-     * @return a {@link DistanceNode} object containing the nearest neighbor of
-     *         {@code series} in {@code trainset} and its distance
+     * @return the index of the nearest neighbor of {@code series} in
+     *         {@code trainset}
      * @throws InterruptedException if the thread has been interrupted
      * @throws Exception            if an error occurs
      */
-    protected DistanceNode<TimeSeries> findNearestNeighbour(TimeSeries series, 
-                                                            Dataset trainset) 
-                                       throws Exception {
+    protected int findNearestNeighbour(TimeSeries series, Dataset trainset) throws Exception {
 
         double minDist = Double.POSITIVE_INFINITY;
-        TimeSeries nearestNeighbour = null;
+        int minIndex = -1;
 
         // if the matrix of distances doesn't exists, we must use the distance measure
         if (distances == null)
 
-            for (TimeSeries ts : trainset) {
+            for (int i = 0; i < trainset.size(); i++) {
 
                 if (Thread.currentThread().isInterrupted())
                     throw new InterruptedException();
 
-                double dist = distance.distance(series, ts); // might throw IncomparableTimeSeriesException
+                double dist = distance.distance(series, trainset.get(i)); // might throw IncomparableTimeSeriesException
 
                 if (dist < minDist) {
                     minDist = dist;
-                    nearestNeighbour = ts;
+                    minIndex = i;
                 }
                 
             }
@@ -120,14 +114,14 @@ public class NNClassifier extends AbstractNNClassifier {
 
             int sindex = series.getIndex();
 
-            for (TimeSeries ts : trainset) {
+            for (int i = 0; i < trainset.size(); i++) {
 
                 if (Thread.currentThread().isInterrupted())
                     throw new InterruptedException();
 
                 double dist;
 
-                int tindex = ts.getIndex();
+                int tindex = trainset.get(i).getIndex();
 
                 if (tindex < distances[sindex].length)
                     dist = distances[sindex][tindex];
@@ -136,14 +130,14 @@ public class NNClassifier extends AbstractNNClassifier {
 
                 if (dist < minDist) {
                     minDist = dist;
-                    nearestNeighbour = ts;
+                    minIndex = tindex;
                 }
                 
             }
 
         }
 
-        return new DistanceNode<TimeSeries>(nearestNeighbour, minDist);
+        return minIndex;
 
     }
 
@@ -171,48 +165,13 @@ public class NNClassifier extends AbstractNNClassifier {
 
             // if the number of threads is 1 or the matrix of distances exists
             if (tnumber < 2 || distances != null)
-                label = findNearestNeighbour(series, trainset).obj.getLabel();
+                label = trainset.get(findNearestNeighbour(series, trainset)).getLabel();
             else
-                label = findNearestNeighbourMultithreaded(series, trainset, tnumber).obj.getLabel();
+                label = trainset.get(getMinIndex(findDistances(series, trainset, tnumber))).getLabel();
 
         }
 
         return label;
-    }
-    
-    /**
-     * Finds the nearest neighbor (and its distance) of the specified time series
-     * ({@code series}) in the training set ({@code trainset}) relying on
-     * {@code tnumber} of threads.
-     * 
-     * @param series   the time series to be classified
-     * @param trainset the training set
-     * @param tnumber  number of threads
-     * @return a {@link DistanceNode} object containing the nearest neighbor of
-     *         {@code series} in the training set ({@code trainset}) and its
-     *         distance
-     * @throws InterruptedException if the thread has been interrupted
-     * @throws Exception            if an error occurs
-     */
-    protected DistanceNode<TimeSeries> findNearestNeighbourMultithreaded(TimeSeries series,
-                                                                         Dataset trainset,
-                                                                         int tnumber) 
-                                       throws Exception {
-
-        List<Double> results = this.findDistances(series, trainset, tnumber);
-        
-        double minDist = Double.POSITIVE_INFINITY;
-        TimeSeries nearestNeighbour = null;
-        
-        for (int i = 0; i < results.size(); i++) {
-            double dist = results.get(i);
-            if (dist < minDist) {
-                minDist = dist;
-                nearestNeighbour = trainset.get(i);
-            }
-        }
-        
-        return new DistanceNode<TimeSeries>(nearestNeighbour, minDist);
     }
 
     @Override

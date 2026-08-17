@@ -36,7 +36,7 @@ import fap.util.ThreadUtils;
  * Defines common methods and fields for (multithreaded) NN classifiers.
  * 
  * @author Zoltán Gellér
- * @version 2025.04.17.
+ * @version 2026.08.14.
  * @see AbstractDistanceBasedClassifier
  * @see Multithreaded
  * @see Copyable
@@ -258,9 +258,9 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
     public void fit(Dataset trainset) throws Exception {
         this.trainset = trainset;
         /*
-         * Method findKNeighbours cannot be called here because the number of nearest
-         * neighbors is not known. In the case of the 1NN classifier, that number is 1,
-         * and in the case of the kNN classifiers, it is determined by the parameter k.
+         * findKNeighbours cannot be called here because the number of nearest neighbors
+         * is not known. In the case of the 1NN classifier, that number is 1, and in the
+         * case of the kNN classifiers, it is determined by the parameter k.
          */
     }
 
@@ -323,29 +323,28 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
         return this.numberOfThreads;
     }
     
-    /**
-     * Calculates the distances between {@code series} and the elements of
-     * {@code dataset} and adds them to the {@code distances} list.
+    /***
+     * Returns the distances between {@code series} and the elements of
+     * {@code dataset}.
      * 
-     * @param distances the list to which the calculated distances should be added
-     * @param series    the time series whose distances are to be calculated
-     * @param dataset   the time series whose distances from {@code series} are to
-     *                  be calculated
-     * @param tnumber   number of threads
+     * @param series  the time series whose distances are to be calculated
+     * @param dataset the time series whose distances from {@code series} are to be
+     *                calculated
+     * @param tnumber number of threads
+     * @return the distances between {@code series} and the elements of
+     *         {@code dataset}
      * @throws Exception if an error occurs
      */
-    private void addDistances(List<Double> distances, TimeSeries series, Dataset dataset, int tnumber) throws Exception {
-        
+    private double[] getDistances(TimeSeries series, Dataset dataset, int tnumber) throws Exception {
+
         try {
 
             if (useCommonPool) {
-                for (Double d: dataset.parallelStream().mapToDouble(ts -> distance.distance(series, ts)).toArray())
-                    distances.add(d);
+                return dataset.parallelStream().mapToDouble(ts -> distance.distance(series, ts)).toArray();
             }
             else {
                 this.initExecutor(tnumber);
-                for (Double d: executor.submit(() -> dataset.parallelStream().mapToDouble(ts -> distance.distance(series, ts)).toArray()).get())
-                    distances.add(d);
+                return executor.submit(() -> dataset.parallelStream().mapToDouble(ts -> distance.distance(series, ts)).toArray()).get();
             }
             
         } catch (ExecutionException | CancellationException | InterruptedException e) {
@@ -357,7 +356,6 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
         
     }
     
-    
     /**
      * Finds the distances between the specified time series ({@code series}) and
      * the elements of the given training set ({@code trainset}) relying on
@@ -367,19 +365,20 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
      * @param dataset the time series whose distances from {@code series} are to be
      *                calculated
      * @param tnumber number of threads
-     * @return the list of distances
+     * @return the distances between {@code series} and the elements if {@code trainset}
      * @throws InterruptedException if the thread has been interrupted
      * @throws Exception            if an error occurs
      */
-    protected List<Double> findDistances(TimeSeries series, Dataset dataset, int tnumber) throws Exception {
+    protected double[] findDistances(TimeSeries series, Dataset dataset, int tnumber) throws Exception {
 
         final int tsize = dataset.size(); 
         
-        List<Double> distances = new ArrayList<>(tsize);
-        
         // if the trainset contains only one time series
-        if (dataset.size() == 1)
-            distances.add(distance.distance(series, dataset.get(0)));
+        if (dataset.size() == 1) {
+            double[] distances = new double[1];
+            distances[0] = distance.distance(series, dataset.get(0));
+            return distances;
+        }
         
         // if the trainset contains more than one time series
         else {
@@ -387,12 +386,15 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
             // if storing distances is enabled, we need to calculate only the not yet calculated distances
             if (distance instanceof AbstractDistance dist && dist.isStoring()) {
 
+                double[] distances = new double[tsize];
+                
                 // time series whose distances must be calculated
                 Dataset newDataset = new Dataset();
 
                 // indices of time series whose distance must be calculated
-                List<Integer> indices = new ArrayList<>();
-
+                int[] indices = new int[tsize];
+                int count = 0;
+                
                 // finding time series whose distance has not yet been calculated
                 for (int i = 0; i < tsize; i++) {
 
@@ -400,44 +402,63 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
 
                     Double recall = dist.recall(series, ts);
 
-                    distances.add(recall);
-
                     if (recall == null) {
-                        indices.add(i);
+                        indices[count++] = i;
                         newDataset.add(ts);
                     }
+                    else
+                        distances[i] = recall;
 
                 }
-
-                final int dsize = newDataset.size();
 
                 // if we have only one distance to calculate
-                if (dsize == 1)
-                    distances.set(indices.get(0), distance.distance(series, newDataset.get(0)));
+                if (count == 1)
+                    distances[indices[0]] = distance.distance(series, newDataset.get(0));
 
                 // if we have more than one distance to calculate
-                else if (dsize > 1) {
+                else if (count > 1) {
 
-                    List<Double> newDistances = new ArrayList<>(dsize);
-                    
-                    addDistances(newDistances, series, newDataset, tnumber);
+                    double[] newDistances = getDistances(series, newDataset, tnumber);
 
                     // merging distances
-                    for (int i = 0; i < dsize; i++)
-                        distances.set(indices.get(i), newDistances.get(i));
+                    for (int i = 0; i < count; i++)
+                        distances[indices[i]] = newDistances[i];
 
                 }
+                
+                return distances;
 
             }
 
             // if storing distances is not enabled, we need to calculate all the distances
             else 
-                addDistances(distances, series, dataset, tnumber);
-
+                return getDistances(series, dataset, tnumber);
 
         }
 
-        return distances;
+    }
+    
+    /**
+     * Returns a new index of the smallest number in {@code distances}.
+     * 
+     * @param distances the distances
+     * @return the index of the smallest number in {@code distances}
+     */
+    protected int getMinIndex(double[] distances) {
+        
+        double minDist = distances[0];
+        int minIndex = 0;
+        
+        for (int i = 1; i < distances.length; i++) {
+            double dist = distances[i];
+            if (dist < minDist) {
+                minDist = dist;
+                minIndex = i;
+            }
+        }
+        
+        return minIndex;
+        
     }
 
     /**

@@ -46,7 +46,7 @@ import fap.util.ThreadUtils;
  *            the {@link Comparable} interface
  * 
  * @author Zoltán Gellér
- * @version 2026.07.03.
+ * @version 2026.08.14.
  * @see AbstractTuner
  * @see ParameterTuner
  * @see Callbackable
@@ -144,7 +144,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
     /**
      * Empty constructor.
      */
-    public AbstractParameterTuner() {
+    protected AbstractParameterTuner() {
     }
 
     /**
@@ -153,7 +153,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * @param modifier the parameter modifier, which is to be used to set the value
      *                 of the parameter tuned by the tuner
      */
-    public AbstractParameterTuner(Modifier<T> modifier) {
+    protected AbstractParameterTuner(Modifier<T> modifier) {
         this.setModifier(modifier);
     }
 
@@ -162,7 +162,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * 
      * @param tnumber number of threads.
      */
-    public AbstractParameterTuner(int tnumber) {
+    protected AbstractParameterTuner(int tnumber) {
         this((Modifier<T>) null, tnumber);
     }
 
@@ -173,7 +173,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      *                 of the parameter tuned by the tuner
      * @param tnumber  number of threads.
      */
-    public AbstractParameterTuner(Modifier<T> modifier, int tnumber) {
+    protected AbstractParameterTuner(Modifier<T> modifier, int tnumber) {
         this.setNumberOfThreads(tnumber);
         this.setModifier(modifier);
     }
@@ -185,7 +185,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * @param first the first value to be evaluated, must be {@code first <= last}
      * @param last  the first value to be evaluated, must be {@code first <= last}
      */
-    public AbstractParameterTuner(T first, T last) {
+    protected AbstractParameterTuner(T first, T last) {
         this(null, first, last, null, 1);
     }
 
@@ -200,7 +200,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * @param last     the first value to be evaluated, must be
      *                 {@code first <= last}
      */
-    public AbstractParameterTuner(Modifier<T> modifier, T first, T last) {
+    protected AbstractParameterTuner(Modifier<T> modifier, T first, T last) {
         this(modifier, first, last, null, 1);
     }
 
@@ -211,7 +211,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * @param last    the first value to be evaluated, must be {@code first <= last}
      * @param tnumber number of threads.
      */
-    public AbstractParameterTuner(T first, T last, int tnumber) {
+    protected AbstractParameterTuner(T first, T last, int tnumber) {
         this(null, first, last, null, tnumber);
     }
 
@@ -227,7 +227,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      *                 {@code first <= last}
      * @param tnumber  number of threads.
      */
-    public AbstractParameterTuner(Modifier<T> modifier, T first, T last, int tnumber) {
+    protected AbstractParameterTuner(Modifier<T> modifier, T first, T last, int tnumber) {
         this(modifier, first, last, null, tnumber);
     }
 
@@ -241,7 +241,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      *                  {@code first <= last}
      * @param increment the increment
      */
-    public AbstractParameterTuner(T first, T last, T increment) {
+    protected AbstractParameterTuner(T first, T last, T increment) {
         this(null, first, last, increment, 1);
     }
 
@@ -257,7 +257,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      *                  {@code first <= last}
      * @param increment the increment
      */
-    public AbstractParameterTuner(Modifier<T> modifier, T first, T last, T increment) {
+    protected AbstractParameterTuner(Modifier<T> modifier, T first, T last, T increment) {
         this(modifier, first, last, increment, 1);
     }
 
@@ -272,7 +272,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * @param increment the increment
      * @param tnumber   number of threads.
      */
-    public AbstractParameterTuner(T first, T last, T increment, int tnumber) {
+    protected AbstractParameterTuner(T first, T last, T increment, int tnumber) {
         this(null, first, last, increment, tnumber);
     }
 
@@ -289,7 +289,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * @param increment the increment
      * @param tnumber   number of threads.
      */
-    public AbstractParameterTuner(Modifier<T> modifier, T first, T last, T increment, int tnumber) {
+    protected AbstractParameterTuner(Modifier<T> modifier, T first, T last, T increment, int tnumber) {
         this.setValues(first, last, increment);
         this.setNumberOfThreads(tnumber);
         this.setModifier(modifier);
@@ -301,7 +301,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * 
      * @param values the list of values to be evaluated
      */
-    public AbstractParameterTuner(List<T> values) {
+    protected AbstractParameterTuner(List<T> values) {
         this(null, values, 1);
     }
 
@@ -313,7 +313,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      *                 of the parameter tuned by the tuner
      * @param values   the list of values to be evaluated
      */
-    public AbstractParameterTuner(Modifier<T> modifier, List<T> values) {
+    protected AbstractParameterTuner(Modifier<T> modifier, List<T> values) {
         this(modifier, values, 1);
     }
 
@@ -324,7 +324,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * @param values  the list of values to be evaluated
      * @param tnumber number of threads.
      */
-    public AbstractParameterTuner(List<T> values, int tnumber) {
+    protected AbstractParameterTuner(List<T> values, int tnumber) {
         this(null, values, tnumber);
     }
 
@@ -337,7 +337,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * @param values   the list of values to be evaluated
      * @param tnumber  number of threads.
      */
-    public AbstractParameterTuner(Modifier<T> modifier, List<T> values, int tnumber) {
+    protected AbstractParameterTuner(Modifier<T> modifier, List<T> values, int tnumber) {
         this.setValues(values);
         this.setNumberOfThreads(tnumber);
         this.setModifier(modifier);
@@ -349,7 +349,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * 
      * @param values the array of values to be evaluated
      */
-    public AbstractParameterTuner(T[] values) {
+    protected AbstractParameterTuner(T[] values) {
         this(null, values, 1);
     }
 
@@ -361,7 +361,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      *                 of the parameter tuned by the tuner
      * @param values   the array of values to be evaluated
      */
-    public AbstractParameterTuner(Modifier<T> modifier, T[] values) {
+    protected AbstractParameterTuner(Modifier<T> modifier, T[] values) {
         this(modifier, values, 1);
     }
 
@@ -372,7 +372,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * @param values  the array of values to be evaluated
      * @param tnumber number of threads
      */
-    public AbstractParameterTuner(T[] values, int tnumber) {
+    protected AbstractParameterTuner(T[] values, int tnumber) {
         this(null, values, tnumber);
     }
 
@@ -385,7 +385,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * @param values   the array of values to be evaluated
      * @param tnumber  number of threads
      */
-    public AbstractParameterTuner(Modifier<T> modifier, T[] values, int tnumber) {
+    protected AbstractParameterTuner(Modifier<T> modifier, T[] values, int tnumber) {
         this.setValues(values);
         this.setNumberOfThreads(tnumber);
         this.setModifier(modifier);

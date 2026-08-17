@@ -20,7 +20,7 @@ package fap.callback;
  * Defines common methods and fields for {@code Callback} objects.
  * 
  * @author Zoltán Gellér
- * @version 2024.09.13.
+ * @version 2026.08.17.
  * @see Callback
  * @see Callbackable
  */
@@ -44,14 +44,14 @@ public abstract class AbstractCallback implements Callback {
     /**
      * Empty constructor.
      */
-    public AbstractCallback() {
+    protected AbstractCallback() {
     }
     
     /**
      * Constructor that sets the desired number of callbacks.
      * @param desiredCBNumber the desired number of callbacks
      */
-    public AbstractCallback(int desiredCBNumber) {
+    protected AbstractCallback(int desiredCBNumber) {
         this.desiredCBNumber = desiredCBNumber;
         this.setPossibleCallbackNumber(desiredCBNumber);
     }

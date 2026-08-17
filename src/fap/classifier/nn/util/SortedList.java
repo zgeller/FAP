@@ -236,5 +236,39 @@ public class SortedList<T> {
         return list;
         
     }
+    
+    /**
+     * Removes the {@code k}th element of the list and returns it.
+     * 
+     * @param k the index of the element to be removed
+     * @return the removed element
+     */
+    public DistanceNode<T> delete(int k) {
+        
+        if (first == null)
+            return null;
+        
+        DistanceNode<T> node = null;
+        
+        if (k == 1)
+            node = remove();
+        else {
+            k--;
+            LinkedDistanceNode<T> tmp = first.next;
+            while (tmp != null && k > 1) {
+                tmp = tmp.next;
+                k--;
+            }
+            if (tmp != null && k == 1) {
+                node = new DistanceNode<T>(tmp.obj, tmp.distance);
+                tmp.prev.next = tmp.next;
+                if (tmp.next != null)
+                    tmp.next.prev = tmp.prev;
+            }
+        }
+        
+        return node;
+        
+    }
 
 }

@@ -49,7 +49,7 @@ import fap.util.ExplicitLine;
  * </ol>
  * 
  * @author Miklós Kálózi, Zoltán Gellér, Brankica Bratić
- * @version 2026.04.19.
+ * @version 2026.08.17.
  * @see Representation
  */
 public abstract class AbstractPLARepresentation<SegmentType> implements Representation {
@@ -70,7 +70,7 @@ public abstract class AbstractPLARepresentation<SegmentType> implements Represen
      * @param maxError  maximum error bound (must be non-negative)
      * @param algorithm type of the algorithm
      */
-    public AbstractPLARepresentation(final TimeSeries series, double maxError, int algorithm) {
+    protected AbstractPLARepresentation(final TimeSeries series, double maxError, int algorithm) {
         this(series.getYValues(), maxError, algorithm);
     }
 	
@@ -81,7 +81,7 @@ public abstract class AbstractPLARepresentation<SegmentType> implements Represen
      * @param maxError  maximum error bound (must be non-negative)
      * @param algorithm type of the algorithm
      */
-    public AbstractPLARepresentation(final double[] values, double maxError, int algorithm) {
+    protected AbstractPLARepresentation(final double[] values, double maxError, int algorithm) {
         createPLA(values, maxError, algorithm);
     }
 	

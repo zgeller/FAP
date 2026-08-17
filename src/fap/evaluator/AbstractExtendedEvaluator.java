@@ -29,7 +29,7 @@ import fap.util.ThreadUtils;
  * classifier evaluators.
  * 
  * @author Zoltán Gellér
- * @version 2025.02.27.
+ * @version 2026.08.17.
  * @see AbstractEvaluator
  * @see Evaluator
  * @see Callbackable
@@ -68,7 +68,7 @@ public abstract class AbstractExtendedEvaluator extends AbstractEvaluator implem
     /**
      * Emptyt constructor (single-threaded).
      */
-    public AbstractExtendedEvaluator() {
+    protected AbstractExtendedEvaluator() {
     }
     
     /**
@@ -76,7 +76,7 @@ public abstract class AbstractExtendedEvaluator extends AbstractEvaluator implem
      * 
      * @param tnumber number of threads.
      */
-    public AbstractExtendedEvaluator(int tnumber) {
+    protected AbstractExtendedEvaluator(int tnumber) {
         this.setNumberOfThreads(tnumber);
     }
     

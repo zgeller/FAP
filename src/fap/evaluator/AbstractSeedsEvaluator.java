@@ -47,7 +47,7 @@ import fap.util.ThreadUtils.RunnableWrapper;
  * individual test subsets.
  * 
  * @author Zoltán Gellér
- * @version 2025.04.22.
+ * @version 2026.08.17.
  * @see AbstractExtendedEvaluator
  * @see Evaluator
  */
@@ -115,7 +115,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * Emptyt constructor (single-threaded, stratified splitting of the dataset,
      * parallel tuning).
      */
-    public AbstractSeedsEvaluator() {
+    protected AbstractSeedsEvaluator() {
     }
     
     /**
@@ -124,7 +124,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * @param stratified indicates whether to use stratified ({@code true}) or
      *                   random ({@code false}) splitting
      */
-    public AbstractSeedsEvaluator(boolean stratified) {
+    protected AbstractSeedsEvaluator(boolean stratified) {
         this.setStratified(stratified);
     }
     
@@ -134,7 +134,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * 
      * @param tnumber number of threads.
      */
-    public AbstractSeedsEvaluator(int tnumber) {
+    protected AbstractSeedsEvaluator(int tnumber) {
         super(tnumber);
     }
 
@@ -145,7 +145,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      *                   random ({@code false}) splitting
      * @param tnumber    number of threads.
      */
-    public AbstractSeedsEvaluator(boolean stratified, int tnumber) {
+    protected AbstractSeedsEvaluator(boolean stratified, int tnumber) {
         super(tnumber);
         this.setStratified(stratified);
     }
@@ -159,7 +159,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
-    public AbstractSeedsEvaluator(int tnumber, boolean fullParallel) {
+    protected AbstractSeedsEvaluator(int tnumber, boolean fullParallel) {
         this(null, tnumber, fullParallel);
     }
 
@@ -172,7 +172,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
-    public AbstractSeedsEvaluator(boolean stratified, int tnumber, boolean fullParallel) {
+    protected AbstractSeedsEvaluator(boolean stratified, int tnumber, boolean fullParallel) {
         this(stratified, null, tnumber, fullParallel);
     }
     
@@ -182,7 +182,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * 
      * @param seeds random seeds used to shuffle the dataset
      */
-    public AbstractSeedsEvaluator(long[] seeds) {
+    protected AbstractSeedsEvaluator(long[] seeds) {
         this.setSeeds(seeds);
     }
 
@@ -193,7 +193,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      *                   random ({@code false}) splitting
      * @param seeds      random seeds used to shuffle the dataset
      */
-    public AbstractSeedsEvaluator(boolean stratified, long[] seeds) {
+    protected AbstractSeedsEvaluator(boolean stratified, long[] seeds) {
         this.setStratified(stratified);
         this.setSeeds(seeds);
     }
@@ -205,7 +205,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * @param seeds   random seeds used to shuffle the dataset
      * @param tnumber number of threads
      */
-    public AbstractSeedsEvaluator(long[] seeds, int tnumber) {
+    protected AbstractSeedsEvaluator(long[] seeds, int tnumber) {
         super(tnumber);
         this.setSeeds(seeds);
     }
@@ -218,7 +218,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * @param seeds      random seeds used to shuffle the dataset
      * @param tnumber    number of threads
      */
-    public AbstractSeedsEvaluator(boolean stratified, long[] seeds, int tnumber) {
+    protected AbstractSeedsEvaluator(boolean stratified, long[] seeds, int tnumber) {
         super(tnumber);
         this.setStratified(stratified);
         this.setSeeds(seeds);
@@ -234,7 +234,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
-    public AbstractSeedsEvaluator(long[] seeds, int tnumber, boolean fullParallel) {
+    protected AbstractSeedsEvaluator(long[] seeds, int tnumber, boolean fullParallel) {
         super(tnumber);
         this.setSeeds(seeds);
         this.setFullParallel(fullParallel);
@@ -250,7 +250,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
-    public AbstractSeedsEvaluator(boolean stratified, long[] seeds, int tnumber, boolean fullParallel) {
+    protected AbstractSeedsEvaluator(boolean stratified, long[] seeds, int tnumber, boolean fullParallel) {
         super(tnumber);
         this.setStratified(stratified);
         this.setSeeds(seeds);

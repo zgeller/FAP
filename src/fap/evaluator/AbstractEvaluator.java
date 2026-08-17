@@ -26,7 +26,7 @@ import fap.exception.EmptyDatasetException;
  * Defines common methods and fields for classifier evaluators.
  * 
  * @author Zoltán Gellér
- * @version 2026.07.03.
+ * @version 2026.08.17.
  * @see Evaluator
  */
 public abstract class AbstractEvaluator implements Evaluator {
@@ -46,7 +46,7 @@ public abstract class AbstractEvaluator implements Evaluator {
     /**
      * Empty constructor.
      */
-    public AbstractEvaluator() {
+    protected AbstractEvaluator() {
     }
     
     /**

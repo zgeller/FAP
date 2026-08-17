@@ -24,7 +24,7 @@ import fap.util.MathUtils;
  * {@link InverseSquaredKNNClassifier} classes.
  * 
  * @author Zoltán Gellér
- * @version 2026.04.22.
+ * @version 2026.08.17.
  * @see KNNClassifier
  */
 public abstract class AbstractInverseKNNClassifier extends KNNClassifier {
@@ -42,7 +42,7 @@ public abstract class AbstractInverseKNNClassifier extends KNNClassifier {
      * ({@link KNNClassifier#k k}), and the default
      * {@link #epsilon} value.
      */
-    public AbstractInverseKNNClassifier() {
+    protected AbstractInverseKNNClassifier() {
     }
 
     /**
@@ -51,7 +51,7 @@ public abstract class AbstractInverseKNNClassifier extends KNNClassifier {
      * 
      * @param k number of nearest neighbors, must be {@code k>=1}
      */
-    public AbstractInverseKNNClassifier(int k) {
+    protected AbstractInverseKNNClassifier(int k) {
         super(k);
     }
     
@@ -62,7 +62,7 @@ public abstract class AbstractInverseKNNClassifier extends KNNClassifier {
      * @param k       number of nearest neighbors, must be {@code k>=1}
      * @param tnumber number of threads
      */
-    public AbstractInverseKNNClassifier(int k, int tnumber) {
+    protected AbstractInverseKNNClassifier(int k, int tnumber) {
         super(k, tnumber);
     }
 
@@ -72,7 +72,7 @@ public abstract class AbstractInverseKNNClassifier extends KNNClassifier {
      * 
      * @param distance distance measure
      */
-    public AbstractInverseKNNClassifier(Distance distance) {
+    protected AbstractInverseKNNClassifier(Distance distance) {
         super(distance);
     }
     
@@ -83,7 +83,7 @@ public abstract class AbstractInverseKNNClassifier extends KNNClassifier {
      * @param distance distance measure
      * @param k        number of nearest neighbours, must be {@code >= 1}
      */
-    public AbstractInverseKNNClassifier(Distance distance, int k) {
+    protected AbstractInverseKNNClassifier(Distance distance, int k) {
         super(distance, k);
     }
     
@@ -96,7 +96,7 @@ public abstract class AbstractInverseKNNClassifier extends KNNClassifier {
      * @param k        number of nearest neighbors, must be {@code >= 1}
      * @param tnumber  number of threads
      */
-    public AbstractInverseKNNClassifier(Distance distance, int k, int tnumber) {
+    protected AbstractInverseKNNClassifier(Distance distance, int k, int tnumber) {
         super(distance, k, tnumber);
     }
 
@@ -107,7 +107,7 @@ public abstract class AbstractInverseKNNClassifier extends KNNClassifier {
      * @param epsilon a small constant that is to be added to the denominator to
      *                avoid division by zero, must be {@code > 0}
      */
-    public AbstractInverseKNNClassifier(int k, double epsilon) {
+    protected AbstractInverseKNNClassifier(int k, double epsilon) {
         super(k);
         this.setEpsilon(epsilon);
     }
@@ -121,7 +121,7 @@ public abstract class AbstractInverseKNNClassifier extends KNNClassifier {
      *                avoid division by zero, must be {@code > 0}
      * @param tnumber number of threads
      */
-    public AbstractInverseKNNClassifier(int k, double epsilon, int tnumber) {
+    protected AbstractInverseKNNClassifier(int k, double epsilon, int tnumber) {
         super(k, tnumber);
         this.setEpsilon(epsilon);
     }
@@ -135,7 +135,7 @@ public abstract class AbstractInverseKNNClassifier extends KNNClassifier {
      * @param epsilon a small constant that is to be added to the denominator to
      *                avoid division by zero, must be {@code > 0}
      */
-    public AbstractInverseKNNClassifier(Distance distance, int k, double epsilon) {
+    protected AbstractInverseKNNClassifier(Distance distance, int k, double epsilon) {
         super(distance, k);
         this.setEpsilon(epsilon);
     }
@@ -151,7 +151,7 @@ public abstract class AbstractInverseKNNClassifier extends KNNClassifier {
      *                avoid division by zero, must be {@code > 0}
      * @param tnumber  number of threads
      */
-    public AbstractInverseKNNClassifier(Distance distance, int k, double epsilon, int tnumber) {
+    protected AbstractInverseKNNClassifier(Distance distance, int k, double epsilon, int tnumber) {
         super(distance, k, tnumber);
         this.setEpsilon(epsilon);
     }

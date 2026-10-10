@@ -34,7 +34,7 @@ import fap.exception.IncomparableTimeSeriesException;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2028.08.16.
+ * @version 2026.08.16.
  * @see AbstractConstrainedDistance
  * @see DTWDistance
  */

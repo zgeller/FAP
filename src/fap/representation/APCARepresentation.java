@@ -143,7 +143,7 @@ public class APCARepresentation implements Representation {
      * Class that stores information about one segment of APCA representation.
      * 
      * @author Brankica Bratic
-     * @version 04.03.2017.
+     * @version 2017.03.04.
      */
     public static class APCASegment {
     

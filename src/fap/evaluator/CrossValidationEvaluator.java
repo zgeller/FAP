@@ -28,19 +28,8 @@ import fap.tuner.Tuner;
 import fap.util.Copyable;
 
 /**
- * Cross-Validation classifier evaluator.
+ * Cross-validation classifier evaluator.
  *
- * <p>
- * If the number of threads is greater than 1, parallel tuning is applied by
- * default. This means that copies of the classifier will be tuned in parallel
- * using copies of the tuner, and then the time series of all the test subsets
- * are classified in parallel as well. This requires that both the tuner and
- * the classifier implement the {@link Copyable} interface (or that there is no
- * tuner and the classifier implements it). If this condition is not met (or
- * the number of seeds is less than 2), it reverts to sequential tuning of the
- * classifier and parallel classification only the time series belonging to
- * individual test subsets.
- * 
  * <p>
  * References:
  * <ol>
@@ -59,7 +48,7 @@ import fap.util.Copyable;
  * 
  * @author Zoltán Gellér
  * @version 2026.07.03.
- * @see AbstractExtendedEvaluator
+ * @see AbstractSeedsEvaluator
  */
 public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements Copyable {
 

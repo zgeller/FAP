@@ -603,15 +603,15 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     }
     
     /**
-     * Multiple iterations of classifier evaluation with sequential tuning (and
-     * parallel evaluating).
+     * Performs multiple iterations of classifier evaluation with sequential tuning
+     * and sequential or parallel (if {@code tnumber} is greater than 1) testing.
      * 
-     * @param tuner    the tuner that is to be used to train the classifier
-     * @param classifier the classifier that is to be evaluated
+     * @param tuner      the tuner used to tune the classifier
+     * @param classifier the classifier to be evaluated
      * @param dataset    the dataset to be used for evaluating the classifier
-     * @param iterations number of iterations
-     * @param tnumber    number of threads
-     * @throws Exception if an error occurs
+     * @param iterations the number of iterations
+     * @param tnumber    the number of threads
+     * @throws Exception if an error occurs during evaluation
      */
     protected void evaluateSequentialTuning(Tuner tuner, 
                                             Classifier classifier, 
@@ -621,7 +621,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
         
         if (tnumber > 1)
             this.initExecutor(tnumber);
-
+        
         for (int iteration = 0; iteration < iterations; iteration++) {
 
             if (Thread.interrupted())
@@ -633,7 +633,6 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
             if (results[iteration] != null && classifiedCount[iteration] == results[iteration].testset.size())
                     continue;
             
-            // if the classifier needs tuning
             else {
 
                 result = new FoldResult();
@@ -749,15 +748,15 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     }
     
     /**
-     * Multiple iterations of classifier evaluation with parallel tuning (and
-     * evaluating).
+     * Performs multiple iterations of classifier evaluation with parallel tuning and
+     * testing.
      * 
-     * @param tuner      the tuner that is to be used to train the classifier
-     * @param classifier the classifier that is to be evaluated
+     * @param tuner      the tuner used to tune the classifier
+     * @param classifier the classifier to be evaluated
      * @param dataset    the dataset to be used for evaluating the classifier
-     * @param iterations number of iterations
-     * @param tnumber    number of threads
-     * @throws Exception if an error occurs
+     * @param iterations the number of iterations
+     * @param tnumber    the number of threads
+     * @throws Exception if an error occurs during evaluation
      */
     protected void evaluateParallelTuning(Tuner tuner, 
                                           Classifier classifier, 
@@ -815,10 +814,10 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     }
 
     /**
-     * Sets the parameters of the specified evaluator to be equal to the parameters
-     * of this evaluator.
+     * Initializes the parameters of the specified evaluator ({@code copy}) to match
+     * those of this evaluator.
      * 
-     * @param copy the evaluator whose parameters are to be set
+     * @param copy the evaluator whose parameters are to be initialized
      * @param deep indicates whether a deep copy should be made
      */
     protected void init(AbstractSeedsEvaluator copy, boolean deep) {

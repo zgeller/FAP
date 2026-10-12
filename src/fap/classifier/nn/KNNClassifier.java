@@ -56,7 +56,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.08.14.
+ * @version 2026.10.12.
  * @see AbstractNNClassifier
  */
 public class KNNClassifier extends AbstractNNClassifier {
@@ -68,12 +68,6 @@ public class KNNClassifier extends AbstractNNClassifier {
      */
     protected int k = 10;
     
-    /**
-     * Indicates how many of the nearest neighbors should be excluded from
-     * consideration. Must be in <code>[0, {@link #k})</code>. Default value is {@code 0}.
-     */
-    protected int exclude = 0;
-
     /**
      * Constructs a new single-threaded majority-voting kNN classifier, with the
      * default number of nearest neighbors ({@link #k}) and without a distance
@@ -164,34 +158,9 @@ public class KNNClassifier extends AbstractNNClassifier {
     public void setK(int k) {
         if (k < 1)
             throw new IllegalArgumentException("Invalid k: " + k + " (must be >= 1)");
-        if (k <= exclude)
-            exclude = 0;
         this.k = k;
     }
 
-    /**
-     * Returns the number of nearest neighbors that are excluded from consideration.
-     * 
-     * @return the number of nearest neighbors that are excluded from consideration
-     */
-    public int getExclude() {
-        return exclude;
-    }
-
-    /**
-     * Sets the number of nearest neighbors to be excluded from consideration. Must
-     * be in <code>[0, {@link #k})</code>.
-     * 
-     * @param exclude the number of nearest neighbors to be excluded from
-     *                consideration; must be in {@code [0, k)}
-     * @throws IllegalArgumentException if {@code exclude } not it {@code [0, k)}
-     */
-    public void setExclude(int exclude) throws IllegalArgumentException {
-//        if (exclude < 0 || exclude >= k)
-//            throw new IllegalArgumentException("exclude out of range [0, " + k + "): " + exclude);
-        this.exclude = exclude;
-    }
-    
     /**
      * Finds the best label among the nearest neighbors using unweighted voting.
      * 
@@ -324,9 +293,6 @@ public class KNNClassifier extends AbstractNNClassifier {
                 list = findSortedDistancesMultithreaded(series, trainset, k, tnumber);
 
         }
-
-        // list.remove(exclude);
-        list.delete(exclude);
 
         if (list.getCount() > 1)
             label = getBestLabel(list);

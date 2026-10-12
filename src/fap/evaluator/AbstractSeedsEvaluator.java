@@ -36,6 +36,7 @@ import fap.util.ThreadUtils.RunnableWrapper;
 /**
  * Defines common methods and fields for classifier evaluators with seeds.
  * 
+ * <p>
  * If the number of threads is greater than 1, parallel tuning is applied by
  * default. This means that copies of the classifier will be tuned in parallel
  * using copies of the tuner, and then the time series of all the test subsets

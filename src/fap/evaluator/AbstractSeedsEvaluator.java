@@ -403,15 +403,16 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     }
     
     /**
-     * It should split the dataset for the specified {@code iteration} into training
-     * and test subsets, in a thread-safe manner.
+     * Splits the dataset for the specified iteration into training and test subsets
+     * in a thread-safe manner.
      * 
      * <p>
-     * The zeroth element of the resulting list should represent the training set, and
-     * the first element should represent the test set.
+     * The zeroth element of the resulting list represents the training set, and the
+     * first element represents the test set.
      * 
-     * @param iteration iteration sequence number
-     * @return the list containing the training and test set (in this order)
+     * @param dataset   the dataset to be split
+     * @param iteration the iteration sequence number
+     * @return a list containing the training set and test set (in that order)
      */
     protected abstract List<Dataset> splitDataset(Dataset dataset, int iteration);
     

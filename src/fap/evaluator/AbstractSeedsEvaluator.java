@@ -367,7 +367,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
 
         int tnumber = ThreadUtils.getThreadLimit(this.getNumberOfThreads());
 
-        // checking conditions for parallel tuning
+        // check the conditions for parallel tuning and evaluating multiple copies of the classifier 
         boolean parallelTuning = (tnumber > 1) && 
                                  this.isFullParallel() && 
                                  ((tuner == null) || (tuner instanceof Copyable)) && 

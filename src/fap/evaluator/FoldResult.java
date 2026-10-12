@@ -21,7 +21,7 @@ import java.util.List;
 import fap.data.Dataset;
 
 /**
- * Auxiliary class for storing fold-related data.
+ * Auxiliary class used by {@link Evaluator} implementations for storing fold-related data.
  * 
  * @author Zoltán Gellér
  * @version 2024.09.11.

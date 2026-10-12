@@ -41,13 +41,12 @@ import fap.util.ThreadUtils.RunnableWrapper;
  * using copies of the tuner, and then the time series of all the test subsets
  * are classified in parallel as well. This requires that both the tuner and the
  * classifier implement the {@link Copyable} interface (or that there is no
- * tuner and the classifier implements it). If this condition is not met (or the
- * number of seeds is less than 2), it reverts to sequential tuning of the
- * classifier and parallel classification only the time series belonging to
- * individual test subsets.
+ * tuner and the classifier implements it). If this condition is not met, it
+ * reverts to sequential tuning of the classifier and parallel classification
+ * only the time series belonging to individual test subsets.
  * 
  * @author Zoltán Gellér
- * @version 2026.08.17.
+ * @version 2026.10.12.
  * @see AbstractExtendedEvaluator
  * @see Evaluator
  */
@@ -399,15 +398,15 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     }
     
     /**
-     * It should split the dataset for the specified {@code iteration} into tuning
+     * It should split the dataset for the specified {@code iteration} into training
      * and test subsets, in a thread-safe manner.
      * 
      * <p>
-     * The zeroth element of the resulting list should represent the tuning set, and
+     * The zeroth element of the resulting list should represent the training set, and
      * the first element should represent the test set.
      * 
      * @param iteration iteration sequence number
-     * @return the list containing the tuning and test set (in this order)
+     * @return the list containing the training and test set (in this order)
      */
     protected abstract List<Dataset> splitDataset(Dataset dataset, int iteration);
     
@@ -766,7 +765,6 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
                                           int iterations,
                                           int tnumber) throws Exception {
 
-
         this.initExecutor(tnumber);
         
         // preparing the tuners
@@ -779,15 +777,15 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
         TuneTask.classifier = classifier;
         
         // creating train tasks and executing them
-        List<TuneTask> trainTasks = new ArrayList<>();
+        List<TuneTask> tuneTasks = new ArrayList<>();
         
         for (int iteration = 0; iteration < iterations; iteration++ )
             if (results[iteration] == null)
-                trainTasks.add(new TuneTask(iteration));
+                tuneTasks.add(new TuneTask(iteration));
         
         newFutures = new ConcurrentLinkedQueue<>();
         
-        ThreadUtils.startRunnables(executor, trainTasks);
+        ThreadUtils.startRunnables(executor, tuneTasks);
         
         ThreadUtils.waitForFutures(executor, newFutures);
         

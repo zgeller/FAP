@@ -162,7 +162,8 @@ public class KNNClassifier extends AbstractNNClassifier {
     }
 
     /**
-     * Finds the best label among the nearest neighbors using unweighted voting.
+     * Returns the best label among the sorted nearest neighbors in {@code list}
+     * using unweighted voting.
      * 
      * @param list sorted list of the nearest neighbors
      * @return the best label
@@ -205,7 +206,7 @@ public class KNNClassifier extends AbstractNNClassifier {
     }
 
     /**
-     * Finds the distances between the specified time series ({@code series}) and
+     * Returns the distances between the specified time series ({@code series}) and
      * the elements of the provided training set ({@code trainset}).
      * 
      * @param series   the time series against which the distances of the elements
@@ -304,16 +305,16 @@ public class KNNClassifier extends AbstractNNClassifier {
     }
 
     /**
-     * Finds the sorted list of {@code k} nearest neighbors (and their distances)
-     * of the specified time series ({@code series}) in the training set
-     * ({@link AbstractNNClassifier#trainset trainset}).
+     * Returns the sorted list of up to {@code k} nearest neighbors (and their
+     * distances) for the specified time series ({@code series}) from the training
+     * set ({@code trainset}).
      * 
      * @param series   the time series to be classified
      * @param trainset the training set
      * @param k        number of nearest neighbors
-     * @return the sorted list of {@code k} nearest neighbors (and their distances)
-     *         of the specified time series ({@code series}) in the training set
-     *         ({@code trainset})
+     * @return the sorted list of up to {@code k} nearest neighbors (and their
+     *         distances) for the specified time series ({@code series}) from the
+     *         training set ({@code trainset})
      * @throws InterruptedException if the thread has been interrupted
      * @throws Exception            if an error occurs
      */
@@ -347,18 +348,17 @@ public class KNNClassifier extends AbstractNNClassifier {
     }
     
     /**
-     * Finds the sorted list of {@code k} nearest neighbors (and their distances)
-     * of the specified time series ({@code series}) in the training set
-     * ({@link AbstractNNClassifier#trainset trainset}) relying on {@code tnumber}
-     * of threads.
+     * Returns the sorted list of up to {@code k} nearest neighbors (and their
+     * distances) for the specified time series ({@code series}) from the training
+     * set ({@code trainset}) using {@code tnumber} threads.
      * 
      * @param series   the time series to be classified
      * @param trainset the training set
      * @param k        number of nearest neighbors
      * @param tnumber  number of threads
-     * @return the sorted list of {@code k} nearest neighbors (and their distances)
-     *         of the specified time series ({@code series}) in the training set
-     *         ({@code trainset})
+     * @return the sorted list of up to {@code k} nearest neighbors (and their
+     *         distances) for the specified time series ({@code series}) from the
+     *         training set ({@code trainset})
      * @throws InterruptedException if the thread has been interrupted
      * @throws Exception            if an error occurs
      */
@@ -382,8 +382,8 @@ public class KNNClassifier extends AbstractNNClassifier {
     }
 
     /**
-     * Sets the number of neighbors of the specified classifier to be equal to the
-     * number of neighbors of this classifier.
+     * Sets the number of neighbors of the specified classifier {@code copy} to
+     * match that of this classifier.
      * 
      * @param copy the classifier whose number of nearest neighbors is to be set
      * @param deep indicates whether a deep copy should be made

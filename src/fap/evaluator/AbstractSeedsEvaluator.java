@@ -792,7 +792,9 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
         if (Thread.interrupted())
             throw new InterruptedException();
         
-        // creating classifying tasks and executing them
+        // In case the evaluation is interrupted after all tuning tasks have been executed
+        // but before all classification tasks have been completed, create the remaining
+        // classification tasks and execute them.
         List<ClassifyTask> classifyTasks = new ArrayList<>();
         
         for (int iteration = 0; iteration < iterations; iteration++)

@@ -59,7 +59,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.08.14.2
+ * @version 2026.10.12.
  * @see KNNClassifier
  */
 public class MacleodKNNClassifier extends KNNClassifier {
@@ -391,10 +391,7 @@ public class MacleodKNNClassifier extends KNNClassifier {
         if (Thread.interrupted())
             throw new InterruptedException();
         
-        int len = k - exclude;
-        list.remove(exclude);
-
-        if (len > 1)
+        if (max > 1)
             label = getBestLabel(list);
         else
             label = list.getFirst().obj.getLabel();

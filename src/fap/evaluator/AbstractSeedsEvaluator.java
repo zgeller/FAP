@@ -776,7 +776,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
         TuneTask.tuner = tuner;
         TuneTask.classifier = classifier;
         
-        // creating train tasks and executing them
+        // creating tune tasks and executing them
         List<TuneTask> tuneTasks = new ArrayList<>();
         
         for (int iteration = 0; iteration < iterations; iteration++ )

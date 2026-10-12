@@ -69,29 +69,30 @@ public class KNNClassifier extends AbstractNNClassifier {
     protected int k = 10;
     
     /**
-     * Constructs a new single-threaded majority-voting kNN classifier, with the
-     * default number of nearest neighbors ({@link #k}) and without a distance
-     * measure.
+     * Constructs a new single-threaded, majority-voting kNN classifier with
+     * the default number of nearest neighbors ({@link #k}) and without a
+     * distance measure.
      */
     public KNNClassifier() {
     }
 
     /**
-     * Constructs a new single-threaded majority-voting kNN classifier utilizing,
-     * with the given number of nearest neighbors ({@code k}).
-     * 
-     * @param k number of nearest neighbors, must be {@code >= 1}
+     * Constructs a new single-threaded, majority-voting kNN classifier with the
+     * given number of nearest neighbors ({@code k}) and without a distance measure.
+     *
+     * @param k the number of nearest neighbors; must be at least {@code 1}
      */
     public KNNClassifier(int k) {
         this.setK(k);
     }
     
     /**
-     * Constructs a new majority-voting kNN classifier, with the specified number of
-     * nearest neighbors ({@code k}), and number of threads ({@code tnumber}).
-     * 
-     * @param k       number of nearest neighbors, must be {@code >= 1}
-     * @param tnumber number of threads
+     * Constructs a new majority-voting kNN classifier with the specified number of
+     * nearest neighbors ({@code k}) and number of threads ({@code tnumber}), and
+     * without a distance measure.
+     *
+     * @param k       the number of nearest neighbors; must be at least {@code 1}
+     * @param tnumber the number of threads
      */
     public KNNClassifier(int k, int tnumber) {
         super(tnumber);
@@ -99,23 +100,23 @@ public class KNNClassifier extends AbstractNNClassifier {
     }
     
     /**
-     * Constructs a new single-threaded majority-voting kNN classifier, with the
-     * specified distance measure ({@code distance}), and the default number of
+     * Constructs a new single-threaded, majority-voting kNN classifier with the
+     * specified distance measure ({@code distance}) and the default number of
      * nearest neighbors ({@link #k}).
-     * 
-     * @param distance distance measure
+     *
+     * @param distance the distance measure
      */
     public KNNClassifier(Distance distance) {
         super(distance);
     }
 
     /**
-     * Constructs a new single-threaded majority-voting kNN classifier, with the
+     * Constructs a new single-threaded, majority-voting kNN classifier with the
      * specified distance measure ({@code distance}) and number of nearest
      * neighbors ({@code k}).
      * 
-     * @param distance distance measure
-     * @param k        number of nearest neighbors, must be {@code >= 1}
+     * @param distance the distance measure
+     * @param k        the number of nearest neighbors; must be at least {@code 1}
      */
     public KNNClassifier(Distance distance, int k) {
         super(distance);
@@ -123,13 +124,13 @@ public class KNNClassifier extends AbstractNNClassifier {
     }
     
     /**
-     * Constructs a new majority-voting kNN classifier, with the specified distance
+     * Constructs a new majority-voting kNN classifier with the specified distance
      * measure ({@code distance}), number of nearest neighbors ({@code k}), and
      * number of threads ({@code tnumber}).
      * 
-     * @param distance distance measure
-     * @param k        number of nearest neighbors, must be {@code >= 1}
-     * @param tnumber  number of threads
+     * @param distance the distance measure
+     * @param k        the number of nearest neighbors; must be at least {@code 1}
+     * @param tnumber  the number of threads
      */
     public KNNClassifier(Distance distance, int k, int tnumber) {
         super(distance, tnumber);
@@ -146,13 +147,9 @@ public class KNNClassifier extends AbstractNNClassifier {
     }
 
     /**
-     * Sets the number of nearest neighbors to consider {@code k}. Must be
-     * {@code >= 1}.
-     * 
-     * <p>
-     * If {@code k <= exclude}, {@link #exclude} defaults to {@code 0}.
-     * 
-     * @param k number of nearest neighbors, must be {@code >= 1}
+     * Sets the number of nearest neighbors ({@code k}) to consider.
+     *
+     * @param k the number of nearest neighbors
      * @throws IllegalArgumentException if {@code k < 1}
      */
     public void setK(int k) {
@@ -262,9 +259,10 @@ public class KNNClassifier extends AbstractNNClassifier {
     
     /**
      * @throws EmptyDatasetException           if the training set is empty
-     * @throws IncomparableTimeSeriesException if the series is incomparable with a
-     *                                         series from the training set
-     * @throws InterruptedException            when the interrupted flag is set
+     * @throws IncomparableTimeSeriesException if {@code series} is incompatible
+     *                                         with a series in the training set
+     * @throws InterruptedException            if the current thread is interrupted
+     *                                         during execution
      */
     @Override
     public double classify(TimeSeries series) throws Exception {

@@ -37,14 +37,14 @@ import fap.util.ThreadUtils.RunnableWrapper;
  * Defines common methods and fields for classifier evaluators with seeds.
  * 
  * <p>
- * If the number of threads is greater than 1, parallel tuning is applied by
- * default. This means that copies of the classifier will be tuned in parallel
- * using copies of the tuner, and then the time series of all the test subsets
- * are classified in parallel as well. This requires that both the tuner and the
- * classifier implement the {@link Copyable} interface (or that there is no
- * tuner and the classifier implements it). If this condition is not met, it
- * reverts to sequential tuning of the classifier and parallel classification
- * only the time series belonging to individual test subsets.
+ * If the number of threads is greater than 1, parallel tuning and evaluation is
+ * applied by default. This means that copies of the classifier are tuned in
+ * parallel using copies of the tuner, and the time series across all test
+ * subsets are classified in parallel as well. This requires that both the tuner
+ * and the classifier implement the {@link Copyable} interface (or that there is
+ * no tuner and the classifier implements it). If this condition is not met, the
+ * evaluator reverts to sequential tuning of the classifier and parallel
+ * classification of only the time series belonging to individual test subsets.
  * 
  * @author Zoltán Gellér
  * @version 2026.10.12.
@@ -68,11 +68,15 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     protected long[] seeds;
     
     /**
-     * Indicates whether to apply parallel tuning and evaluating the classifier
+     * Indicates whether to apply parallel tuning and evaluation of the classifier,
      * which requires that both the tuner and the classifier implement the
-     * {@link Copyable} interface (or that there is no tuner). If they do not
-     * implement it, the algorithm will revert to sequential tuning (and parallel
-     * evaluation). Default value is {@code true}.
+     * {@link Copyable} interface (or that there is no tuner and the classifier
+     * implements it). If this requirement is not met, the algorithm reverts to
+     * sequential tuning of the classifier and parallel classification of only the
+     * time series belonging to individual test subsets.
+     * 
+     * <p>
+     * Default value is {@code true}.
      */
     protected boolean fullParallel = true;
     

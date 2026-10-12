@@ -811,7 +811,6 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
         classifiedCount = null;
 
     }
-    
 
     /**
      * Sets the parameters of the specified evaluator to be equal to the parameters

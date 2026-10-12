@@ -609,7 +609,8 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     
     /**
      * Performs multiple iterations of classifier evaluation with sequential tuning
-     * and sequential or parallel (if {@code tnumber} is greater than 1) testing.
+     * and sequential or parallel (if {@code tnumber} is greater than 1)
+     * classification.
      * 
      * @param tuner      the tuner used to tune the classifier
      * @param classifier the classifier to be evaluated
@@ -754,7 +755,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     
     /**
      * Performs multiple iterations of classifier evaluation with parallel tuning and
-     * testing.
+     * classification.
      * 
      * @param tuner      the tuner used to tune the classifier
      * @param classifier the classifier to be evaluated

@@ -46,7 +46,7 @@ import fap.util.ThreadUtils;
  *            the {@link Comparable} interface
  * 
  * @author Zoltán Gellér
- * @version 2026.08.14.
+ * @version 2026.10.13.
  * @see AbstractTuner
  * @see ParameterTuner
  * @see Callbackable
@@ -486,27 +486,55 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
     }
     
     /**
-     * Checks if conditions are met for tuning.
+     * Checks if all conditions are met for tuning:
+     * <ul>
+     *  <li>{@code classifier} is not {@code null}
+     *  <li>{@code dataset} is neither {@code null} nor empty
+     *  <li>either the {@link #subtuner} or the {@link #evaluator} is not {@code null}
+     * </ul>
      * 
      * @param classifier the classifier whose hyperparameters are to be tuned
      * @param dataset    the dataset
      * @throws NullPointerException  if the classifier or dataset is {@code null}
      * @throws EmptyDatasetException if the dataset is empty
-     * @throws IllegalStateException if both the subtuner and evaluator are
+     * @throws IllegalStateException if both the {@code subtuner} and {@code evaluator} are
      *                               {@code null}
      */
     protected void checkConditions(Classifier classifier, Dataset dataset) {
+        checkConditions(classifier, dataset, true);
+    }
 
+    /**
+     * Checks if the conditions are met for tuning:
+     * <ul>
+     *  <li>{@code classifier} is not {@code null}
+     *  <li>{@code dataset} is neither {@code null} nor empty
+     *  <li>if {@code checkState} is {@code true}, either the {@link #subtuner} or
+     *      the {@link #evaluator} is not {@code null}
+     * </ul>
+     * 
+     * @param classifier the classifier whose hyperparameters are to be tuned
+     * @param dataset    the dataset
+     * @param checkState indicates whether to check if either the {@code subtuner}
+     *                   or the {@code evaluator} is not {@code null}
+     * @throws NullPointerException  if the classifier or dataset is {@code null}
+     * @throws EmptyDatasetException if the dataset is empty
+     * @throws IllegalStateException if {@code checkState} is {@code true} and both
+     *                               the {@code subtuner} and {@code evaluator} are
+     *                               {@code null}
+     */
+    protected void checkConditions(Classifier classifier, Dataset dataset, boolean checkState) {
+        
         Objects.requireNonNull(classifier, "The classifier cannot be null.");
         Objects.requireNonNull(dataset, "The dataset cannot be null.");
 
         EmptyDatasetException.check(dataset);
         
-        if ((subtuner == null) && (evaluator == null))
+        if (checkState && (subtuner == null) && (evaluator == null))
             throw new IllegalStateException("Both subtuner and evaluator cannot be null at the same time.");
         
     }
-
+    
     @Override
     public double tune(Classifier classifier, Dataset dataset) throws Exception {
 

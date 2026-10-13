@@ -56,7 +56,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.10.12.
+ * @version 2026.10.13.
  * @see AbstractNNClassifier
  */
 public class KNNClassifier extends AbstractNNClassifier {
@@ -138,9 +138,9 @@ public class KNNClassifier extends AbstractNNClassifier {
     }
 
     /**
-     * Returns the number of nearest neighbors to consider {@code k}.
-     * 
-     * @return the number of nearest neighbors to consider {@code k}
+     * Returns the number of nearest neighbors ({@code k}) to consider.
+     *
+     * @return the number of nearest neighbors
      */
     public int getK() {
         return k;
@@ -193,6 +193,75 @@ public class KNNClassifier extends AbstractNNClassifier {
         }
 
         return bestLabel;
+        
+    }
+
+    /**
+     * Returns the best labels evaluated across the first {@code i} nearest
+     * neighbors in {@code list}, for each {@code i} in the range
+     * {@code [1, list.getCount()]}, using unweighted voting.
+     *
+     * @param list the sorted list of nearest neighbors
+     * @return an array of best labels evaluated over the first {@code i} nearest
+     *         neighbors, for each {@code i} in {@code [1, list.getCount()]}
+     */
+    protected double[] getBestLabels(SortedList<TimeSeries> list) {
+
+        LinkedDistanceNode<TimeSeries> node = list.getFirst();
+        
+        final int k = this.getK();          // the number of nearest neighbors that should be considered
+        final int count = list.getCount();  // the actual number of nearest neighbors
+
+        ArrayList<Map<Double, Integer>> neighbours = new ArrayList<>();
+        
+        double[] bestLabels = new double[k];
+        int[] bestWeights = new int[k];
+
+        double label = node.obj.getLabel();
+        
+        for (int i = 0; i < k; i++) {
+            
+            Map<Double, Integer> hmap = new HashMap<>();
+            hmap.put(label, 1);
+            neighbours.add(new HashMap<Double, Integer>());
+            
+            bestLabels[i] = label;
+            bestWeights[i] = 1;
+            
+        }
+
+        node = node.next;
+        
+        int index = 1;
+
+        while (node != null) {
+
+            label = node.obj.getLabel();
+
+            for (int i = index; i < count; i++) {
+                
+                int weight = 1;
+                
+                weight = neighbours.get(i).merge(label, 1, Integer::sum);
+               
+                if (weight > bestWeights[i]) {
+                    bestLabels[i] = label;
+                    bestWeights[i] = weight;
+                }
+                
+            }
+
+            node = node.next;
+            index++;
+            
+        }
+
+        // if there is less than k nearest neighbours
+        // the best label is determined based on the available number of nearest neighbors
+        for (int i = count; i < k; i++)
+            bestLabels[i] = bestLabels[count - 1];
+        
+        return bestLabels;
         
     }
     
@@ -299,6 +368,61 @@ public class KNNClassifier extends AbstractNNClassifier {
             label = list.getFirst().obj.getLabel();
         
         return label;
+        
+    }
+    
+    /**
+     * Classifies the given time series for each neighbor count from {@code 1} to
+     * {@code k}.
+     *
+     * @param series the time series to be classified
+     * @return an array of predicted labels for {@code series}, where the element at
+     *         index {@code i} corresponds to the classification result using
+     *         {@code i + 1} nearest neighbors
+     * @throws EmptyDatasetException           if the training set is empty
+     * @throws IncomparableTimeSeriesException if {@code series} is incompatible
+     *                                         with a series in the training set
+     * @throws InterruptedException            if the current thread is interrupted
+     *                                         during execution
+     * @throws Exception                       if an error occurs during
+     *                                         classification
+     */
+    public double[] classifyK(TimeSeries series) throws Exception {
+        
+        EmptyDatasetException.check(trainset);
+        
+        int k = this.getK();
+
+        // sorted list of k nearest neighbours
+        SortedList<TimeSeries> list;
+
+        double[] labels;
+
+        // if the sorted list of nearest neighbours exists
+        if (kNeighbours != null)
+            list = kNeighbours.get(series.getIndex());
+        
+        // if the sorted list of nearest neighbours doesn't exist
+        else {
+
+            int tnumber = ThreadUtils.getThreadLimit(this.getNumberOfThreads());
+
+            // if the number of threads is 1 or the matrix of distances exists
+            if (tnumber < 2 || distances != null)
+                list = findSortedDistances(series, trainset, k);
+            else
+                list = findSortedDistancesMultithreaded(series, trainset, k, tnumber);
+
+        }
+        
+        if (list.getCount() > 1)
+            labels = getBestLabels(list);
+        else {
+            labels = new double[1];
+            labels[0] = list.getFirst().obj.getLabel();
+        }
+        
+        return labels;
         
     }
 

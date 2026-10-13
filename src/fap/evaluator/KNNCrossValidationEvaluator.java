@@ -35,17 +35,17 @@ import fap.util.Copyable;
  * <p>
  * References:
  * <ol>
- * <li>M. Mohri, A. Rostamizadeh, A. Talwalkar, Foundations of Machine Learning,
- * The MIT Press, 2012.
- * <li>J. Abonyi, Adatbányászat a hatékonyság eszköze, 1st ed., ComputerBooks,
- * Budapest, 2006.
- * <li>P.-N. Tan, M. Steinbach, V. Kumar, A. Karpatne, Introduction to Data
- * Mining, 2nd ed., Pearson Education, 2019.
- * <li>J. Han, J. Pei, H. Tong, Data Mining: Concepts and Techniques, 4th ed.,
- * Morgan Kaufmann, 2022.
- * <li>T.M. Mitchell, Machine Learning, McGraw-Hill, Inc., New York, NY, USA,
- * 1997.
- * <li>E. Alpaydin, Introduction to Machine Learning, MIT Press, 2004.
+ *  <li>M. Mohri, A. Rostamizadeh, A. Talwalkar, Foundations of Machine Learning,
+ *      The MIT Press, 2012.
+ *  <li>J. Abonyi, Adatbányászat a hatékonyság eszköze, 1st ed., ComputerBooks,
+ *      Budapest, 2006.
+ *  <li>P.-N. Tan, M. Steinbach, V. Kumar, A. Karpatne, Introduction to Data
+ *      Mining, 2nd ed., Pearson Education, 2019.
+ *  <li>J. Han, J. Pei, H. Tong, Data Mining: Concepts and Techniques, 4th ed.,
+ *      Morgan Kaufmann, 2022.
+ *  <li>T.M. Mitchell, Machine Learning, McGraw-Hill, Inc., New York, NY, USA,
+ *      1997.
+ *  <li>E. Alpaydin, Introduction to Machine Learning, MIT Press, 2004.
  * </ol>
  * 
  * @author Zoltán Gellér

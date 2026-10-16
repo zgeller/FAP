@@ -46,7 +46,7 @@ import fap.util.ThreadUtils;
  *            the {@link Comparable} interface
  * 
  * @author Zoltán Gellér
- * @version 2026.10.13.
+ * @version 2026.10.16.
  * @see AbstractTuner
  * @see ParameterTuner
  * @see Callbackable
@@ -459,8 +459,8 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
     }
 
     @Override
-    public void setSubtuner(ParameterTuner<?> subTuner) {
-        this.subtuner = subTuner;
+    public void setSubtuner(ParameterTuner<?> subtuner) {
+        this.subtuner = subtuner;
     }
 
     @Override
@@ -699,7 +699,7 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
             AbstractParameterTuner<T> tunerCopy = (AbstractParameterTuner<T>) tuners.poll();
             Classifier classifierCopy = classifiers.poll();
             
-            ParameterTuner<?> subTuner = tunerCopy.getSubtuner();
+            ParameterTuner<?> subtuner = tunerCopy.getSubtuner();
             Evaluator evaluator = tunerCopy.getEvaluator();
             Modifier<T> modifier = tunerCopy.getModifier();
 
@@ -708,11 +708,11 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
 
             double error = Double.POSITIVE_INFINITY;
 
-            if (subTuner != null) {
+            if (subtuner != null) {
 
-                error = subTuner.tune(classifierCopy, TuneTask.dataset);
+                error = subtuner.tune(classifierCopy, TuneTask.dataset);
 
-                if (subTuner instanceof Resumable rst)
+                if (subtuner instanceof Resumable rst)
                     rst.reset();
 
             } else {
@@ -727,8 +727,8 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
             // memorizing parameter values
             List<Comparable<?>> params = new LinkedList<>();
             params.add(value);
-            if (subTuner != null)
-                params.addAll(subTuner.getParameters());
+            if (subtuner != null)
+                params.addAll(subtuner.getParameters());
             
             tunedParameters.set(index, params);
 
@@ -915,17 +915,17 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
         
         super.init(copy, deep);
         
-        ParameterTuner<?> subTunerCopy = subtuner;
+        ParameterTuner<?> subtunerCopy = subtuner;
         Evaluator evaluatorCopy = evaluator;
 
         if (deep) {
             if (subtuner != null)
-                subTunerCopy = (ParameterTuner<?>) ((Copyable) subtuner).makeACopy();
+                subtunerCopy = (ParameterTuner<?>) ((Copyable) subtuner).makeACopy();
             if (evaluator != null)
                 evaluatorCopy = (Evaluator) ((Copyable) evaluator).makeACopy();
         }
 
-        copy.setSubtuner(subTunerCopy);
+        copy.setSubtuner(subtunerCopy);
         copy.setEvaluator(evaluatorCopy);
         copy.setModifier(this.getModifier()); // consider making a deep copy
         copy.setValues(this.getValues()); // consider making a deep copy

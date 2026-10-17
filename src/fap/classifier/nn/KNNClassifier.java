@@ -56,7 +56,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.10.17.2
+ * @version 2026.10.17.3
  * @see AbstractNNClassifier
  */
 public class KNNClassifier extends AbstractNNClassifier {
@@ -268,7 +268,7 @@ public class KNNClassifier extends AbstractNNClassifier {
     @Override
     public void fit(Dataset trainset) throws Exception {
         super.fit(trainset);
-        findKNeighbours(trainset, this.k);
+        findKNeighbors(trainset, this.k);
     }
 
     /**

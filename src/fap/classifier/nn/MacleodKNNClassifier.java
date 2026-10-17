@@ -59,7 +59,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.10.17.
+ * @version 2026.10.17.2
  * @see KNNClassifier
  */
 public class MacleodKNNClassifier extends KNNClassifier {
@@ -344,7 +344,7 @@ public class MacleodKNNClassifier extends KNNClassifier {
         int k = this.getK();
         if (max < k)
             max = k;
-        findKNeighbours(trainset, max);
+        findKNeighbors(trainset, max);
     }
 
     /**

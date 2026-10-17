@@ -36,7 +36,7 @@ import fap.util.ThreadUtils;
  * Defines common methods and fields for (multithreaded) NN classifiers.
  * 
  * @author Zoltán Gellér
- * @version 2026.10.17.3
+ * @version 2026.10.17.4
  * @see AbstractDistanceBasedClassifier
  * @see Multithreaded
  * @see Copyable
@@ -258,7 +258,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
     public void fit(Dataset trainset) throws Exception {
         this.trainset = trainset;
         /*
-         * findKNeighbours cannot be called here because the number of nearest neighbors
+         * findKNeighbors cannot be called here because the number of nearest neighbors
          * is not known. In the case of the 1NN classifier, that number is 1, and in the
          * case of the kNN classifiers, it is determined by the parameter k.
          */
@@ -268,10 +268,10 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
      * Sets the matrix of neighbors. Must be invoked before the {@link #fit}
      * method.
      * 
-     * @param neighbours the matrix of neighbors to set
+     * @param neighbors the matrix of neighbors to set
      */
-    public void setNeighbours(int[][] neighbours) {
-        this.neighbors = neighbours;
+    public void setNeighbors(int[][] neighbors) {
+        this.neighbors = neighbors;
     }
 
     /**
@@ -279,7 +279,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
      * 
      * @return the matrix of neighbors
      */
-    public int[][] getNeighbours() {
+    public int[][] getNeighbors() {
         return this.neighbors;
     }
 
@@ -478,7 +478,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
 
         if (!deep) {
             copy.setDistances(this.getDistances());            
-            copy.setNeighbours(this.getNeighbours());
+            copy.setNeighbors(this.getNeighbors());
         }
         
     }

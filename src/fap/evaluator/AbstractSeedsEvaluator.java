@@ -50,7 +50,7 @@ import fap.util.ThreadUtils.RunnableWrapper;
  * In parallel classification mode, the thread count of the classifier (or its
  * copies) is set to 1 (under the assumption that the executor used by the
  * classifier is instantiated once, rather than per {@code classify} method
- * call).
+ * call) and restored once the evaluation is complete.
  * 
  * @author Zoltán Gellér
  * @version 2026.10.17.4

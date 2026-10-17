@@ -28,7 +28,6 @@ import fap.util.Resumable;
 import fap.util.ThreadUtils;
 
 /**
- * 
  * Defines common methods and fields for evaluators of kNN classifiers with
  * seeds, leveraging the ability of kNN classifiers to classify the given time
  * series for each neighbor count from {@code 1} to {@code k}, where {@code k}

@@ -46,6 +46,12 @@ import fap.util.ThreadUtils.RunnableWrapper;
  * evaluator reverts to sequential tuning of the classifier and parallel
  * classification of only the time series belonging to individual test subsets.
  * 
+ * <p>
+ * In parallel classification mode, the thread count of the classifier (or its
+ * copies) is set to 1 (under the assumption that the executor used by the
+ * classifier is instantiated once, rather than per {@code classify} method
+ * call).
+ * 
  * @author Zoltán Gellér
  * @version 2026.10.17.
  * @see AbstractExtendedEvaluator

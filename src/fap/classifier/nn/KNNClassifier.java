@@ -56,7 +56,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.10.13.
+ * @version 2026.10.17.
  * @see AbstractNNClassifier
  */
 public class KNNClassifier extends AbstractNNClassifier {
@@ -223,7 +223,7 @@ public class KNNClassifier extends AbstractNNClassifier {
             
             Map<Double, Integer> hmap = new HashMap<>();
             hmap.put(label, 1);
-            neighbours.add(new HashMap<Double, Integer>());
+            neighbours.add(hmap);
             
             bestLabels[i] = label;
             bestWeights[i] = 1;

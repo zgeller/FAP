@@ -53,7 +53,7 @@ import fap.util.ThreadUtils.RunnableWrapper;
  * call).
  * 
  * @author Zoltán Gellér
- * @version 2026.10.17.3
+ * @version 2026.10.17.4
  * @see AbstractExtendedEvaluator
  * @see Evaluator
  */
@@ -493,11 +493,10 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
                 // only single-threaded classifiers are supported
                 // - if the same classifier is used in multiple threads, the same executor will
                 // deal with all the tasks generated in those threads
-                if (classifier instanceof Multithreaded mc)
+                if (classifierCopy instanceof Multithreaded mc)
                     mc.setNumberOfThreads(1);
                 
                 classifiers[iteration] = classifierCopy;
-
                 results[iteration] = result;
                 
                 return;
@@ -525,6 +524,12 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+
+            // only single-threaded classifiers are supported
+            // - if the same classifier is used in multiple threads, the same executor will
+            // deal with all the tasks generated in those threads
+            if (classifierCopy instanceof Multithreaded mc)
+                mc.setNumberOfThreads(1);
             
             classifiers[iteration] = classifierCopy;
             results[iteration] = result;

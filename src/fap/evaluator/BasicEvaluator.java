@@ -42,7 +42,7 @@ import fap.util.ThreadUtils;
  * Evaluates a classifier based on the specified test and training sets.
  * 
  * @author Zoltán Gellér
- * @version 2026.07.03.
+ * @version 2026.10.17.
  * @see Serializable
  * @see Callbackable
  * @see Resumable
@@ -233,12 +233,12 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
             if (Thread.interrupted())
                 throw new InterruptedException();
 
-            TimeSeries testSeries = testset.get(i);
+            TimeSeries ts = testset.get(i);
 
-            double label = classifier.classify(testSeries);
+            double label = classifier.classify(ts);
 
             counter++;
-            if (testSeries.getLabel() != label)
+            if (ts.getLabel() != label)
                 misclassfied++;
 
             labels[i] = label;
@@ -290,12 +290,12 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
         public void run() {
             
             // the time series to be tested
-            TimeSeries testSeries = testset.get(index);
+            TimeSeries ts = testset.get(index);
             
             // test
             double label;
             try {
-                label = classifier.classify(testSeries);
+                label = classifier.classify(ts);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -306,7 +306,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
                 
                 // update the results
                 counter++;
-                if (testSeries.getLabel() != label)
+                if (ts.getLabel() != label)
                     misclassfied++;
                 
                 // call back

@@ -101,7 +101,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
 
     /**
      * The predicted labels. A {@code null} value indicates that the given time
-     * series has not yet been tested.
+     * series has not yet been classified.
      */
     private Double[] labels;
 
@@ -224,7 +224,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
 
         final int tsize = testset.size();
         
-        // test
+        // evaluate
         for (int i = 0; i < tsize; i++) {
 
             if (labels[i] != null)
@@ -243,7 +243,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
 
             labels[i] = label;
 
-            // calling back
+            // call back
             if (callback != null) {
                 progress += stepSize;
                 if (progress >= steps) {
@@ -292,7 +292,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
             // the time series to be tested
             TimeSeries ts = testset.get(index);
             
-            // test
+            // classify
             double label;
             try {
                 label = classifier.classify(ts);
@@ -377,8 +377,11 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
     }
 
     /**
-     * Returns the predicted labels. A {@code null} value indicates that the given
-     * time series has not yet been tested.
+     * Returns the predicted label of each time series from the test set.
+     * 
+     * <p>
+     * A {@code null} value indicates that the given time series has not yet been
+     * classified.
      * 
      * @return the predicted labels
      */

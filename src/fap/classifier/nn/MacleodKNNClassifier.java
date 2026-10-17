@@ -59,7 +59,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.10.12.
+ * @version 2026.10.17.
  * @see KNNClassifier
  */
 public class MacleodKNNClassifier extends KNNClassifier {
@@ -369,8 +369,8 @@ public class MacleodKNNClassifier extends KNNClassifier {
         double label;
 
         // if the sorted list of nearest neighbors exists
-        if (kNeighbours != null)
-            list = kNeighbours.get(series.getIndex());
+        if (kNeighbors != null)
+            list = kNeighbors.get(series.getIndex());
 
         // if the sorted list of nearest neighbors doesn't exist
         else {

@@ -56,7 +56,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.10.17.
+ * @version 2026.10.17.2
  * @see AbstractNNClassifier
  */
 public class KNNClassifier extends AbstractNNClassifier {
@@ -212,7 +212,7 @@ public class KNNClassifier extends AbstractNNClassifier {
         final int k = this.getK();          // the number of nearest neighbors that should be considered
         final int count = list.getCount();  // the actual number of nearest neighbors
 
-        ArrayList<Map<Double, Integer>> neighbours = new ArrayList<>();
+        ArrayList<Map<Double, Integer>> neighbors = new ArrayList<>();
         
         double[] bestLabels = new double[k];
         int[] bestWeights = new int[k];
@@ -223,7 +223,7 @@ public class KNNClassifier extends AbstractNNClassifier {
             
             Map<Double, Integer> hmap = new HashMap<>();
             hmap.put(label, 1);
-            neighbours.add(hmap);
+            neighbors.add(hmap);
             
             bestLabels[i] = label;
             bestWeights[i] = 1;
@@ -242,7 +242,7 @@ public class KNNClassifier extends AbstractNNClassifier {
                 
                 int weight = 1;
                 
-                weight = neighbours.get(i).merge(label, 1, Integer::sum);
+                weight = neighbors.get(i).merge(label, 1, Integer::sum);
                
                 if (weight > bestWeights[i]) {
                     bestLabels[i] = label;
@@ -346,8 +346,8 @@ public class KNNClassifier extends AbstractNNClassifier {
         double label;
 
         // if the sorted list of nearest neighbours exists
-        if (kNeighbours != null)
-            list = kNeighbours.get(series.getIndex());
+        if (kNeighbors != null)
+            list = kNeighbors.get(series.getIndex());
         
         // if the sorted list of nearest neighbours doesn't exist
         else {
@@ -399,8 +399,8 @@ public class KNNClassifier extends AbstractNNClassifier {
         double[] labels;
 
         // if the sorted list of nearest neighbours exists
-        if (kNeighbours != null)
-            list = kNeighbours.get(series.getIndex());
+        if (kNeighbors != null)
+            list = kNeighbors.get(series.getIndex());
         
         // if the sorted list of nearest neighbours doesn't exist
         else {

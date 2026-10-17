@@ -27,7 +27,7 @@ import fap.util.ThreadUtils;
  * 1NN (Nearest Neighbors) classifier.
  * 
  * @author Zoltán Gellér
- * @version 2026.08.14.
+ * @version 2026.10.17.
  * @see AbstractNNClassifier
  */
 public class NNClassifier extends AbstractNNClassifier {
@@ -155,8 +155,8 @@ public class NNClassifier extends AbstractNNClassifier {
         double label;
 
         // if the sorted list of nearest neighbors exists
-        if (kNeighbours != null)
-            label = kNeighbours.get(series.getIndex()).getFirst().obj.getLabel();
+        if (kNeighbors != null)
+            label = kNeighbors.get(series.getIndex()).getFirst().obj.getLabel();
 
         // if the sorted list of nearest neighbors doesn't exist
         else {

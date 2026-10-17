@@ -36,7 +36,7 @@ import fap.util.ThreadUtils;
  * Defines common methods and fields for (multithreaded) NN classifiers.
  * 
  * @author Zoltán Gellér
- * @version 2026.08.17.
+ * @version 2026.10.17.
  * @see AbstractDistanceBasedClassifier
  * @see Multithreaded
  * @see Copyable
@@ -77,12 +77,12 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
      * The list of sorted lists of k nearest neighbors (and their distances):
      * 
      * <ul>
-     * <li>{@code kNeighbours[n]} is a (sorted) list of the k nearest neighbors
+     * <li>{@code kNeighbors[n]} is a (sorted) list of the k nearest neighbors
      * (and their distances) of the time series whose index is n.
      * </ul>
      * <p>
      */
-    protected transient List<SortedList<TimeSeries>> kNeighbours;
+    protected transient List<SortedList<TimeSeries>> kNeighbors;
 
     /**
      * The number of threads. Default value is {@code 1}.
@@ -156,7 +156,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
     }
     
     /**
-     * Populates {@link #kNeighbours kNeighbours[index]} with up to {@code k}
+     * Populates {@link #kNeighbors kNeighbors[index]} with up to {@code k}
      * nearest neighbors of the time series with the given {@code index} among the
      * given {@code list} of time series relying on the {@link #neighbors} and
      * {@link #distances} matrices.
@@ -184,7 +184,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
          * distance obtained from the distances matrix).
          */
 
-        kNeighbours.set(index, new SortedList<TimeSeries>(k));
+        kNeighbors.set(index, new SortedList<TimeSeries>(k));
 
         int nIndex = 0;
 
@@ -209,7 +209,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
                 // distance in ascending order
                 // i.e. Neighbors[index][nIndex] is at a smaller distance than
                 // Neighbors[index][nIndex + i], i>0
-                kNeighbours.get(index).add(list[neighbor], distance);
+                kNeighbors.get(index).add(list[neighbor], distance);
 
             } else
                 nIndex++;
@@ -218,7 +218,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
     }
 
     /**
-     * Populates {@link #kNeighbours} with up to {@code k} nearest neighbors of
+     * Populates {@link #kNeighbors} with up to {@code k} nearest neighbors of
      * every time series in the whole dataset among the training set
      * ({@code trainset}) relying on the {@link #neighbors} and {@link #distances}
      * matrices.
@@ -244,9 +244,9 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
             if (k > dsSize)
                 k = dsSize;
 
-            kNeighbours = new ArrayList<SortedList<TimeSeries>>(nlen);
+            kNeighbors = new ArrayList<SortedList<TimeSeries>>(nlen);
             for (int index = 0; index < nlen; index++) {
-                kNeighbours.add(null);
+                kNeighbors.add(null);
                 if (list[index] == null)
                     findKNeighbours(index, list, k);
             }

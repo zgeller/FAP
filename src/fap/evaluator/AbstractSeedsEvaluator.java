@@ -47,7 +47,7 @@ import fap.util.ThreadUtils.RunnableWrapper;
  * classification of only the time series belonging to individual test subsets.
  * 
  * @author Zoltán Gellér
- * @version 2026.10.12.
+ * @version 2026.10.17.
  * @see AbstractExtendedEvaluator
  * @see Evaluator
  */
@@ -483,6 +483,12 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
+
+                // only single-threaded classifiers are supported
+                // - if the same classifier is used in multiple threads, the same executor will
+                // deal with all the tasks generated in those threads
+                if (classifier instanceof Multithreaded mc)
+                    mc.setNumberOfThreads(1);
                 
                 classifiers[iteration] = classifierCopy;
 
@@ -693,7 +699,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
                 // - if the same classifier is used in multiple threads, the same executor will
                 // deal with all the tasks generated in those threads
                 int ctnumber = 0;
-                if (classifier instanceof Multithreaded mc && tnumber > 1) {
+                if (classifier instanceof Multithreaded mc) {
                     ctnumber = mc.getNumberOfThreads();
                     mc.setNumberOfThreads(1);
                 }
@@ -703,7 +709,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
                 }
                 finally {
                     // restoring the thread number of multithreaded classifiers
-                    if (classifier instanceof Multithreaded mc && tnumber > 1)
+                    if (classifier instanceof Multithreaded mc)
                         mc.setNumberOfThreads(ctnumber);
                 }
                 

@@ -61,7 +61,7 @@ public interface KNNEvaluator extends Serializable {
      * Evaluates the error rates of the specified kNN classifier using the given
      * dataset for each neighbor count from {@code 1} to {@code k}.
      * 
-     * @param classifier the kNN classifier that is to be evaluated
+     * @param classifier the kNN classifier to be evaluated
      * @param dataset    the dataset to be used for evaluating the classifier
      * @return an array containing the error rates of the evaluated kNN classifier
      *         for each neighbor count from {@code 1} to {@code k}

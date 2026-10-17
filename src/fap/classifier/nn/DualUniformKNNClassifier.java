@@ -53,7 +53,7 @@ public class DualUniformKNNClassifier extends KNNClassifier {
 	/**
      * Constructs a new single-threaded weighted kNN classifier utilizing the
      * dual-uniform weighting function, with the default number of nearest
-     * neighbours ({@link KNNClassifier#k k}).
+     * neighbors ({@link KNNClassifier#k k}).
      */
 	public DualUniformKNNClassifier() {
 	}
@@ -63,7 +63,7 @@ public class DualUniformKNNClassifier extends KNNClassifier {
      * dual-uniform weighting function, with the given number of nearest neighbors
      * ({@code k}).
      * 
-     * @param k number of nearest neighbours, must be {@code >= 1}
+     * @param k number of nearest neighbors, must be {@code >= 1}
      */
 	public DualUniformKNNClassifier(int k) {
 		super(k);

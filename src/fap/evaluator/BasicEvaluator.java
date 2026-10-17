@@ -35,11 +35,11 @@ import fap.util.Resumable;
 import fap.util.ThreadUtils;
 
 /**
- * A basic classifier evaluator that does not implements the
+ * A basic classifier evaluator that does not implement the
  * {@link fap.evaluator.Evaluator Evaluator} interface.
  * 
  * <p>
- * It evaluates a classifier based on the specified test and train sets.
+ * Evaluates a classifier based on the specified test and training sets.
  * 
  * @author Zoltán Gellér
  * @version 2026.07.03.
@@ -68,33 +68,34 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
     private transient ThreadPoolExecutor executor;
 
     /**
-     * The expected error rate (the lowest error rate on the training set).
-     * Default value is NaN (indicating that there was no tuning).
+     * The expected error rate (the lowest error rate on the training set). The
+     * default value is {@code Double.NaN} (indicating that no tuning was
+     * performed).
      */
     private double expectedError = Double.NaN;
     
     /**
-     * Average error rate. 
+     * The average error rate.
      */
     private double error;
 
     /**
-     * Number of misclassified time series.
+     * The number of misclassified time series.
      */
     private int misclassfied;
 
     /**
-     * Indicates whether the testing is completed.
+     * Indicates whether evaluating has completed.
      */
     private boolean done;
 
     /**
-     * Indicates whether the testing has started.
+     * Indicates whether evaluating has started.
      */
     private boolean insideLoop;
 
     /**
-     * Number of time series tested so far.
+     * The number of time series tested so far.
      */
     private int counter;
 
@@ -117,7 +118,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
     /**
      * Constructs a new basic evaluator with the specified number of threads.
      * 
-     * @param tnumber number of threads
+     * @param tnumber the number of threads
      */
     public BasicEvaluator(int tnumber) {
         this.setNumberOfThreads(tnumber);
@@ -141,13 +142,13 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
      * Evaluates the error rate of the specified classifier using the given test and
      * training sets.
      * 
-     * @param tuner      the tuner that is to be used to train the classifier
-     * @param classifier the classifier that is to be evaluated
-     * @param testset    test set
-     * @param trainset   training set
+     * @param tuner      the tuner used to train the classifier
+     * @param classifier the classifier to be evaluated
+     * @param testset    the test set
+     * @param trainset   the training set
      * @return the error rate of the classifier
-     * @throws InterruptedException when the interrupted flag is set
-     * @throws Exception            if an error occurs
+     * @throws InterruptedException if the thread is interrupted
+     * @throws Exception            if an error occurs during evaluation
      */
     public double evaluate(Tuner tuner, Classifier classifier, Dataset testset, Dataset trainset) throws Exception {
 
@@ -161,7 +162,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
 
         final int tsize = testset.size();
 
-        // callback initialization
+        // initialize callback
         if (callback != null) {
             stepSize = (double) callback.getDesiredCallbackNumber() / tsize;
             if (stepSize >= 1 || stepSize == 0) {
@@ -170,20 +171,20 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
             }
         }
 
-        // initialization
+        // initialize
         if (!insideLoop)
             init(tsize);
         else if (callback != null)
             callback.setCallbackCount(steps);
 
-        // tuning the classifier
+        // tune the classifier
         if (tuner != null)
             expectedError = tuner.tune(classifier, trainset);
         
-        // initializing the classifier
+        // initialize the classifier
         classifier.fit(trainset);
         
-        // evaluation
+        // evaluate
         int tnumber = ThreadUtils.getThreadLimit(this.getNumberOfThreads());
 
         if (tnumber < 2 || ((tuner != null) && !(tuner instanceof Copyable)) || !(classifier instanceof Copyable))
@@ -191,7 +192,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
         else
             evaluateMultithreaded(classifier, testset, tnumber);
 
-        // finalization
+        // finalize
         error = (double) misclassfied / tsize;
         insideLoop = false;
         done = true;
@@ -200,11 +201,11 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
             callback.setCallbackCount(-1);
         }
         
-        // reseting the trainger
+        // reset the tuner
         if (tuner instanceof Resumable rt)
             rt.reset();
 
-        // reseting the classifier
+        // reset the classifier
         if (classifier instanceof Resumable rc)
             rc.reset();
         
@@ -215,15 +216,15 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
     /**
      * Single-threaded implementation of classifier evaluation.
      * 
-     * @param classifier the classifier that is to be evaluated
-     * @throws InterruptedException when the interrupted flag is set
-     * @throws Exception            if an error occurs
+     * @param classifier the classifier to be evaluated
+     * @throws InterruptedException if the thread is interrupted
+     * @throws Exception            if an error occurs during evaluation
      */
     private void evaluateSinglethreaded(Classifier classifier, Dataset testset) throws Exception {
 
         final int tsize = testset.size();
         
-        // testing
+        // test
         for (int i = 0; i < tsize; i++) {
 
             if (labels[i] != null)
@@ -262,7 +263,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
     protected class EvaluatorTask implements Runnable {
 
         /**
-         * The classifier that is to be evaluated.
+         * The classifier to be evaluated.
          */
         public static Classifier classifier;
         
@@ -272,12 +273,12 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
         public static Dataset testset;
 
         /**
-         * The index of the time series that is to be classified.
+         * The index of the time series to be classified.
          */
         private int index;
         
         /**
-         * Auxiliary object used for synchronizing threads.
+         * The auxiliary object used for synchronizing threads.
          */
         private static Object semaphore = new Object();
         
@@ -291,7 +292,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
             // the time series to be tested
             TimeSeries testSeries = testset.get(index);
             
-            // testing
+            // test
             double label;
             try {
                 label = classifier.classify(testSeries);
@@ -303,12 +304,12 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
             
             synchronized(semaphore) {
                 
-                // updating the results
+                // update the results
                 counter++;
                 if (testSeries.getLabel() != label)
                     misclassfied++;
                 
-                // calling back
+                // call back
                 if (callback != null) {
                     progress += stepSize;
                     if (progress >= steps) {
@@ -331,17 +332,17 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
     /**
      * Multi-threaded implementation of classifier evaluation.
      * 
-     * @param classifier the classifier that is to be evaluated
-     * @param testset    test set
-     * @param tnumber    number of threads
-     * @throws InterruptedException when the interrupted flag is set
-     * @throws Exception            if an error occurs
+     * @param classifier the classifier to be evaluated
+     * @param testset    the test set
+     * @param tnumber    the number of threads
+     * @throws InterruptedException if the thread is interrupted
+     * @throws Exception            if an error occurs during evaluation
      */
     private void evaluateMultithreaded(Classifier classifier, Dataset testset, int tnumber) throws Exception {
         
         final int tsize = testset.size();
         
-        // preparing the executor service and the tasks 
+        // prepare the executor service and the tasks 
 
         this.initExecutor(tnumber);
         
@@ -357,6 +358,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
         // only single-threaded classifiers are supported
         // - if the same classifier is used in multiple threads, the same executor will
         // deal with all the tasks generated in those threads
+        // TODO: if the classifier is copyable, make copies
         int ctnumber = 0;
         if (classifier instanceof Multithreaded mc && tnumber > 1) {
             ctnumber = mc.getNumberOfThreads();
@@ -367,7 +369,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
             ThreadUtils.startRunnables(executor, tasks);
         }
         finally {
-            // restoring the thread number of multithreaded classifiers
+            // restore the thread number of multithreaded classifiers
             if (classifier instanceof Multithreaded mc && tnumber > 1)
                 mc.setNumberOfThreads(ctnumber);
         }
@@ -385,19 +387,19 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
     }
 
     /**
-     * The expected error rate (the lowest error rate on the training set).
+     * Returns the expected error rate (the lowest error rate on the training set).
      * 
      * @return the expected error rate (the lowest error rate on the training set)
-     *         or NaN if there was no tuning
+     *         or {@code Double.NaN} if no tuning was performed
      */
     public double getExpectedError() {
         return expectedError;
     }
     
     /**
-     * Returns the average error rate of the tested classifier.
+     * Returns the average error rate of the evaluated classifier.
      * 
-     * @return the average error rate of the tested classifier
+     * @return the average error rate of the evaluated classifier
      */
     public double getError() {
         return error;

@@ -66,7 +66,7 @@ public final class TimeSeriesUtils {
     /**
      * Calculates the k-entropy of a time series.
      * 
-     * @param neighbours matrix of neighbors
+     * @param neighbors matrix of neighbors
      * @param classes    array of classes (labels)
      * @param labels     classes (labels) of the time series
      * @param k          number of nearest neighbors to consider
@@ -74,13 +74,13 @@ public final class TimeSeriesUtils {
      *                   calculated
      * @return k-entropy of the given time series
      */
-    public static double getKEntropy(int[][] neighbours, double[] classes, double[] labels, int k, int index) {
+    public static double getKEntropy(int[][] neighbors, double[] classes, double[] labels, int k, int index) {
         double kEntropy = 0;
         double dk = (double) k;
         for (double label : classes) {
             int count = 0;
             for (int i = 0; i < k; i++)
-                if (label == labels[neighbours[index][i]])
+                if (label == labels[neighbors[index][i]])
                     count++;
             if (count > 0) {
                 double p = count / dk;
@@ -93,36 +93,36 @@ public final class TimeSeriesUtils {
     /**
      * Calculates the k-entropy of a dataset.
      * 
-     * @param neighbours matrix of neighbors
+     * @param neighbors matrix of neighbors
      * @param classes    array of classes (labels)
      * @param labels     classes (labels) of the time series
      * @param k          number of nearest neighbors to consider
      * @return k-entropy of the given dataset
      */
-    public static double getKEntropy(int[][] neighbours, double[] classes, double[] labels, int k) {
+    public static double getKEntropy(int[][] neighbors, double[] classes, double[] labels, int k) {
         double kEntropy = 0;
         int len = labels.length;
         for (int index = 0; index < len; index++)
-            kEntropy += getKEntropy(neighbours, classes, labels, k, index);
+            kEntropy += getKEntropy(neighbors, classes, labels, k, index);
         return kEntropy / len;
     }
 
     /**
      * Calculates the k-entropy of individual time series and the dataset.
      * 
-     * @param neighbours matrix of neighbors
+     * @param neighbors matrix of neighbors
      * @param classes    array of classes (labels)
      * @param labels     classes (labels) of the time series
      * @param k          number of nearest neighbors to consider
      * @return array of k-entropies of individual times series and the dataset as
      *         the last element of the array
      */
-    public static double[] getKEntropies(int[][] neighbours, double[] classes, double[] labels, int k) {
+    public static double[] getKEntropies(int[][] neighbors, double[] classes, double[] labels, int k) {
         int len = labels.length;
         double[] kEntropies = new double[len + 1];
         double kEntropy = 0;
         for (int index = 0; index < len; index++) {
-            double indexKEntropy = getKEntropy(neighbours, classes, labels, k, index);
+            double indexKEntropy = getKEntropy(neighbors, classes, labels, k, index);
             kEntropies[index] = indexKEntropy;
             kEntropy += indexKEntropy;
         }

@@ -40,6 +40,12 @@ import fap.util.ThreadUtils;
  * <p>
  * Evaluates a classifier based on the specified test and training sets.
  * 
+ * <p>
+ * In parallel evaluation, the thread count of the classifier is set to 1 (under
+ * the assumption that the executor used by the classifier is instantiated once,
+ * rather than per {@code classify} method call) and restored once the
+ * evaluation is complete.
+ * 
  * @author Zoltán Gellér
  * @version 2026.10.17.2
  * @see Serializable

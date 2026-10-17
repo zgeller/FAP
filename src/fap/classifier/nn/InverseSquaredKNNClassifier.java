@@ -236,14 +236,14 @@ public class InverseSquaredKNNClassifier extends AbstractInverseKNNClassifier {
 
         LinkedDistanceNode<TimeSeries> node = list.getFirst();
 
-        Map<Double, Double> neighbours = new HashMap<>();
+        Map<Double, Double> neighbors = new HashMap<>();
 
         double epsilon = this.getEpsilon();
 
         double bestLabel = node.obj.getLabel();
         double bestWeight = 1 / (node.distance * node.distance + epsilon);
 
-        neighbours.put(bestLabel, bestWeight);
+        neighbors.put(bestLabel, bestWeight);
         node = node.next;
 
         while (node != null) {
@@ -251,7 +251,7 @@ public class InverseSquaredKNNClassifier extends AbstractInverseKNNClassifier {
             double label = node.obj.getLabel();
             double weight = 1 / (node.distance * node.distance + epsilon);
 
-            weight = neighbours.merge(label, weight, Double::sum);
+            weight = neighbors.merge(label, weight, Double::sum);
             
             if (weight > bestWeight) {
                 bestLabel = label;

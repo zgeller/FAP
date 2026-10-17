@@ -29,7 +29,6 @@ import fap.data.Dataset;
 import fap.data.TimeSeries;
 import fap.exception.EmptyDatasetException;
 import fap.tuner.Tuner;
-import fap.util.Copyable;
 import fap.util.Multithreaded;
 import fap.util.Resumable;
 import fap.util.ThreadUtils;
@@ -186,12 +185,12 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
         
         // evaluate
         int tnumber = ThreadUtils.getThreadLimit(this.getNumberOfThreads());
-
-        if (tnumber < 2 || ((tuner != null) && !(tuner instanceof Copyable)) || !(classifier instanceof Copyable))
-            evaluateSinglethreaded(classifier, testset);
-        else
+        
+        if (tnumber > 1)
             evaluateMultithreaded(classifier, testset, tnumber);
-
+        else
+            evaluateSinglethreaded(classifier, testset);
+        
         // finalize
         error = (double) misclassfied / tsize;
         insideLoop = false;

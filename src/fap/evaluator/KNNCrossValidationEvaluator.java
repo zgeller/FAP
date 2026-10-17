@@ -67,15 +67,15 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
     private transient List<List<Dataset>> listOfFolds;
 
     /**
-     * Constructs a new single-threaded stratified 10-fold CrossValidation
-     * evaluator.
+     * Constructs a new single-threaded stratified 10-fold
+     * {@code KNNCrossValidation} evaluator.
      */
     public KNNCrossValidationEvaluator() {
     }
     
     /**
-     * Constructs a new single-threaded stratified 10-fold CrossValidation evaluator
-     * with the specified random {@code seeds}.
+     * Constructs a new single-threaded stratified 10-fold
+     * {@code KNNCrossValidation} evaluator with the specified random {@code seeds}.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be
@@ -88,9 +88,9 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
     }
 
     /**
-     * Constructs a new stratified CrossValidation evaluator with the specified
-     * number of threads ({@code tnumber}), the specified random {@code seeds}, and
-     * parallel tuning.
+     * Constructs a new stratified {@code KNNCrossValidation} evaluator with the
+     * specified number of threads ({@code tnumber}), the specified random
+     * {@code seeds}, and parallel tuning.
      * 
      * @param seeds   random seeds used to shuffle the dataset
      * @param tnumber number of threads
@@ -100,8 +100,9 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
     }
 
     /**
-     * Constructs a new stratified CrossValidation evaluator with the specified
-     * number of threads ({@code tnumber}) and the specified random {@code seeds}.
+     * Constructs a new stratified {@code KNNCrossValidation} evaluator with the
+     * specified number of threads ({@code tnumber}) and the specified random
+     * {@code seeds}.
      * 
      * @param seeds        random seeds used to shuffle the dataset
      * @param tnumber      number of threads
@@ -113,8 +114,8 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
     }
     
     /**
-     * Constructs a new single-threaded stratified CrossValidation evaluator with
-     * the specified number of folds ({@code fnumber}).
+     * Constructs a new single-threaded stratified {@code KNNCrossValidation}
+     * evaluator with the specified number of folds ({@code fnumber}).
      * 
      * @param fnumber number of folds, must be {@code > 1}
      */
@@ -123,9 +124,9 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
     }
 
     /**
-     * Constructs a new stratified CrossValidation evaluator with the specified
-     * number of folds ({@code fnumber}) and threads ({@code tnumber}), and parallel
-     * tuning.
+     * Constructs a new stratified {@code KNNCrossValidation} evaluator with the
+     * specified number of folds ({@code fnumber}) and threads ({@code tnumber}),
+     * and parallel tuning.
      * 
      * @param fnumber number of folds, must be {@code > 1}
      * @param tnumber number of threads
@@ -136,8 +137,8 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
     }
 
     /**
-     * Constructs a new stratified CrossValidation evaluator with the specified
-     * number of folds ({@code fnumber}) and threads ({@code tnumber}).
+     * Constructs a new stratified {@code KNNCrossValidation} evaluator with the
+     * specified number of folds ({@code fnumber}) and threads ({@code tnumber}).
      * 
      * @param fnumber      number of folds, must be {@code > 1}
      * @param tnumber      number of threads
@@ -150,9 +151,9 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
     }
     
     /**
-     * Constructs a new single-threaded stratified CrossValidation evaluator with
-     * the specified number of folds ({@code fnumber}) and the specified random
-     * {@code seeds}.
+     * Constructs a new single-threaded stratified {@code KNNCrossValidation}
+     * evaluator with the specified number of folds ({@code fnumber}) and the
+     * specified random {@code seeds}.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be
@@ -167,9 +168,9 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
     }
 
     /**
-     * Constructs a new stratified CrossValidation evaluator with the specified
-     * number of folds ({@code fnumber}) and threads ({@code tnumber}), the
-     * specified random {@code seeds}, and parallel tuning.
+     * Constructs a new stratified {@code KNNCrossValidation} evaluator with the
+     * specified number of folds ({@code fnumber}) and threads ({@code tnumber}),
+     * the specified random {@code seeds}, and parallel tuning.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be
@@ -185,9 +186,9 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
     }
 
     /**
-     * Constructs a new stratified CrossValidation evaluator with the specified
-     * number of folds ({@code fnumber}) and threads ({@code tnumber}), the
-     * specified random {@code seeds}.
+     * Constructs a new stratified {@code KNNCrossValidation} evaluator with the
+     * specified number of folds ({@code fnumber}) and threads ({@code tnumber}),
+     * the specified random {@code seeds}.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be
@@ -205,21 +206,21 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
     }
     
     /**
-     * Constructs a new single-threaded CrossValidation evaluator with the specified
-     * number of folds ({@code fnumber}).
+     * Constructs a new single-threaded {@code KNNCrossValidation} evaluator with
+     * the specified number of folds ({@code fnumber}).
      * 
      * @param fnumber    number of folds, must be {@code > 1}
      * @param stratified indicates whether the folds should be stratified
      *                   {@code true}
-     * 
      */
     public KNNCrossValidationEvaluator(int fnumber, boolean stratified) {
         this(fnumber, stratified, null);
     }
 
     /**
-     * Constructs a new single-threaded CrossValidation evaluator with the specified
-     * number of folds ({@code fnumber}) and the specified random {@code seeds}.
+     * Constructs a new single-threaded {@code KNNCrossValidation} evaluator with
+     * the specified number of folds ({@code fnumber}) and the specified random
+     * {@code seeds}.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be
@@ -236,8 +237,9 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
     }
 
     /**
-     * Constructs a new CrossValidation evaluator with the specified number of folds
-     * ({@code fnumber}) and threads ({@code tnumber}), and parallel tuning.
+     * Constructs a new {@code KNNCrossValidation} evaluator with the specified
+     * number of folds ({@code fnumber}) and threads ({@code tnumber}), and parallel
+     * tuning.
      * 
      * @param fnumber    number of folds, must be {@code > 1}
      * @param stratified indicates whether the folds should be stratified
@@ -249,8 +251,8 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
     }
 
     /**
-     * Constructs a new CrossValidation evaluator with the specified number of folds
-     * ({@code fnumber}) and threads ({@code tnumber}).
+     * Constructs a new {@code KNNCrossValidation} evaluator with the specified
+     * number of folds ({@code fnumber}) and threads ({@code tnumber}).
      * 
      * @param fnumber      number of folds, must be {@code > 1}
      * @param stratified   indicates whether the folds should be stratified
@@ -264,9 +266,9 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
     }
     
     /**
-     * Constructs a new CrossValidation evaluator with the specified number of folds
-     * ({@code fnumber}) and threads ({@code tnumber}), and the specified random
-     * {@code seeds}, and parallel tuning.
+     * Constructs a new {@code KNNCrossValidation} evaluator with the specified
+     * number of folds ({@code fnumber}) and threads ({@code tnumber}), and the
+     * specified random {@code seeds}, and parallel tuning.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be
@@ -284,9 +286,9 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
     }
 
     /**
-     * Constructs a new CrossValidation evaluator with the specified number of folds
-     * ({@code fnumber}) and threads ({@code tnumber}), and the specified random
-     * {@code seeds}.
+     * Constructs a new {@code KNNCrossValidation} evaluator with the specified
+     * number of folds ({@code fnumber}) and threads ({@code tnumber}), and the
+     * specified random {@code seeds}.
      * 
      * <p>
      * The number of seeds determines how many times should the evaluation be

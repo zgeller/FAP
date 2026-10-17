@@ -49,7 +49,7 @@ import fap.util.ThreadUtils;
  * call).
  * 
  * @author Zoltán Gellér
- * @version 2026.10.17.4
+ * @version 2026.10.17.5
  * @see AbstractKNNExtendedEvaluator
  * @see KNNEvaluator
  */
@@ -469,11 +469,10 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
             // only single-threaded classifiers are supported
             // - if the same classifier is used in multiple threads, the same executor will
             // deal with all the tasks generated in those threads
-            if (classifier instanceof Multithreaded mc)
+            if (classifierCopy instanceof Multithreaded mc)
                 mc.setNumberOfThreads(1);
             
             classifiers[iteration] = classifierCopy;
-
             results[iteration] = result;
             
             return;

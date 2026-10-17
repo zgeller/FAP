@@ -256,7 +256,7 @@ public class KNNClassifier extends AbstractNNClassifier {
             
         }
 
-        // if there is less than k nearest neighbours
+        // if there is less than k nearest neighbors
         // the best label is determined based on the available number of nearest neighbors
         for (int i = count; i < k; i++)
             bestLabels[i] = bestLabels[count - 1];
@@ -340,16 +340,16 @@ public class KNNClassifier extends AbstractNNClassifier {
         
         int k = this.getK();
 
-        // sorted list of k nearest neighbours
+        // sorted list of k nearest neighbors
         SortedList<TimeSeries> list;
 
         double label;
 
-        // if the sorted list of nearest neighbours exists
+        // if the sorted list of nearest neighbors exists
         if (kNeighbors != null)
             list = kNeighbors.get(series.getIndex());
         
-        // if the sorted list of nearest neighbours doesn't exist
+        // if the sorted list of nearest neighbors doesn't exist
         else {
 
             int tnumber = ThreadUtils.getThreadLimit(this.getNumberOfThreads());
@@ -393,16 +393,16 @@ public class KNNClassifier extends AbstractNNClassifier {
         
         int k = this.getK();
 
-        // sorted list of k nearest neighbours
+        // sorted list of k nearest neighbors
         SortedList<TimeSeries> list;
 
         double[] labels;
 
-        // if the sorted list of nearest neighbours exists
+        // if the sorted list of nearest neighbors exists
         if (kNeighbors != null)
             list = kNeighbors.get(series.getIndex());
         
-        // if the sorted list of nearest neighbours doesn't exist
+        // if the sorted list of nearest neighbors doesn't exist
         else {
 
             int tnumber = ThreadUtils.getThreadLimit(this.getNumberOfThreads());

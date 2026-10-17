@@ -38,7 +38,7 @@ public abstract class AbstractInverseKNNClassifier extends KNNClassifier {
     private double epsilon = MathUtils.getZeroDenominator();
 
     /**
-     * Constructor with the default number of nearest neighbours
+     * Constructor with the default number of nearest neighbors
      * ({@link KNNClassifier#k k}), and the default
      * {@link #epsilon} value.
      */
@@ -81,7 +81,7 @@ public abstract class AbstractInverseKNNClassifier extends KNNClassifier {
      * neighbors ({@code k}) and with the default {@link #epsilon} value.
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      */
     protected AbstractInverseKNNClassifier(Distance distance, int k) {
         super(distance, k);

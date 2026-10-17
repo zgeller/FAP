@@ -153,7 +153,7 @@ public class ZavrelKNNClassifier extends KNNClassifier {
      * parameters {@link #alpha} and {@link #beta}.
      * 
      * @param distance distance measure
-     * @param k        number of nearest neighbours, must be {@code >= 1}
+     * @param k        number of nearest neighbors, must be {@code >= 1}
      */
     public ZavrelKNNClassifier(Distance distance, int k) {
         super(distance, k);

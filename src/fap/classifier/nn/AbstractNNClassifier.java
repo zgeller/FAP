@@ -56,7 +56,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
      * 
      * <ul>
      * <li>it must apply to the entire dataset, not just the training set
-     * <li>{@code neighbours[n][m]} is the index of the m-th nearest neighbor of
+     * <li>{@code neighbors[n][m]} is the index of the m-th nearest neighbor of
      * the time series whose index is n.
      * </ul>
      */

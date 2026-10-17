@@ -69,7 +69,7 @@ public class FibonacciKNNClassifier extends KNNClassifier {
      * Fibonacci weighting function, with the given number of nearest neighbors
      * ({@code k}).
      * 
-     * @param k number of nearest neighbours, must be {@code >= 1}
+     * @param k number of nearest neighbors, must be {@code >= 1}
      */
     public FibonacciKNNClassifier(int k) {
         super(k);

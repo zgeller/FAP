@@ -157,7 +157,7 @@ public class FibonacciKNNClassifier extends KNNClassifier {
     protected double getBestLabel(SortedList<TimeSeries> list) {
 
         LinkedDistanceNode<TimeSeries> node = list.getFirst();
-        Map<Double, Integer> neighbours = new HashMap<>();
+        Map<Double, Integer> neighbors = new HashMap<>();
 
         int len = list.getCount();
         if (len != fibonacci.length)
@@ -167,7 +167,7 @@ public class FibonacciKNNClassifier extends KNNClassifier {
         int index = 0;
         int bestWeight = fibonacci[0];
 
-        neighbours.put(bestLabel, bestWeight);
+        neighbors.put(bestLabel, bestWeight);
         node = node.next;
         index++;
 
@@ -176,7 +176,7 @@ public class FibonacciKNNClassifier extends KNNClassifier {
             double label = node.obj.getLabel();
             int weight = fibonacci[index];
 
-            weight = neighbours.merge(label, weight, Integer::sum);
+            weight = neighbors.merge(label, weight, Integer::sum);
 
             if (weight > bestWeight) {
                 bestLabel = label;

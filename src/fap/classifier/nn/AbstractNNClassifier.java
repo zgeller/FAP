@@ -175,7 +175,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
      *              should be found
      * @param k     the number of nearest neighbors to be found
      */
-    private void findKNeighbours(int index, TimeSeries[] list, int k) {
+    private void findKNeighbors(int index, TimeSeries[] list, int k) {
 
         /*
          * For each member of the neighbors[index] array with index nIndex, the
@@ -248,7 +248,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
             for (int index = 0; index < nlen; index++) {
                 kNeighbors.add(null);
                 if (list[index] == null)
-                    findKNeighbours(index, list, k);
+                    findKNeighbors(index, list, k);
             }
         }
 

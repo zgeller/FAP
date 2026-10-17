@@ -169,19 +169,19 @@ public class KNNClassifier extends AbstractNNClassifier {
 
         LinkedDistanceNode<TimeSeries> node = list.getFirst();
 
-        Map<Double, Integer> neighbours = new HashMap<>();
+        Map<Double, Integer> neighbors = new HashMap<>();
 
         double bestLabel = node.obj.getLabel();
         int bestWeight = 1;
 
-        neighbours.put(bestLabel, bestWeight);
+        neighbors.put(bestLabel, bestWeight);
         node = node.next;
 
         while (node != null) {
 
             double label = node.obj.getLabel();
             
-            int weight = neighbours.merge(label, 1, Integer::sum);
+            int weight = neighbors.merge(label, 1, Integer::sum);
 
             if (weight > bestWeight) {
                 bestLabel = label;

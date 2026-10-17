@@ -129,12 +129,12 @@ public class UniformKNNClassifier extends KNNClassifier {
 
         LinkedDistanceNode<TimeSeries> node = list.getFirst();
 
-        Map<Double, Double> neighbours = new HashMap<>();
+        Map<Double, Double> neighbors = new HashMap<>();
 
         double bestLabel = node.obj.getLabel();
         double bestWeight = 1.0d;
 
-        neighbours.put(bestLabel, bestWeight);
+        neighbors.put(bestLabel, bestWeight);
         node = node.next;
         int index = 2;
 
@@ -143,7 +143,7 @@ public class UniformKNNClassifier extends KNNClassifier {
             double label = node.obj.getLabel();
             double weight = 1.0d / index;
 
-            weight = neighbours.merge(label, weight, Double::sum);
+            weight = neighbors.merge(label, weight, Double::sum);
             
             if (weight > bestWeight) {
                 bestLabel = label;

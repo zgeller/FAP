@@ -271,19 +271,19 @@ public class MacleodKNNClassifier extends KNNClassifier {
 
             LinkedDistanceNode<TimeSeries> node = firstNode;
 
-            Map<Double, Integer> neighbours = new HashMap<>();
+            Map<Double, Integer> neighbors = new HashMap<>();
 
             bestLabel = node.obj.getLabel();
             int bestWeight = 1;
 
-            neighbours.put(bestLabel, bestWeight);
+            neighbors.put(bestLabel, bestWeight);
             node = node.next;
 
             while (node != null && index < k) {
 
                 double label = node.obj.getLabel();
                 
-                int weight = neighbours.merge(label, 1, Integer::sum);
+                int weight = neighbors.merge(label, 1, Integer::sum);
                 
                 if (weight > bestWeight) {
                     bestLabel = label;
@@ -301,7 +301,7 @@ public class MacleodKNNClassifier extends KNNClassifier {
 
             LinkedDistanceNode<TimeSeries> node = firstNode;
 
-            Map<Double, Double> neighbours = new HashMap<>();
+            Map<Double, Double> neighbors = new HashMap<>();
 
             double alpha = this.getAlpha();
 
@@ -311,7 +311,7 @@ public class MacleodKNNClassifier extends KNNClassifier {
             bestLabel = firstNode.obj.getLabel();
             double bestWeight = (sDist - node.distance + alfaDiff) / diff;
 
-            neighbours.put(bestLabel, bestWeight);
+            neighbors.put(bestLabel, bestWeight);
             node = node.next;
 
             while (node != null && index < k) {
@@ -319,7 +319,7 @@ public class MacleodKNNClassifier extends KNNClassifier {
                 double label = node.obj.getLabel();
                 double weight = (sDist - node.distance + alfaDiff) / diff;
 
-                weight = neighbours.merge(label, weight, Double::sum);
+                weight = neighbors.merge(label, weight, Double::sum);
 
                 if (weight > bestWeight) {
                     bestLabel = label;

@@ -56,7 +56,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.10.17.3
+ * @version 2026.10.17.4
  * @see AbstractNNClassifier
  */
 public class KNNClassifier extends AbstractNNClassifier {
@@ -212,7 +212,7 @@ public class KNNClassifier extends AbstractNNClassifier {
         final int k = this.getK();          // the number of nearest neighbors that should be considered
         final int count = list.getCount();  // the actual number of nearest neighbors
 
-        ArrayList<Map<Double, Integer>> neighbors = new ArrayList<>();
+        ArrayList<Map<Double, Integer>> neighbors = new ArrayList<>(k);
         
         double[] bestLabels = new double[k];
         int[] bestWeights = new int[k];
@@ -231,7 +231,6 @@ public class KNNClassifier extends AbstractNNClassifier {
         }
 
         node = node.next;
-        
         int index = 1;
 
         while (node != null) {
@@ -258,8 +257,11 @@ public class KNNClassifier extends AbstractNNClassifier {
 
         // if there is less than k nearest neighbors
         // the best label is determined based on the available number of nearest neighbors
-        for (int i = count; i < k; i++)
-            bestLabels[i] = bestLabels[count - 1];
+        if (count < k) {
+            double bestLabel = bestLabels[count - 1];
+            for (int i = count; i < k; i++)
+                bestLabels[i] = bestLabel;
+        }
         
         return bestLabels;
         

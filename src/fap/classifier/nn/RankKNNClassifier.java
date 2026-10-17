@@ -135,13 +135,13 @@ public class RankKNNClassifier extends KNNClassifier {
 
         LinkedDistanceNode<TimeSeries> node = list.getFirst();
 
-        Map<Double, Integer> neighbours = new HashMap<>();
+        Map<Double, Integer> neighbors = new HashMap<>();
 
         double bestLabel = node.obj.getLabel();
         int rank = list.getCount();
         int bestWeight = rank;
 
-        neighbours.put(bestLabel, bestWeight);
+        neighbors.put(bestLabel, bestWeight);
         node = node.next;
         rank--;
 
@@ -149,7 +149,7 @@ public class RankKNNClassifier extends KNNClassifier {
 
             double label = node.obj.getLabel();
 
-            int weight = neighbours.merge(label, rank, Integer::sum);
+            int weight = neighbors.merge(label, rank, Integer::sum);
 
             if (weight > bestWeight) {
                 bestLabel = label;

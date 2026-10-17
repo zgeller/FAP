@@ -49,7 +49,7 @@ import fap.util.ThreadUtils;
  * call).
  * 
  * @author Zoltán Gellér
- * @version 2026.10.17.2
+ * @version 2026.10.17.3
  * @see AbstractKNNExtendedEvaluator
  * @see KNNEvaluator
  */
@@ -638,14 +638,14 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
                     if (Thread.interrupted())
                         throw new InterruptedException();
                     
-                    TimeSeries ts = result.testset.get(i);
+                    TimeSeries testSeries = result.testset.get(i);
                     
-                    double[] labels = classifier.classifyK(ts);
+                    double[] labels = classifier.classifyK(testSeries);
                     
                     classified[iteration][i] = true;
                     
                     classifiedCount[iteration]++;
-                    final double tsLabel = ts.getLabel();
+                    final double tsLabel = testSeries.getLabel();
                     for (int n = 0; n < k; n++)
                         if (labels[n] != tsLabel)
                             results[iteration].misclassified[n]++;

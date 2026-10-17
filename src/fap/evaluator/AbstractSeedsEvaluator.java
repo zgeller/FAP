@@ -53,7 +53,7 @@ import fap.util.ThreadUtils.RunnableWrapper;
  * call).
  * 
  * @author Zoltán Gellér
- * @version 2026.10.17.
+ * @version 2026.10.17.2
  * @see AbstractExtendedEvaluator
  * @see Evaluator
  */
@@ -729,14 +729,14 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
                     if (Thread.interrupted())
                         throw new InterruptedException();
                     
-                    TimeSeries ts = result.testset.get(i);
+                    TimeSeries testSeries = result.testset.get(i);
                     
-                    double label = classifier.classify(ts);
+                    double label = classifier.classify(testSeries);
                     
                     classified[iteration][i] = true;
                     
                     classifiedCount[iteration]++;
-                    if (label != ts.getLabel())
+                    if (label != testSeries.getLabel())
                         results[iteration].misclassified++;
                     
                     // calling back

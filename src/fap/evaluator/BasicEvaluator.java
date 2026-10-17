@@ -41,7 +41,7 @@ import fap.util.ThreadUtils;
  * Evaluates a classifier based on the specified test and training sets.
  * 
  * @author Zoltán Gellér
- * @version 2026.10.17.
+ * @version 2026.10.17.2
  * @see Serializable
  * @see Callbackable
  * @see Resumable
@@ -359,7 +359,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
         // deal with all the tasks generated in those threads
         // TODO: if the classifier is copyable, make copies
         int ctnumber = 0;
-        if (classifier instanceof Multithreaded mc && tnumber > 1) {
+        if (classifier instanceof Multithreaded mc) {
             ctnumber = mc.getNumberOfThreads();
             mc.setNumberOfThreads(1);
         }
@@ -369,7 +369,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
         }
         finally {
             // restore the thread number of multithreaded classifiers
-            if (classifier instanceof Multithreaded mc && tnumber > 1)
+            if (classifier instanceof Multithreaded mc)
                 mc.setNumberOfThreads(ctnumber);
         }
         

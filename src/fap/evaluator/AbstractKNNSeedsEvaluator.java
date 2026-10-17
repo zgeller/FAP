@@ -49,7 +49,7 @@ import fap.util.ThreadUtils;
  * call).
  * 
  * @author Zoltán Gellér
- * @version 2026.10.17.
+ * @version 2026.10.17.2
  * @see AbstractKNNExtendedEvaluator
  * @see KNNEvaluator
  */
@@ -645,8 +645,9 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
                     classified[iteration][i] = true;
                     
                     classifiedCount[iteration]++;
+                    final double tsLabel = ts.getLabel();
                     for (int n = 0; n < k; n++)
-                        if (labels[n] != ts.getLabel())
+                        if (labels[n] != tsLabel)
                             results[iteration].misclassified[n]++;
                     
                     // calling back

@@ -257,7 +257,7 @@ public class ZavrelKNNClassifier extends KNNClassifier {
 
         LinkedDistanceNode<TimeSeries> node = list.getFirst();
 
-        Map<Double, Double> neighbours = new HashMap<>();
+        Map<Double, Double> neighbors = new HashMap<>();
         
         double alpha = this.getAlpha();
         double beta = this.getBeta();
@@ -265,7 +265,7 @@ public class ZavrelKNNClassifier extends KNNClassifier {
         double bestLabel = node.obj.getLabel();
         double bestWeight = Math.exp(-alpha * Math.pow(node.distance, beta));
 
-        neighbours.put(bestLabel, bestWeight);
+        neighbors.put(bestLabel, bestWeight);
         node = node.next;
 
         while (node != null) {
@@ -273,7 +273,7 @@ public class ZavrelKNNClassifier extends KNNClassifier {
             double label = node.obj.getLabel();
             double weight = Math.exp(-alpha * Math.pow(node.distance, beta));
 
-            weight = neighbours.merge(label, weight, Double::sum);
+            weight = neighbors.merge(label, weight, Double::sum);
             
             if (weight > bestWeight) {
                 bestLabel = label;

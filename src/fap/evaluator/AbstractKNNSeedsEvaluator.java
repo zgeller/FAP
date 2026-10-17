@@ -44,7 +44,7 @@ import fap.util.ThreadUtils;
  * of only the time series belonging to individual test subsets.
  * 
  * @author Zoltán Gellér
- * @version 2026.10.13.
+ * @version 2026.10.17.
  * @see AbstractKNNExtendedEvaluator
  * @see KNNEvaluator
  */
@@ -460,6 +460,12 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+
+            // only single-threaded classifiers are supported
+            // - if the same classifier is used in multiple threads, the same executor will
+            // deal with all the tasks generated in those threads
+            if (classifier instanceof Multithreaded mc)
+                mc.setNumberOfThreads(1);
             
             classifiers[iteration] = classifierCopy;
 
@@ -603,7 +609,7 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
                 // - if the same classifier is used in multiple threads, the same executor will
                 // deal with all the tasks generated in those threads
                 int ctnumber = 0;
-                if (classifier instanceof Multithreaded mc && tnumber > 1) {
+                if (classifier instanceof Multithreaded mc) {
                     ctnumber = mc.getNumberOfThreads();
                     mc.setNumberOfThreads(1);
                 }
@@ -613,7 +619,7 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
                 }
                 finally {
                     // restoring the thread number of multithreaded classifiers
-                    if (classifier instanceof Multithreaded mc && tnumber > 1)
+                    if (classifier instanceof Multithreaded mc)
                         mc.setNumberOfThreads(ctnumber);
                 }
                 

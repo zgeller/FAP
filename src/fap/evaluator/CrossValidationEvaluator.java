@@ -328,7 +328,7 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
     }
 
     /***
-     * @throws InterruptedException when the interrupted flag is set
+     * @throws InterruptedException if the current thread has been interrupted
      */
     @Override
     public double evaluate(Tuner tuner, Classifier classifier, Dataset dataset) throws Exception {

@@ -152,7 +152,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
      * @param testset    the test set
      * @param trainset   the training set
      * @return the error rate of the classifier
-     * @throws InterruptedException if the thread is interrupted
+     * @throws InterruptedException if the current thread has been interrupted
      * @throws Exception            if an error occurs during evaluation
      */
     public double evaluate(Tuner tuner, Classifier classifier, Dataset testset, Dataset trainset) throws Exception {
@@ -219,10 +219,10 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
     }
 
     /**
-     * Single-threaded implementation of classifier evaluation.
+     * Performs single-threaded evaluation of the classifier.
      * 
      * @param classifier the classifier to be evaluated
-     * @throws InterruptedException if the thread is interrupted
+     * @throws InterruptedException if the current thread has been interrupted
      * @throws Exception            if an error occurs during evaluation
      */
     private void evaluateSinglethreaded(Classifier classifier, Dataset testset) throws Exception {
@@ -335,12 +335,12 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
     }
 
     /**
-     * Multi-threaded implementation of classifier evaluation.
+     * Performs multi-threaded evaluation of the classifier.
      * 
      * @param classifier the classifier to be evaluated
      * @param testset    the test set
      * @param tnumber    the number of threads
-     * @throws InterruptedException if the thread is interrupted
+     * @throws InterruptedException if the current thread has been interrupted
      * @throws Exception            if an error occurs during evaluation
      */
     private void evaluateMultithreaded(Classifier classifier, Dataset testset, int tnumber) throws Exception {

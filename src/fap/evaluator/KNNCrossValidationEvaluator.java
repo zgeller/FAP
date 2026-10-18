@@ -329,7 +329,7 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
     }
 
     /***
-     * @throws InterruptedException when the interrupted flag is set
+     * @throws InterruptedException if the current thread has been interrupted
      */
     @Override
     public double[] evaluate(KNNClassifier classifier, Dataset dataset) throws Exception {

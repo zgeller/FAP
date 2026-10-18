@@ -145,7 +145,7 @@ public class KNNBasicEvaluator implements Serializable, Callbackable, Resumable,
      * @param trainset   the training set
      * @return an array containing the error rates of the evaluated kNN classifier
      *         for each neighbor count from {@code 1} to {@code k}
-     * @throws InterruptedException if the current thread is interrupted
+     * @throws InterruptedException if the current thread has been interrupted
      * @throws Exception            if an error occurs during evaluation
      */
     public double[] evaluate(KNNClassifier classifier, Dataset testset, Dataset trainset) throws Exception {
@@ -207,10 +207,10 @@ public class KNNBasicEvaluator implements Serializable, Callbackable, Resumable,
     }
 
     /**
-     * Single-threaded implementation of classifier evaluation.
+     * Performs single-threaded evaluation of the classifier.
      * 
      * @param classifier the classifier to be evaluated
-     * @throws InterruptedException if the thread is interrupted
+     * @throws InterruptedException if the current thread has been interrupted
      * @throws Exception            if an error occurs during evaluation
      */
     private void evaluateSinglethreaded(KNNClassifier classifier, Dataset testset) throws Exception {
@@ -333,12 +333,12 @@ public class KNNBasicEvaluator implements Serializable, Callbackable, Resumable,
     }
 
     /**
-     * Multi-threaded implementation of classifier evaluation.
+     * Performs multi-threaded evaluation of the classifier.
      * 
      * @param classifier the classifier to be evaluated
      * @param testset    the test set
      * @param tnumber    the number of threads
-     * @throws InterruptedException if the thread is interrupted
+     * @throws InterruptedException if the current thread has been interrupted
      * @throws Exception            if an error occurs during evaluation
      */
     private void evaluateMultithreaded(KNNClassifier classifier, Dataset testset, int tnumber) throws Exception {

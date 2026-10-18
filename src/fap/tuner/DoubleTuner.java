@@ -23,7 +23,7 @@ import java.util.List;
  * General tuner of {@code Double} parameters.
  * 
  * @author Zoltán Gellér
- * @version 2025.04.22.
+ * @version 2026.10.18.
  * @see AbstractParameterTuner
  * @see Modifier
  */
@@ -275,17 +275,6 @@ public class DoubleTuner extends AbstractParameterTuner<Double> {
         for (int i = 0; i < len; i++)
             values.add(first + i * increment);
 
-    }
-    
-    /**
-     * Initializes the specified tuner with the common data structures of this
-     * tuner.
-     * 
-     * @param copy the classifier whose data structures is to be initialized
-     * @param deep indicates whether a deep copy should be made
-     */
-    protected void init(DoubleTuner copy, boolean deep) {
-        super.init(copy, deep);
     }
     
     @Override

@@ -1,0 +1,459 @@
+/*   
+ * Copyright 2026 Zoltán Gellér
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *     
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package fap.evaluator;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
+import fap.classifier.nn.KNNClassifier;
+import fap.data.Dataset;
+import fap.util.Copyable;
+
+/***
+ * Holdout evaluator of kNN classifiers leveraging their ability to classify the
+ * given time series for each neighbor count from {@code 1} to {@code k}, where
+ * {@code k} denotes the number of nearest neighbors.
+ * 
+ * <p>
+ * References:
+ * <ol>
+ *  <li> J. Abonyi, Adatbányászat a hatékonyság eszköze, 1st ed., ComputerBooks,
+ *       Budapest, 2006.
+ *  <li> P.-N. Tan, M. Steinbach, V. Kumar, A. Karpatne, Introduction to Data
+ *       Mining, 2nd ed., Pearson Education, 2019.
+ *  <li> J. Han, J. Pei, H. Tong, Data Mining: Concepts and Techniques, 4th ed.,
+ *       Morgan Kaufmann, 2022.
+ * </ol>
+ * 
+ * @author Zoltán Gellér
+ * @version 2026.10.18.
+ * @see AbstractKNNSeedsEvaluator
+ * @see Copyable
+ */
+public class KNNHoldoutEvaluator extends AbstractKNNSeedsEvaluator implements Copyable {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * The percentage of the dataset that makes up the training set. Must be in the
+     * range {@code [0..100]}. The default value is {@code 50}.
+     */
+    private double percentage = 50;
+
+    /**
+     * The size of the test set. Defaults to {@code -1} if not set or calculated.
+     */
+    private int tsize = -1;
+    
+    /**
+     * Constructs a new single-threaded stratified {@code Holdout} evaluator that
+     * uses 50% of the dataset for tuning and training, and 50% for testing.
+     */
+    public KNNHoldoutEvaluator() {
+    }
+
+    /**
+     * Constructs a new stratified {@code Holdout} evaluator with the specified
+     * number of threads ({@code tnumber}) that uses 50% of the dataset for tuning
+     * and training, and 50% for testing.
+     * 
+     * @param tnumber the number of threads
+     */
+    public KNNHoldoutEvaluator(int tnumber) {
+        super(tnumber);
+    }
+    
+    /**
+     * Constructs a new stratified {@code Holdout} evaluator with the specified
+     * number of threads ({@code tnumber}) that uses 50% of the dataset for tuning
+     * and training, and 50% for testing.
+     * 
+     * @param tnumber      the number of threads
+     * @param fullParallel indicates whether to apply full parallel tuning
+     *                     ({@code true})
+     */
+    public KNNHoldoutEvaluator(int tnumber, boolean fullParallel) {
+        super(tnumber, fullParallel);
+    }
+    
+    
+    /**
+     * Constructs a new single-threaded stratified {@code Holdout} evaluator with
+     * the specified random {@code seeds} that uses 50% of the dataset for tuning
+     * and training, and 50% for testing.
+     * 
+     * <p>
+     * The number of seeds determines how many times the evaluation should be
+     * repeated.
+     * 
+     * @param seeds the random seeds used to shuffle the dataset
+     */
+    public KNNHoldoutEvaluator(long[] seeds) {
+        super(seeds);
+    }
+    
+    /**
+     * Constructs a new stratified {@code Holdout} evaluator with the specified
+     * number of threads ({@code tnumber}) and the specified random {@code seeds}
+     * that uses 50% of the dataset for tuning and training, and 50% for testing.
+     * 
+     * <p>
+     * The number of seeds determines how many times the evaluation should be
+     * repeated.
+     * 
+     * @param seeds   the random seeds used to shuffle the dataset
+     * @param tnumber the number of threads
+     */
+    public KNNHoldoutEvaluator(long[] seeds, int tnumber) {
+        super(seeds, tnumber);
+    }
+
+    /**
+     * Constructs a new stratified {@code Holdout} evaluator with the specified
+     * number of threads ({@code tnumber}) and the specified random {@code seeds}
+     * that uses 50% of the dataset for tuning and training, and 50% for testing.
+     * 
+     * <p>
+     * The number of seeds determines how many times the evaluation should be
+     * repeated.
+     * 
+     * @param seeds        the random seeds used to shuffle the dataset
+     * @param tnumber      the number of threads
+     * @param fullParallel indicates whether to apply full parallel tuning
+     *                     ({@code true})
+     */
+    public KNNHoldoutEvaluator(long[] seeds, int tnumber, boolean fullParallel) {
+        super(seeds, tnumber, fullParallel);
+    }
+    
+    /**
+     * Constructs a new single-threaded stratified {@code Holdout} evaluator that
+     * uses the specified {@code percentage} of the dataset for tuning and training
+     * the classifier, and the remaining portion for testing.
+     * 
+     * @param percentage the percentage of the dataset that makes up the training
+     *                   set, must be in the range {@code [0..100]}
+     */
+    public KNNHoldoutEvaluator(double percentage) {
+        this(percentage, null);
+    }
+    
+    /**
+     * Constructs a new single-threaded stratified {@code Holdout} evaluator with
+     * the specified random {@code seeds} that uses the specified {@code percentage}
+     * of the dataset for tuning and training the classifier, and the remaining
+     * portion for testing.
+     * 
+     * <p>
+     * The number of seeds determines how many times the evaluation should be
+     * repeated.
+     * 
+     * @param percentage the percentage of the dataset that makes up the training
+     *                   set, must be in the range {@code [0..100]}
+     * @param seeds      the random seeds used to shuffle the dataset
+     */
+    public KNNHoldoutEvaluator(double percentage, long[] seeds) {
+        super(seeds);
+        this.setPercentage(percentage);
+    }
+
+    /**
+     * Constructs a new stratified {@code Holdout} evaluator with the specified
+     * number of threads ({@code tnumber}) that uses the specified
+     * {@code percentage} of the dataset for tuning and training the classifier, and
+     * the remaining portion for testing.
+     * 
+     * @param percentage the percentage of the dataset that makes up the training
+     *                   set, must be in the range {@code [0..100]}
+     * @param tnumber    the number of threads
+     */
+    public KNNHoldoutEvaluator(double percentage, int tnumber) {
+        this(percentage, null, tnumber);
+    }
+
+    /**
+     * Constructs a new stratified {@code Holdout} evaluator with the specified
+     * number of threads ({@code tnumber}) that uses the specified
+     * {@code percentage} of the dataset for tuning and training the classifier, and
+     * the remaining portion for testing.
+     * 
+     * @param percentage   the percentage of the dataset that makes up the training
+     *                     set, must be in the range {@code [0..100]}
+     * @param tnumber      the number of threads
+     * @param fullParallel indicates whether to apply full parallel tuning
+     *                     ({@code true})
+     */
+    public KNNHoldoutEvaluator(double percentage, int tnumber, boolean fullParallel) {
+        this(percentage, null, tnumber, fullParallel);
+    }
+    
+    /**
+     * Constructs a new stratified {@code Holdout} evaluator with the specified
+     * number of threads ({@code tnumber}) and the specified random {@code seeds}
+     * that uses the specified {@code percentage} of the dataset for tuning and
+     * training the classifier, and the remaining portion for testing.
+     * 
+     * <p>
+     * The number of seeds determines how many times the evaluation should be
+     * repeated.
+     * 
+     * @param percentage the percentage of the dataset that makes up the training
+     *                   set, must be in the range {@code [0..100]}
+     * @param seeds      the random seeds used to shuffle the dataset
+     * @param tnumber    the number of threads
+     */
+    public KNNHoldoutEvaluator(double percentage, long[] seeds, int tnumber) {
+        super(seeds, tnumber);
+        this.setPercentage(percentage);
+    }
+
+    /**
+     * Constructs a new stratified {@code Holdout} evaluator with the specified
+     * number of threads ({@code tnumber}) and the specified random {@code seeds}
+     * that uses the specified {@code percentage} of the dataset for tuning and
+     * training the classifier, and the remaining portion for testing.
+     * 
+     * <p>
+     * The number of seeds determines how many times the evaluation should be
+     * repeated.
+     * 
+     * @param percentage   the percentage of the dataset that makes up the training
+     *                     set, must be in the range {@code [0..100]}
+     * @param seeds        the random seeds used to shuffle the dataset
+     * @param tnumber      the number of threads
+     * @param fullParallel indicates whether to apply full parallel tuning
+     *                     ({@code true})
+     */
+    public KNNHoldoutEvaluator(double percentage, long[] seeds, int tnumber, boolean fullParallel) {
+        super(seeds, tnumber, fullParallel);
+        this.setPercentage(percentage);
+    }
+    
+    /**
+     * Constructs a new single-threaded {@code Holdout} evaluator that uses the
+     * specified {@code percentage} of the dataset for tuning and training the
+     * classifier, and the remaining portion for testing.
+     * 
+     * @param percentage the percentage of the dataset that makes up the training
+     *                   set, must be in the range {@code [0..100]}
+     * @param stratified indicates whether to use stratified ({@code true}) or
+     *                   random ({@code false}) holdout
+     */
+    public KNNHoldoutEvaluator(double percentage, boolean stratified) {
+        this(percentage, stratified, null);
+    }
+    
+    /**
+     * Constructs a new single-threaded {@code Holdout} evaluator with the specified
+     * random {@code seeds} that uses the specified {@code percentage} of the
+     * dataset for tuning and training the classifier, and the remaining portion for
+     * testing.
+     * 
+     * <p>
+     * The number of seeds determines how many times the evaluation should be
+     * repeated.
+     * 
+     * @param percentage the percentage of the dataset that makes up the training
+     *                   set, must be in the range {@code [0..100]}
+     * @param stratified indicates whether to use stratified ({@code true}) or
+     *                   random ({@code false}) holdout
+     * @param seeds      the random seeds used to shuffle the dataset
+     */
+    public KNNHoldoutEvaluator(double percentage, boolean stratified, long[] seeds) {
+        super(stratified, seeds);
+        this.setPercentage(percentage);
+    }
+
+    /**
+     * Constructs a new {@code Holdout} evaluator with the specified number of
+     * threads ({@code tnumber}) that uses the specified {@code percentage} of the
+     * dataset for tuning and training the classifier, and the remaining portion for
+     * testing.
+     * 
+     * @param percentage the percentage of the dataset that makes up the training
+     *                   set, must be in the range {@code [0..100]}
+     * @param stratified indicates whether to use stratified ({@code true}) or
+     *                   random ({@code false}) holdout
+     * @param tnumber    the number of threads
+     */
+    public KNNHoldoutEvaluator(double percentage, boolean stratified, int tnumber) {
+        this(percentage, stratified, null, tnumber);
+    }
+
+    /**
+     * Constructs a new {@code Holdout} evaluator with the specified number of
+     * threads ({@code tnumber}) that uses the specified {@code percentage} of the
+     * dataset for tuning and training the classifier, and the remaining portion for
+     * testing.
+     * 
+     * @param percentage   the percentage of the dataset that makes up the training
+     *                     set, must be in the range {@code [0..100]}
+     * @param stratified   indicates whether to use stratified ({@code true}) or
+     *                     random ({@code false}) holdout
+     * @param tnumber      the number of threads
+     * @param fullParallel indicates whether to apply full parallel tuning
+     *                     ({@code true})
+     */
+    public KNNHoldoutEvaluator(double percentage, boolean stratified, int tnumber, boolean fullParallel) {
+        this(percentage, stratified, null, tnumber, fullParallel);
+    }
+    
+    /**
+     * Constructs a new {@code Holdout} evaluator with the specified number of
+     * threads ({@code tnumber}) and the specified random {@code seeds} that uses
+     * the specified {@code percentage} of the dataset for tuning and training the
+     * classifier, and the remaining portion for testing.
+     * 
+     * <p>
+     * The number of seeds determines how many times the evaluation should be
+     * repeated.
+     * 
+     * @param percentage the percentage of the dataset that makes up the training
+     *                   set, must be in the range {@code [0..100]}
+     * @param stratified indicates whether to use stratified ({@code true}) or
+     *                   random ({@code false}) holdout
+     * @param seeds      the random seeds used to shuffle the dataset
+     * @param tnumber    the number of threads
+     */
+    public KNNHoldoutEvaluator(double percentage, boolean stratified, long[] seeds, int tnumber) {
+        super(stratified, seeds, tnumber);
+        this.setPercentage(percentage);
+    }
+
+    /**
+     * Constructs a new {@code Holdout} evaluator with the specified number of
+     * threads ({@code tnumber}) and the specified random {@code seeds} that uses
+     * the specified {@code percentage} of the dataset for tuning and training the
+     * classifier, and the remaining portion for testing.
+     * 
+     * <p>
+     * The number of seeds determines how many times the evaluation should be
+     * repeated.
+     * 
+     * @param percentage   the percentage of the dataset that makes up the training
+     *                     set, must be in the range {@code [0..100]}
+     * @param stratified   indicates whether to use stratified ({@code true}) or
+     *                     random ({@code false}) holdout
+     * @param seeds        the random seeds used to shuffle the dataset
+     * @param tnumber      the number of threads
+     * @param fullParallel indicates whether to apply full parallel tuning
+     *                     ({@code true})
+     */
+    public KNNHoldoutEvaluator(double percentage, boolean stratified, long[] seeds, int tnumber, boolean fullParallel) {
+        super(stratified, seeds, tnumber, fullParallel);
+        this.setPercentage(percentage);
+    }
+    
+    /**
+     * Sets the percentage of the dataset that makes up the training set. Must be in
+     * the range {@code [0, 100]}.
+     * 
+     * @param percentage the percentage of the dataset that makes up the training
+     *                   set; must be in {@code [0, 100]}
+     * @throws IllegalArgumentException if {@code percentage} is not in
+     *                                  {@code [0, 100]}
+     */
+    public void setPercentage(double percentage) throws IllegalArgumentException {
+
+        if (percentage < 0 || percentage > 100)
+            throw new IllegalArgumentException("percentage out of range [0, 100]: " + percentage);
+
+        this.percentage = percentage;
+
+    }
+
+    /**
+     * Returns the percentage of the dataset that makes up the training set.
+     * 
+     * @return the percentage of the dataset that makes up the training set
+     */
+    public double getPercentage() {
+        return this.percentage;
+    }
+
+    /**
+     * @exception InterruptedException when the interrupted flag is set
+     */
+    @Override
+    public double[] evaluate(KNNClassifier classifier, Dataset dataset) throws Exception {
+
+        checkConditions(classifier, dataset);
+        
+        done = false;
+
+        // determine the size of the test set
+        if (tsize < 0) {
+            List<Dataset> list = dataset.divide(percentage, stratified);
+            tsize = list.get(1).size();
+        }
+
+        int runs = seeds == null ? 1 : seeds.length;
+
+        int iterations = runs;
+        
+        int cbCount = runs * tsize;
+
+        return super.evaluate(classifier, dataset, iterations, cbCount);
+
+    }
+    
+    @Override
+    protected List<Dataset> splitDataset(Dataset dataset, int iteration) {
+        
+        Dataset ds = dataset;
+        
+        if (seeds != null) {
+            ds = new Dataset(dataset);
+            Collections.shuffle(ds, new Random(seeds[iteration]));
+        }
+        
+        // divide the dataset into test and train subsets
+        List<Dataset> list = ds.divide(percentage, stratified);
+
+        return list;
+        
+    }
+    
+    /**
+     * Sets the parameters of the specified evaluator to be equal to the parameters
+     * of this evaluator.
+     * 
+     * @param copy the evaluator whose parameters are to be set
+     * @param deep indicates whether a deep copy should be made
+     */
+    protected void init(KNNHoldoutEvaluator copy, boolean deep) {
+        super.init(copy, deep);
+        copy.setPercentage(this.getPercentage());
+    }
+    
+    @Override
+    public Object makeACopy(boolean deep) {
+        KNNHoldoutEvaluator copy = new KNNHoldoutEvaluator();
+        init(copy, deep);
+        return copy;
+    }
+    
+    @Override
+    public String toString() {
+        return super.toString() + ", percentage=" + getPercentage() 
+                                + ", stratified=" + isStratified()
+                                + ", seeds=" + Arrays.toString(getSeeds());
+    }
+    
+}

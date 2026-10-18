@@ -19,6 +19,7 @@ package fap.evaluator;
 import java.util.ArrayList;
 import java.util.List;
 
+import fap.classifier.Classifier;
 import fap.classifier.nn.KNNClassifier;
 import fap.data.Dataset;
 import fap.data.TimeSeries;
@@ -49,7 +50,7 @@ import fap.util.ThreadUtils;
  * call) and restored once the evaluation is complete.
  * 
  * @author Zoltán Gellér
- * @version 2026.10.17.5
+ * @version 2026.10.18
  * @see AbstractKNNExtendedEvaluator
  * @see KNNEvaluator
  */
@@ -723,6 +724,12 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
             throw new InterruptedException();
         
         ThreadUtils.startRunnables(executor, classifyTasks);
+        
+        // shut down the copies of classifiers if they are multit-hreaded
+        
+        if (classifier instanceof Multithreaded)
+            for (Classifier classifierCopy : classifiers)
+                ((Multithreaded) classifierCopy).shutdown();                
         
         classifiers = null;
         classified = null;

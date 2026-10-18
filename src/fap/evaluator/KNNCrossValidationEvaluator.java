@@ -50,18 +50,19 @@ import fap.util.Copyable;
  * @author Zoltán Gellér
  * @version 2026.10.18.
  * @see AbstractKNNSeedsEvaluator
+ * @see Copyable
  */
 public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator implements Copyable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * Number of folds. Default value is {@code 10}.
+     * The number of folds. The default value is {@code 10}.
      */
     private int fnumber = 10;
     
     /**
-     * List containing folds for every seed.
+     * The list containing folds for every seed.
      */
     private transient List<List<Dataset>> listOfFolds;
 
@@ -77,10 +78,10 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
      * {@code KNNCrossValidation} evaluator with the specified random {@code seeds}.
      * 
      * <p>
-     * The number of seeds determines how many times should the evaluation be
+     * The number of seeds determines how many times the evaluation should be
      * repeated.
      * 
-     * @param seeds random seeds used to shuffle the dataset
+     * @param seeds the random seeds used to shuffle the dataset
      */
     public KNNCrossValidationEvaluator(long[] seeds) {
         super(seeds);
@@ -91,8 +92,8 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
      * specified number of threads ({@code tnumber}), the specified random
      * {@code seeds}, and parallel tuning.
      * 
-     * @param seeds   random seeds used to shuffle the dataset
-     * @param tnumber number of threads
+     * @param seeds   the random seeds used to shuffle the dataset
+     * @param tnumber the number of threads
      */
     public KNNCrossValidationEvaluator(long[] seeds, int tnumber) {
         super(seeds, tnumber);
@@ -103,8 +104,8 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
      * specified number of threads ({@code tnumber}) and the specified random
      * {@code seeds}.
      * 
-     * @param seeds        random seeds used to shuffle the dataset
-     * @param tnumber      number of threads
+     * @param seeds        the random seeds used to shuffle the dataset
+     * @param tnumber      the number of threads
      * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
@@ -116,7 +117,7 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
      * Constructs a new single-threaded stratified {@code KNNCrossValidation}
      * evaluator with the specified number of folds ({@code fnumber}).
      * 
-     * @param fnumber number of folds, must be {@code > 1}
+     * @param fnumber the number of folds, must be {@code > 1}
      */
     public KNNCrossValidationEvaluator(int fnumber) {
         this(fnumber, null);
@@ -127,8 +128,8 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
      * specified number of folds ({@code fnumber}) and threads ({@code tnumber}),
      * and parallel tuning.
      * 
-     * @param fnumber number of folds, must be {@code > 1}
-     * @param tnumber number of threads
+     * @param fnumber the number of folds, must be {@code > 1}
+     * @param tnumber the number of threads
      */
     public KNNCrossValidationEvaluator(int fnumber, int tnumber) {
         super(tnumber);
@@ -139,8 +140,8 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
      * Constructs a new stratified {@code KNNCrossValidation} evaluator with the
      * specified number of folds ({@code fnumber}) and threads ({@code tnumber}).
      * 
-     * @param fnumber      number of folds, must be {@code > 1}
-     * @param tnumber      number of threads
+     * @param fnumber      the number of folds, must be {@code > 1}
+     * @param tnumber      the number of threads
      * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
@@ -155,11 +156,11 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
      * specified random {@code seeds}.
      * 
      * <p>
-     * The number of seeds determines how many times should the evaluation be
+     * The number of seeds determines how many times the evaluation should be
      * repeated.
      * 
-     * @param fnumber number of folds, must be {@code > 1}
-     * @param seeds   random seeds used to shuffle the dataset
+     * @param fnumber the number of folds, must be {@code > 1}
+     * @param seeds   the random seeds used to shuffle the dataset
      */
     public KNNCrossValidationEvaluator(int fnumber, long[] seeds) {
         super(seeds);
@@ -172,12 +173,12 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
      * the specified random {@code seeds}, and parallel tuning.
      * 
      * <p>
-     * The number of seeds determines how many times should the evaluation be
+     * The number of seeds determines how many times the evaluation should be
      * repeated.
      * 
-     * @param fnumber number of folds, must be {@code > 1}
-     * @param seeds   random seeds used to shuffle the dataset
-     * @param tnumber number of threads
+     * @param fnumber the number of folds, must be {@code > 1}
+     * @param seeds   the random seeds used to shuffle the dataset
+     * @param tnumber the number of threads
      */
     public KNNCrossValidationEvaluator(int fnumber, long[] seeds, int tnumber) {
         super(seeds, tnumber);
@@ -190,12 +191,12 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
      * the specified random {@code seeds}.
      * 
      * <p>
-     * The number of seeds determines how many times should the evaluation be
+     * The number of seeds determines how many times the evaluation should be
      * repeated.
      * 
-     * @param fnumber      number of folds, must be {@code > 1}
-     * @param seeds        random seeds used to shuffle the dataset
-     * @param tnumber      number of threads
+     * @param fnumber      the number of folds, must be {@code > 1}
+     * @param seeds        the random seeds used to shuffle the dataset
+     * @param tnumber      the number of threads
      * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
@@ -208,7 +209,7 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
      * Constructs a new single-threaded {@code KNNCrossValidation} evaluator with
      * the specified number of folds ({@code fnumber}).
      * 
-     * @param fnumber    number of folds, must be {@code > 1}
+     * @param fnumber    the number of folds, must be {@code > 1}
      * @param stratified indicates whether the folds should be stratified
      *                   {@code true}
      */
@@ -222,13 +223,13 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
      * {@code seeds}.
      * 
      * <p>
-     * The number of seeds determines how many times should the evaluation be
+     * The number of seeds determines how many times the evaluation should be
      * repeated.
      * 
-     * @param fnumber    number of folds, must be {@code > 1}
+     * @param fnumber    the number of folds, must be {@code > 1}
      * @param stratified indicates whether the folds should be stratified
      *                   {@code true}
-     * @param seeds      random seeds used to shuffle the dataset
+     * @param seeds      the random seeds used to shuffle the dataset
      */
     public KNNCrossValidationEvaluator(int fnumber, boolean stratified, long[] seeds) {
         super(stratified, seeds);
@@ -240,10 +241,10 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
      * number of folds ({@code fnumber}) and threads ({@code tnumber}), and parallel
      * tuning.
      * 
-     * @param fnumber    number of folds, must be {@code > 1}
+     * @param fnumber    the number of folds, must be {@code > 1}
      * @param stratified indicates whether the folds should be stratified
      *                   {@code true}
-     * @param tnumber    number of threads
+     * @param tnumber    the number of threads
      */
     public KNNCrossValidationEvaluator(int fnumber, boolean stratified, int tnumber) {
         this(fnumber, stratified, null, tnumber);
@@ -253,10 +254,10 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
      * Constructs a new {@code KNNCrossValidation} evaluator with the specified
      * number of folds ({@code fnumber}) and threads ({@code tnumber}).
      * 
-     * @param fnumber      number of folds, must be {@code > 1}
+     * @param fnumber      the number of folds, must be {@code > 1}
      * @param stratified   indicates whether the folds should be stratified
      *                     {@code true}
-     * @param tnumber      number of threads
+     * @param tnumber      the number of threads
      * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
@@ -270,14 +271,14 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
      * specified random {@code seeds}, and parallel tuning.
      * 
      * <p>
-     * The number of seeds determines how many times should the evaluation be
+     * The number of seeds determines how many times the evaluation should be
      * repeated.
      * 
-     * @param fnumber    number of folds, must be {@code > 1}
+     * @param fnumber    the number of folds, must be {@code > 1}
      * @param stratified indicates whether the folds should be stratified
      *                   {@code true}
-     * @param seeds      random seeds used to shuffle the dataset
-     * @param tnumber    number of threads
+     * @param seeds      the random seeds used to shuffle the dataset
+     * @param tnumber    the number of threads
      */
     public KNNCrossValidationEvaluator(int fnumber, boolean stratified, long[] seeds, int tnumber) {
         super(stratified, seeds, tnumber);
@@ -290,14 +291,14 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
      * specified random {@code seeds}.
      * 
      * <p>
-     * The number of seeds determines how many times should the evaluation be
+     * The number of seeds determines how many times the evaluation should be
      * repeated.
      * 
-     * @param fnumber      number of folds, must be {@code > 1}
+     * @param fnumber      the number of folds, must be {@code > 1}
      * @param stratified   indicates whether the folds should be stratified
      *                     {@code true}
-     * @param seeds        random seeds used to shuffle the dataset
-     * @param tnumber      number of threads
+     * @param seeds        the random seeds used to shuffle the dataset
+     * @param tnumber      the number of threads
      * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */

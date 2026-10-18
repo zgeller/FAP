@@ -23,7 +23,7 @@ import java.util.List;
  * General tuner of {@code Integer} parameters.
  * 
  * @author Zoltán Gellér
- * @version 2025.04.22.
+ * @version 2025.10.18.
  * @see AbstractParameterTuner
  * @see Modifier
  */
@@ -277,17 +277,6 @@ public class IntegerTuner extends AbstractParameterTuner<Integer> {
 
     }
 
-    /**
-     * Initializes the specified tuner with the common data structures of this
-     * tuner.
-     * 
-     * @param copy the classifier whose data structures is to be initialized
-     * @param deep indicates whether a deep copy should be made
-     */
-    protected void init(IntegerTuner copy, boolean deep) {
-        super.init(copy, deep);
-    }
-    
     @Override
     public Object makeACopy(boolean deep) {
         IntegerTuner copy = new IntegerTuner();

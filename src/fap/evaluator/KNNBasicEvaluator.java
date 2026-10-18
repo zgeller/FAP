@@ -228,12 +228,12 @@ public class KNNBasicEvaluator implements Serializable, Callbackable, Resumable,
             if (Thread.interrupted())
                 throw new InterruptedException();
 
-            TimeSeries testSeries = testset.get(i);
+            TimeSeries ts = testset.get(i);
 
-            double[] klabels = classifier.classifyK(testSeries);
+            double[] klabels = classifier.classifyK(ts);
 
             counter++;
-            final double tsLabel = testSeries.getLabel();
+            final double tsLabel = ts.getLabel();
             for (int n = 0; n < k; n++)
                 if (tsLabel != klabels[n])
                     misclassfied[n]++;

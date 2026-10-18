@@ -49,6 +49,7 @@ import fap.util.Copyable;
  * @author Zoltán Gellér
  * @version 2026.07.03.
  * @see AbstractSeedsEvaluator
+ * @see Copyable
  */
 public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements Copyable {
 

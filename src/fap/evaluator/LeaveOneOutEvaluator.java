@@ -54,6 +54,7 @@ import fap.util.ThreadUtils;
  * @author Zoltán Gellér
  * @version 2026.07.03.
  * @see AbstractExtendedEvaluator
+ * @see Copyable
  */
 public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements Copyable {
 

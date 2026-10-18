@@ -43,6 +43,7 @@ import fap.util.Copyable;
  * @author Zoltán Gellér
  * @version 2026.07.03.
  * @see AbstractSeedsEvaluator
+ * @see Copyable
  */
 public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable {
 
@@ -50,12 +51,12 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
 
     /**
      * The percentage of the dataset that makes up the training set. Must be in the
-     * range {@code [0..100]} Default value is {@code 50}.
+     * range {@code [0..100]}. The default value is {@code 50}.
      */
     private double percentage = 50;
 
     /**
-     * Size of the test set.
+     * The size of the test set. Defaults to {@code -1} if not set or calculated.
      */
     private int tsize = -1;
     
@@ -364,7 +365,7 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
      * 
      * @param percentage the percentage of the dataset that makes up the training
      *                   set; must be in {@code [0, 100]}
-     * @throws IllegalArgumentException if {@code percentage} not in
+     * @throws IllegalArgumentException if {@code percentage} is not in
      *                                  {@code [0, 100]}
      */
     public void setPercentage(double percentage) throws IllegalArgumentException {
@@ -385,7 +386,7 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
         return this.percentage;
     }
 
-    /***
+    /**
      * @exception InterruptedException when the interrupted flag is set
      */
     @Override
@@ -395,7 +396,7 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
         
         done = false;
 
-        // determining the size of the test set
+        // determine the size of the test set
         if (tsize < 0) {
             List<Dataset> list = dataset.divide(percentage, stratified);
             tsize = list.get(1).size();
@@ -421,7 +422,7 @@ public class HoldoutEvaluator extends AbstractSeedsEvaluator implements Copyable
             Collections.shuffle(ds, new Random(seeds[iteration]));
         }
         
-        // dividing the dataset into test and train subsets
+        // divide the dataset into test and train subsets
         List<Dataset> list = ds.divide(percentage, stratified);
 
         return list;

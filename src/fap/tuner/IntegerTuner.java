@@ -23,7 +23,7 @@ import java.util.List;
  * General tuner of {@code Integer} parameters.
  * 
  * @author Zoltán Gellér
- * @version 2025.10.18.
+ * @version 2026.10.18.
  * @see AbstractParameterTuner
  * @see Modifier
  */

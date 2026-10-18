@@ -56,12 +56,12 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
     private static final long serialVersionUID = 1L;
 
     /**
-     * Number of folds. Default value is {@code 10}.
+     * The number of folds. The default value is {@code 10}.
      */
     private int fnumber = 10;
     
     /**
-     * List containing folds for every seed.
+     * The list containing folds for every seed.
      */
     private transient List<List<Dataset>> listOfFolds;
 
@@ -77,10 +77,10 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * evaluator with the specified random {@code seeds}.
      * 
      * <p>
-     * The number of seeds determines how many times should the evaluation be
+     * The number of seeds determines how many times the evaluation should be
      * repeated.
      * 
-     * @param seeds random seeds used to shuffle the dataset
+     * @param seeds the random seeds used to shuffle the dataset
      */
     public CrossValidationEvaluator(long[] seeds) {
         super(seeds);
@@ -91,8 +91,8 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * specified number of threads ({@code tnumber}), the specified random
      * {@code seeds}, and parallel tuning.
      * 
-     * @param seeds   random seeds used to shuffle the dataset
-     * @param tnumber number of threads
+     * @param seeds   the random seeds used to shuffle the dataset
+     * @param tnumber the number of threads
      */
     public CrossValidationEvaluator(long[] seeds, int tnumber) {
         super(seeds, tnumber);
@@ -103,8 +103,8 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * specified number of threads ({@code tnumber}) and the specified random
      * {@code seeds}.
      * 
-     * @param seeds        random seeds used to shuffle the dataset
-     * @param tnumber      number of threads
+     * @param seeds        the random seeds used to shuffle the dataset
+     * @param tnumber      the number of threads
      * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
@@ -116,7 +116,7 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * Constructs a new single-threaded stratified {@code CrossValidation} evaluator
      * with the specified number of folds ({@code fnumber}).
      * 
-     * @param fnumber number of folds, must be {@code > 1}
+     * @param fnumber the number of folds, must be {@code > 1}
      */
     public CrossValidationEvaluator(int fnumber) {
         this(fnumber, null);
@@ -127,8 +127,8 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * specified number of folds ({@code fnumber}) and threads ({@code tnumber}),
      * and parallel tuning.
      * 
-     * @param fnumber number of folds, must be {@code > 1}
-     * @param tnumber number of threads
+     * @param fnumber the number of folds, must be {@code > 1}
+     * @param tnumber the number of threads
      */
     public CrossValidationEvaluator(int fnumber, int tnumber) {
         super(tnumber);
@@ -139,8 +139,8 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * Constructs a new stratified {@code CrossValidation} evaluator with the
      * specified number of folds ({@code fnumber}) and threads ({@code tnumber}).
      * 
-     * @param fnumber      number of folds, must be {@code > 1}
-     * @param tnumber      number of threads
+     * @param fnumber      the number of folds, must be {@code > 1}
+     * @param tnumber      the number of threads
      * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
@@ -155,11 +155,11 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * {@code seeds}.
      * 
      * <p>
-     * The number of seeds determines how many times should the evaluation be
+     * The number of seeds determines how many times the evaluation should be
      * repeated.
      * 
-     * @param fnumber number of folds, must be {@code > 1}
-     * @param seeds   random seeds used to shuffle the dataset
+     * @param fnumber the number of folds, must be {@code > 1}
+     * @param seeds   the random seeds used to shuffle the dataset
      */
     public CrossValidationEvaluator(int fnumber, long[] seeds) {
         super(seeds);
@@ -172,12 +172,12 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * the specified random {@code seeds}, and parallel tuning.
      * 
      * <p>
-     * The number of seeds determines how many times should the evaluation be
+     * The number of seeds determines how many times the evaluation should be
      * repeated.
      * 
-     * @param fnumber number of folds, must be {@code > 1}
-     * @param seeds   random seeds used to shuffle the dataset
-     * @param tnumber number of threads
+     * @param fnumber the number of folds, must be {@code > 1}
+     * @param seeds   the random seeds used to shuffle the dataset
+     * @param tnumber the number of threads
      */
     public CrossValidationEvaluator(int fnumber, long[] seeds, int tnumber) {
         super(seeds, tnumber);
@@ -190,12 +190,12 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * the specified random {@code seeds}.
      * 
      * <p>
-     * The number of seeds determines how many times should the evaluation be
+     * The number of seeds determines how many times the evaluation should be
      * repeated.
      * 
-     * @param fnumber      number of folds, must be {@code > 1}
-     * @param seeds        random seeds used to shuffle the dataset
-     * @param tnumber      number of threads
+     * @param fnumber      the number of folds, must be {@code > 1}
+     * @param seeds        the random seeds used to shuffle the dataset
+     * @param tnumber      the number of threads
      * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
@@ -208,10 +208,9 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * Constructs a new single-threaded {@code CrossValidation} evaluator with the
      * specified number of folds ({@code fnumber}).
      * 
-     * @param fnumber    number of folds, must be {@code > 1}
+     * @param fnumber    the number of folds, must be {@code > 1}
      * @param stratified indicates whether the folds should be stratified
      *                   {@code true}
-     * 
      */
     public CrossValidationEvaluator(int fnumber, boolean stratified) {
         this(fnumber, stratified, null);
@@ -223,13 +222,13 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * {@code seeds}.
      * 
      * <p>
-     * The number of seeds determines how many times should the evaluation be
+     * The number of seeds determines how many times the evaluation should be
      * repeated.
      * 
-     * @param fnumber    number of folds, must be {@code > 1}
+     * @param fnumber    the number of folds, must be {@code > 1}
      * @param stratified indicates whether the folds should be stratified
      *                   {@code true}
-     * @param seeds      random seeds used to shuffle the dataset
+     * @param seeds      the random seeds used to shuffle the dataset
      */
     public CrossValidationEvaluator(int fnumber, boolean stratified, long[] seeds) {
         super(stratified, seeds);
@@ -241,10 +240,10 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * of folds ({@code fnumber}) and threads ({@code tnumber}), and parallel
      * tuning.
      * 
-     * @param fnumber    number of folds, must be {@code > 1}
+     * @param fnumber    the number of folds, must be {@code > 1}
      * @param stratified indicates whether the folds should be stratified
      *                   {@code true}
-     * @param tnumber    number of threads
+     * @param tnumber    the number of threads
      */
     public CrossValidationEvaluator(int fnumber, boolean stratified, int tnumber) {
         this(fnumber, stratified, null, tnumber);
@@ -254,10 +253,10 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * Constructs a new {@code CrossValidation} evaluator with the specified number
      * of folds ({@code fnumber}) and threads ({@code tnumber}).
      * 
-     * @param fnumber      number of folds, must be {@code > 1}
+     * @param fnumber      the number of folds, must be {@code > 1}
      * @param stratified   indicates whether the folds should be stratified
      *                     {@code true}
-     * @param tnumber      number of threads
+     * @param tnumber      the number of threads
      * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
@@ -274,11 +273,11 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * The number of seeds determines how many times should the evaluation be
      * repeated.
      * 
-     * @param fnumber    number of folds, must be {@code > 1}
+     * @param fnumber    the number of folds, must be {@code > 1}
      * @param stratified indicates whether the folds should be stratified
      *                   {@code true}
-     * @param seeds      random seeds used to shuffle the dataset
-     * @param tnumber    number of threads
+     * @param seeds      the random seeds used to shuffle the dataset
+     * @param tnumber    the number of threads
      */
     public CrossValidationEvaluator(int fnumber, boolean stratified, long[] seeds, int tnumber) {
         super(stratified, seeds, tnumber);
@@ -291,14 +290,14 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
      * random {@code seeds}.
      * 
      * <p>
-     * The number of seeds determines how many times should the evaluation be
+     * The number of seeds determines how many times the evaluation should be
      * repeated.
      * 
-     * @param fnumber      number of folds, must be {@code > 1}
+     * @param fnumber      the number of folds, must be {@code > 1}
      * @param stratified   indicates whether the folds should be stratified
      *                     {@code true}
-     * @param seeds        random seeds used to shuffle the dataset
-     * @param tnumber      number of threads
+     * @param seeds        the random seeds used to shuffle the dataset
+     * @param tnumber      the number of threads
      * @param fullParallel indicates whether to apply full parallel tuning
      *                     ({@code true})
      */
@@ -346,7 +345,7 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
         
         int cbCount = runs * dataset.size();
         
-        // creating folds
+        // create folds
         listOfFolds = new ArrayList<List<Dataset>>(runs);
         if (seeds == null) {
             List<Dataset> folds = dataset.split(fnumber, stratified);
@@ -381,7 +380,7 @@ public class CrossValidationEvaluator extends AbstractSeedsEvaluator implements 
         
         List<Dataset> list = new ArrayList<>();
         
-        // preparing the test and training sets
+        // prepare the test and training sets
         List<Dataset> folds = listOfFolds.get(run);
         list.add(new Dataset(folds, fold));      // training set
         list.add(folds.get(fold));               // test set

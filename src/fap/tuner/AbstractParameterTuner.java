@@ -46,7 +46,7 @@ import fap.util.ThreadUtils;
  *            the {@link Comparable} interface
  * 
  * @author Zoltán Gellér
- * @version 2026.10.16.
+ * @version 2026.10.18.
  * @see AbstractTuner
  * @see ParameterTuner
  * @see Callbackable
@@ -760,12 +760,13 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
      * 
      * @param classifier the classifier to be tuned
      * @param dataset    the dataset
-     * @param tnumber    number of threads
+     * @param tnumber    the number of threads
      * @throws Exception if an error occurs
      */
     protected void tuneParallel(Classifier classifier, Dataset dataset, int tnumber) throws Exception {
 
         // making copies of this tuner
+        // TODO: consider making copies only the subtuner and the evaluator
         tuners = new ConcurrentLinkedQueue<>();
         Copier.makeCopies(this, tuners, tnumber);
         
@@ -804,6 +805,15 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
         bestValue = tasks.get(bestIndex).value;
         
         parameters = new LinkedList<>(tunedParameters.get(bestIndex));
+        
+        // shut down the copies of the classifier and this tuner if they are multi-threaded
+        
+        if (classifier instanceof Multithreaded)
+            for (Classifier classifierCopy : classifiers)
+                ((Multithreaded) classifierCopy).shutdown();                
+        
+        for (Tuner tunerCopy : tuners)
+            ((Multithreaded) tunerCopy).shutdown();
         
         tuners = null;
         classifiers = null;

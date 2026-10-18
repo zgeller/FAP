@@ -343,7 +343,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
     }
 
     /**
-     * Performs single-threaded evaluation of the classifier.
+     * Performs multi-threaded evaluation of the classifier.
      * 
      * @param tuner      the tuner to be used to tune the classifier
      * @param classifier the classifier to be evaluated

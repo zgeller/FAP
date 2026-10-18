@@ -26,6 +26,7 @@ import fap.data.TimeSeries;
 import fap.tuner.Tuner;
 import fap.util.Copier;
 import fap.util.Copyable;
+import fap.util.Multithreaded;
 import fap.util.Resumable;
 import fap.util.ThreadUtils;
 
@@ -52,7 +53,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.07.03.
+ * @version 2026.10.18.
  * @see AbstractExtendedEvaluator
  * @see Copyable
  */
@@ -276,7 +277,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
                 classifier = classifiers.poll();
             }
             
-            // tune
+            // tune the classifier
             if (tuner != null)
                 try {
                     expectedErrors[index] = tuner.tune(classifier, trainset);
@@ -291,7 +292,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
                 throw new RuntimeException(e);
             }
             
-            // classify
+            // classify the time series
             double label;
             try {
                 label = classifier.classify(ts);
@@ -359,7 +360,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
 
         final int dsize = dataset.size();
 
-        // prepare the tuners and the classifiers
+        // make copies of the tuner and the classifier
         
         tuners = new LinkedList<>();
         classifiers = new LinkedList<>();
@@ -379,6 +380,19 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
                 tasks.add(new EvaluatorTask(i));
         
         ThreadUtils.startRunnables(executor, tasks);
+
+        // shut down the copies of classifiers and tuners if they are multit-hreaded
+        
+        if (classifier instanceof Multithreaded)
+            for (Classifier classifierCopy : classifiers)
+                ((Multithreaded) classifierCopy).shutdown();                
+        
+        if (tuner instanceof Multithreaded)
+            for (Tuner tunerCopy : tuners)
+                ((Multithreaded) tunerCopy).shutdown();
+        
+        classifiers = null;
+        tuners = null;
         
     }
     

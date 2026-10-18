@@ -67,8 +67,8 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
     private int counter;
 
     /**
-     * The labels returned by the classifier. A {@code null} value indicates that the
-     * given time series has not yet been tested.
+     * The predicted labels of each time series from the dataset. A {@code null}
+     * value indicates that the given time series has not yet been tested.
      */
     private Double[] labels;
     

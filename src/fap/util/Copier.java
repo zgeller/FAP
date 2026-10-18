@@ -34,8 +34,9 @@ public final class Copier {
     }
     
     /**
-     * Makes {@code n} copies of the specified {@code tuner} and {@code classifier}
-     * and adds them to the {@code tuners} and {@code classifiers} lists.
+     * Makes {@code n} deep copies of the specified {@code tuner} and
+     * {@code classifier} and adds them to the {@code tuners} and
+     * {@code classifiers} lists.
      * 
      * <p>
      * If the tuner does not affect the distance measure, the copies of the
@@ -47,7 +48,7 @@ public final class Copier {
      *                    be added
      * @param classifiers the list to which the copies of the {@code classifier}
      *                    should be added
-     * @param n           number of copies
+     * @param n           the number of copies
      */
     public static void makeCopies(Tuner tuner, Classifier classifier, Collection<Tuner> tuners, Collection<Classifier> classifiers, int n) {
         
@@ -69,13 +70,13 @@ public final class Copier {
     }
 
     /**
-     * Makes {@code n} copies of the specified {@code tuner} and adds them to the
-     * {@code tuners} list.
+     * Makes {@code n} deep copies of the specified {@code tuner} and adds them to
+     * the {@code tuners} list.
      * 
      * @param tuner  the tuner whose copies should be made
      * @param tuners the list to which the copies of the {@code tuner} should be
-     *                 added
-     * @param n        number of copies
+     *               added
+     * @param n      the number of copies
      */
     public static void makeCopies(Tuner tuner, Collection<Tuner> tuners, int n) {
         
@@ -97,7 +98,7 @@ public final class Copier {
      * @param classifiers the list to which the copies of the {@code classifier}
      *                    should be added
      * @param deep        indicates whether a deep copy should be made
-     * @param n           number of copies
+     * @param n           the number of copies
      */
     public static void makeCopies(Classifier classifier, Collection<Classifier> classifiers, boolean deep, int n) {
 
@@ -112,13 +113,13 @@ public final class Copier {
     }
     
     /**
-     * Makes {@code n} copies of the specified {@code evaluator} and adds them to
-     * the {@code evaluators} list.
+     * Makes {@code n} deep copies of the specified {@code evaluator} and adds them
+     * to the {@code evaluators} list.
      * 
      * @param evaluator  the evaluator whose copies should be made
      * @param evaluators the list to which the copies of the {@code evaluator}
      *                   should be added
-     * @param n          number of copies
+     * @param n          the number of copies
      */
     public static void makeCopies(Evaluator evaluator, Collection<Evaluator> evaluators, int n) {
         

@@ -24,7 +24,6 @@ import java.util.Random;
 
 import fap.classifier.nn.KNNClassifier;
 import fap.data.Dataset;
-import fap.exception.EmptyDatasetException;
 import fap.util.Copyable;
 
 /**
@@ -49,7 +48,7 @@ import fap.util.Copyable;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.10.13.
+ * @version 2026.10.18.
  * @see AbstractKNNSeedsEvaluator
  */
 public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator implements Copyable {
@@ -334,11 +333,10 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
     @Override
     public double[] evaluate(KNNClassifier classifier, Dataset dataset) throws Exception {
 
-        if (done)
-            return error;
-
-        EmptyDatasetException.check(dataset);
-
+        checkConditions(classifier, dataset);
+        
+        done = false;
+        
         int fnumber = this.getNumberOfFolds();
 
         int runs = seeds == null ? 1 : seeds.length;

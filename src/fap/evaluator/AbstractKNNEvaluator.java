@@ -16,6 +16,12 @@
 
 package fap.evaluator;
 
+import java.util.Objects;
+
+import fap.classifier.Classifier;
+import fap.data.Dataset;
+import fap.exception.EmptyDatasetException;
+
 /**
  * Defines common methods and fields for evaluators of kNN classifiers,
  * leveraging the ability of kNN classifiers to classify the given time series
@@ -23,7 +29,7 @@ package fap.evaluator;
  * the number of nearest neighbors.
  * 
  * @author Zoltán Gellér
- * @version 2026.10.13.
+ * @version 2026.10.18.
  * @see KNNEvaluator
  */
 public abstract class AbstractKNNEvaluator implements KNNEvaluator {
@@ -46,6 +52,20 @@ public abstract class AbstractKNNEvaluator implements KNNEvaluator {
     public AbstractKNNEvaluator() {
     }
 
+    /**
+     * Checks whether the conditions for evaluation are met.
+     * 
+     * @param classifier the classifier to be evaluated
+     * @param dataset    the dataset to be used for evaluating the classifier
+     * @throws NullPointerException  if the classifier or dataset is {@code null}
+     * @throws EmptyDatasetException if the dataset is empty
+     */
+    protected void checkConditions(Classifier classifier, Dataset dataset) {
+        Objects.requireNonNull(classifier, "The classifier cannot be null.");
+        Objects.requireNonNull(dataset, "The dataset cannot be null.");
+        EmptyDatasetException.check(dataset);
+    }
+    
     @Override
     public double[] getError() {
         return error != null ? error.clone() : null;

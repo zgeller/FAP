@@ -35,8 +35,8 @@ import fap.util.ThreadUtils;
  *
  * <p>
  * The multi-threaded implementation requires that the tuner (if there is one)
- * and the classifier (properly) implement the {@link Copyable} interface. If
- * this condition is not met, it reverts to single-threaded implementation.
+ * and the classifier implement the {@link Copyable} interface. If this
+ * condition is not met, it reverts to single-threaded implementation.
  *
  * <p>
  * References:

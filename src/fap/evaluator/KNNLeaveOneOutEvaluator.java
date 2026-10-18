@@ -36,9 +36,9 @@ import fap.util.ThreadUtils;
  * {@code k}, where {@code k} denotes the number of nearest neighbors.
  *
  * <p>
- * The multi-threaded implementation requires that the the classifier (properly)
- * implement the {@link Copyable} interface. If this condition is not met, it
- * reverts to single-threaded implementation.
+ * The multi-threaded implementation requires that the the classifier implement
+ * the {@link Copyable} interface. If this condition is not met, it reverts to
+ * single-threaded implementation.
  *
  * <p>
  * References:

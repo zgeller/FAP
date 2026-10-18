@@ -830,7 +830,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
         
         ThreadUtils.startRunnables(executor, classifyTasks);
         
-        // shut down the copies of classifiers and tuners if they are multit-hreaded
+        // shut down the copies of the classifier and the tuner if they are multi-threaded
         
         if (classifier instanceof Multithreaded)
             for (Classifier classifierCopy : classifiers)

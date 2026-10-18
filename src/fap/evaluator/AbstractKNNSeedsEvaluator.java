@@ -725,7 +725,7 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
         
         ThreadUtils.startRunnables(executor, classifyTasks);
         
-        // shut down the copies of classifiers if they are multit-hreaded
+        // shut down the copies of the classifier if it is multi-threaded
         
         if (classifier instanceof Multithreaded)
             for (Classifier classifierCopy : classifiers)

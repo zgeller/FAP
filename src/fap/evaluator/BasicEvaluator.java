@@ -47,7 +47,7 @@ import fap.util.ThreadUtils;
  * evaluation is complete.
  * 
  * @author Zoltán Gellér
- * @version 2026.10.17.2
+ * @version 2026.10.18.
  * @see Serializable
  * @see Callbackable
  * @see Resumable
@@ -210,10 +210,6 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
         if (tuner instanceof Resumable rt)
             rt.reset();
 
-        // reset the classifier
-        if (classifier instanceof Resumable rc)
-            rc.reset();
-        
         return error;
 
     }
@@ -248,6 +244,10 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
 
             labels[i] = label;
 
+            // reset the classifier
+            if (classifier instanceof Resumable rc)
+                rc.reset();
+            
             // call back
             if (callback != null) {
                 progress += stepSize;
@@ -306,6 +306,10 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
             }
 
             labels[index] = label;
+            
+            // reset the classifier
+            if (classifier instanceof Resumable rc)
+                rc.reset();
             
             synchronized(semaphore) {
                 

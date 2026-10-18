@@ -50,7 +50,7 @@ import fap.util.ThreadUtils;
  * individually for each number of nearest neighbors is not supported.
  * 
  * @author Zoltán Gellér
- * @version 2026.10.18.
+ * @version 2026.10.18.2
  * @see Serializable
  * @see Callbackable
  * @see Resumable
@@ -239,6 +239,10 @@ public class KNNBasicEvaluator implements Serializable, Callbackable, Resumable,
                     misclassified[n]++;
 
             labels[i] = klabels;
+            
+            // reset the classifier
+            if (classifier instanceof Resumable rc)
+                rc.reset();
 
             // call back
             if (callback != null) {
@@ -301,6 +305,10 @@ public class KNNBasicEvaluator implements Serializable, Callbackable, Resumable,
             }
 
             labels[index] = klabels;
+            
+            // reset the classifier
+            if (classifier instanceof Resumable rc)
+                rc.reset();
             
             synchronized(semaphore) {
                 

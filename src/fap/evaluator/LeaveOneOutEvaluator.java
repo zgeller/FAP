@@ -199,20 +199,20 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
                 throw new InterruptedException();
 
             // test series
-            TimeSeries testSeries = dataset.remove(i);
+            TimeSeries ts = dataset.remove(i);
 
             if (tuner != null)
                 expectedErrors[i] = tuner.tune(classifier, dataset);
 
             classifier.fit(dataset);
 
-            double label = classifier.classify(testSeries);
+            double label = classifier.classify(ts);
 
             counter++;
-            if (testSeries.getLabel() != label)
+            if (ts.getLabel() != label)
                 misclassified++;
             
-            dataset.add(i, testSeries);
+            dataset.add(i, ts);
 
             labels[i] = label;
 

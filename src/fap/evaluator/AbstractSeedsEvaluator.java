@@ -53,7 +53,7 @@ import fap.util.ThreadUtils.RunnableWrapper;
  * call) and restored once the evaluation is complete.
  * 
  * @author Zoltán Gellér
- * @version 2026.10.17.4
+ * @version 2026.10.18
  * @see AbstractExtendedEvaluator
  * @see Evaluator
  */
@@ -829,6 +829,16 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
             throw new InterruptedException();
         
         ThreadUtils.startRunnables(executor, classifyTasks);
+        
+        // shut down the copies of classifiers and tuners if they are multit-hreaded
+        
+        if (classifier instanceof Multithreaded)
+            for (Classifier classifierCopy : classifiers)
+                ((Multithreaded) classifierCopy).shutdown();                
+        
+        if (tuner instanceof Multithreaded)
+            for (Tuner tunerCopy : tuners)
+                ((Multithreaded) tunerCopy).shutdown();
         
         tuners = null;
         classifiers = null;

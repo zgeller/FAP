@@ -53,17 +53,17 @@ public abstract class AbstractKNNExtendedEvaluator extends AbstractKNNEvaluator 
     protected transient Callback callback;
     
     /**
-     * The number of threads. Default value is {@code 1}.
+     * The number of threads. The default value is {@code 1}.
      */
     protected int numberOfThreads = 1;
     
     /**
-     * Indicates whether the testing is completed. Default value is {@code false}.
+     * Indicates whether the testing is completed. The default value is {@code false}.
      */
     protected boolean done = false;
 
     /**
-     * Indicates whether the testing has started. Default value is {@code false}.
+     * Indicates whether the testing has started. The default value is {@code false}.
      */
     protected boolean insideLoop = false;
 
@@ -76,7 +76,7 @@ public abstract class AbstractKNNExtendedEvaluator extends AbstractKNNEvaluator 
     /**
      * Constructor with the number of threads.
      * 
-     * @param tnumber number of threads.
+     * @param tnumber the number of threads.
      */
     public AbstractKNNExtendedEvaluator(int tnumber) {
         this.setNumberOfThreads(tnumber);

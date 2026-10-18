@@ -354,14 +354,14 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * @param tuner      the tuner that is to be used to train the classifier
      * @param classifier the classifier that is to be evaluated
      * @param dataset    the dataset to be used for evaluating the classifier
-     * @param iterations number of iterations
-     * @param cbCount    number of possible callbacks
+     * @param iterations the number of iterations
+     * @param cbCount    the number of possible callbacks
      * @return the error rate
-     * @throws Exception if an error occurs
+     * @throws Exception if an error occurs during evaluation
      */
     protected double evaluate(Tuner tuner, Classifier classifier, Dataset dataset, int iterations, int cbCount) throws Exception {
 
-        // callback initialization
+        // initialize callback
         if (callback != null) {
             stepSize = (double) callback.getDesiredCallbackNumber() / cbCount;
             if (stepSize >= 1 || stepSize == 0) {
@@ -370,7 +370,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
             }
         }
 
-        // initializing
+        // initialize
         if (!insideLoop)
             initLoop(iterations);
         else if (callback != null)
@@ -389,7 +389,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
         else
             evaluateSequentialTuning(tuner, classifier, dataset, iterations, tnumber);
 
-        // calculating error rates
+        // calculate error rates
         error = 0;
         for (FoldResult result : results) {
             result.error = (double) result.misclassified / result.testset.size();
@@ -397,7 +397,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
             error += result.error;
         }
 
-        // finalizing
+        // finalize
         error = error / iterations;
         insideLoop = false;
         done = true;
@@ -469,7 +469,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
         @Override
         public void run() {
 
-            // creating a new result object
+            // create a new result object
             FoldResult result = new FoldResult();
             
             List<Dataset> list = splitDataset(TuneTask.dataset, iteration);
@@ -503,14 +503,14 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
                 
             }
             
-            // getting a tuner
+            // get a tuner
             tunerCopy = tuners.poll();
             
             // deep copy of the classifier is needed only if the tuner affects the
             // underlying distance measure
             classifierCopy = (Classifier) ((Copyable)classifier).makeACopy(tunerCopy.affectsDistance());
             
-            // tuning and updating the result object 
+            // tune and update the result object 
             try {
                 result.expectedError = tunerCopy.tune(classifierCopy, result.trainset);
                 if (tunerCopy instanceof ParameterTuner<?> pt)
@@ -534,14 +534,14 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
             classifiers[iteration] = classifierCopy;
             results[iteration] = result;
             
-            // reseting the tuner
+            // reset the tuner
             if (tunerCopy instanceof Resumable rt)
                 rt.reset();
 
-            // releasing the tuner
+            // release the tuner
             tuners.add(tunerCopy);
             
-            // creating classifying tasks and executing them
+            // create classifying tasks and executing them
             List<ClassifyTask> classifyTasks = new ArrayList<>();
             
             for (int index = 0; index < results[iteration].testset.size(); index++)
@@ -590,7 +590,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
             
             Classifier classifier = classifiers[iteration];
 
-            // classifying
+            // classify
             double label = Double.NaN;
             try {
                 label = classifier.classify(ts);
@@ -600,14 +600,14 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
 
             classified[iteration][tsIndex] = true;
             
-            // updating the results
+            // update the results
             synchronized(results[iteration]) {
                 classifiedCount[iteration]++;
                 if (label != ts.getLabel())
                     results[iteration].misclassified++;
             }
             
-            // calling back
+            // call back
             if (callback != null)
                 synchronized(callback) {
                     progress += stepSize;
@@ -663,11 +663,11 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
                 
                 List<Dataset> list = splitDataset(dataset, iteration);
                 
-                // preparing the test and tuning sets
+                // prepare the test and tuning sets
                 result.trainset = list.get(0);
                 result.testset = list.get(1);
                 
-                // tuning the classifier
+                // tune the classifier
                 double expectedError = Double.NaN;
                 if (tuner != null)
                     expectedError = tuner.tune(classifier, result.trainset);
@@ -683,7 +683,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
                 classifiers[iteration] = classifier;
                 classified[iteration] = new boolean[result.testset.size()];
                 
-                // reseting the trainer
+                // resetg the trainer
                 if (tuner instanceof Resumable rt)
                     rt.reset();
                 
@@ -699,7 +699,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
             // multi-threaded testing
             if (tnumber > 1) {
 
-                // initializing 
+                // initialize 
                 List<ClassifyTask> tasks = new ArrayList<>(tsize);
 
                 for (int i = 0; i < tsize; i++)
@@ -744,7 +744,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
                     if (label != ts.getLabel())
                         results[iteration].misclassified++;
                     
-                    // calling back
+                    // call back
                     if (callback != null) {
                         progress += stepSize;
                         if (progress >= steps) {
@@ -763,7 +763,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
             
             result.error = (double) result.misclassified / tsize;
 
-            // reseting the classifier
+            // reset the classifier
             if (classifier instanceof Resumable rc)
                 rc.reset();
             
@@ -790,7 +790,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
 
         this.initExecutor(tnumber);
         
-        // preparing the tuners
+        // prepare the tuners
         tuners = new ConcurrentLinkedQueue<>();
         if (tuner != null)
             Copier.makeCopies(tuner, tuners, tnumber);
@@ -799,7 +799,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
         TuneTask.tuner = tuner;
         TuneTask.classifier = classifier;
         
-        // creating tune tasks and executing them
+        // create tune tasks and executing them
         List<TuneTask> tuneTasks = new ArrayList<>();
         
         for (int iteration = 0; iteration < iterations; iteration++ )

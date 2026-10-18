@@ -34,12 +34,12 @@ public abstract class AbstractEvaluator implements Evaluator {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Average error rate. Default value is {@code 0.0}.
+     * The average error rate. The default value is {@code 0.0}.
      */
     protected double error;
 
     /**
-     * Number of misclassified time series. Default value is {@code 0}.
+     * The number of misclassified time series. The default value is {@code 0}.
      */
     protected int misclassified;
 
@@ -50,9 +50,9 @@ public abstract class AbstractEvaluator implements Evaluator {
     }
     
     /**
-     * Checks if conditions are met for evaluating.
+     * Checks whether the conditions for evaluation are met.
      * 
-     * @param classifier the classifier that is to be evaluated
+     * @param classifier the classifier to be evaluated
      * @param dataset    the dataset to be used for evaluating the classifier
      * @throws NullPointerException  if the classifier or dataset is {@code null}
      * @throws EmptyDatasetException if the dataset is empty

@@ -347,7 +347,7 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
         
         int cbCount = runs * dataset.size();
         
-        // creating folds
+        // create folds
         listOfFolds = new ArrayList<List<Dataset>>(runs);
         if (seeds == null) {
             List<Dataset> folds = dataset.split(fnumber, stratified);
@@ -382,7 +382,7 @@ public class KNNCrossValidationEvaluator extends AbstractKNNSeedsEvaluator imple
         
         List<Dataset> list = new ArrayList<>();
         
-        // preparing the test and training sets
+        // prepare the test and training sets
         List<Dataset> folds = listOfFolds.get(run);
         list.add(new Dataset(folds, fold));      // training set
         list.add(folds.get(fold));               // test set

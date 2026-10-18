@@ -31,12 +31,12 @@ public abstract class AbstractKNNEvaluator implements KNNEvaluator {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Average error rates for each neighbor count from {@code 1} to {@code k}.
+     * The average error rates for each neighbor count from {@code 1} to {@code k}.
      */
     protected double[] error;
 
     /**
-     * Number of misclassified time series for each neighbor count from {@code 1} to {@code k}.
+     * The number of misclassified time series for each neighbor count from {@code 1} to {@code k}.
      */
     protected int[] misclassified;
     

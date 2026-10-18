@@ -335,14 +335,14 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
      * 
      * @param classifier the classifier that is to be evaluated
      * @param dataset    the dataset to be used for evaluating the classifier
-     * @param iterations number of iterations
-     * @param cbCount    number of possible callbacks
+     * @param iterations the number of iterations
+     * @param cbCount    the number of possible callbacks
      * @return the error rate
-     * @throws Exception if an error occurs
+     * @throws Exception if an error occurs during evaluation
      */
     protected double[] evaluate(KNNClassifier classifier, Dataset dataset, int iterations, int cbCount) throws Exception {
 
-        // callback initialization
+        // initialize callback
         if (callback != null) {
             stepSize = (double) callback.getDesiredCallbackNumber() / cbCount;
             if (stepSize >= 1 || stepSize == 0) {
@@ -353,7 +353,7 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
         
         final int k = classifier.getK();
 
-        // initializing
+        // initialize
         if (!insideLoop)
             initLoop(iterations, k);
         else if (callback != null)
@@ -371,7 +371,7 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
         else
             evaluateSequentialTraining(classifier, dataset, iterations, tnumber);
 
-        // calculating error rates
+        // calculate error rates
         for (int i = 0; i < k; i++) {
             double err = 0;
             int mc = 0;
@@ -446,7 +446,7 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
 
             final int k = classifier.getK();
             
-            // creating a new result object
+            // create a new result object
             KNNFoldResult result = new KNNFoldResult();
             result.error = new double[k];
             result.misclassified = new int[k];
@@ -518,7 +518,7 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
             
             final int k = classifier.getK();
             
-            // classifying
+            // classify
             double[] labels;
             try {
                 labels = classifier.classifyK(ts);
@@ -528,7 +528,7 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
 
             classified[iteration][tsIndex] = true;
             
-            // updating the results
+            // update the results
             synchronized(results[iteration]) {
                 classifiedCount[iteration]++;
                 for (int n = 0; n < k; n++)
@@ -536,7 +536,7 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
                         results[iteration].misclassified[n]++;
             }
             
-            // calling back
+            // call back
             if (callback != null)
                 synchronized(callback) {
                     progress += stepSize;
@@ -587,7 +587,7 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
             
             List<Dataset> list = splitDataset(dataset, iteration);
             
-            // preparing the test and tuning sets
+            // prepare the test and tuning sets
             result.trainset = list.get(0);
             result.testset = list.get(1);
             
@@ -602,7 +602,7 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
             // multi-threaded testing
             if (tnumber > 1) {
 
-                // initializing 
+                // initialize 
                 List<ClassifyTask> tasks = new ArrayList<>(tsize);
 
                 for (int i = 0; i < tsize; i++)
@@ -649,7 +649,7 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
                         if (labels[n] != tsLabel)
                             results[iteration].misclassified[n]++;
                     
-                    // calling back
+                    // call back
                     if (callback != null) {
                         progress += stepSize;
                         if (progress >= steps) {
@@ -669,7 +669,7 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
             for (int n = 0; n < k; n++)
                 result.error[n] = (double) result.misclassified[n] / tsize;
 
-            // reseting the classifier
+            // reset the classifier
             if (classifier instanceof Resumable rc)
                 rc.reset();
             
@@ -697,7 +697,7 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
         TrainTask.dataset = dataset;
         TrainTask.classifier = classifier;
         
-        // creating tune tasks and executing them
+        // create tune tasks and executing them
         List<TrainTask> trainTasks = new ArrayList<>();
         
         for (int iteration = 0; iteration < iterations; iteration++ )

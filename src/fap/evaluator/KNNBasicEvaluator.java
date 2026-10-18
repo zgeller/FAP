@@ -50,7 +50,7 @@ import fap.util.ThreadUtils;
  * individually for each number of nearest neighbors is not supported.
  * 
  * @author Zoltán Gellér
- * @version 2026.10.17.
+ * @version 2026.10.18.
  * @see Serializable
  * @see Callbackable
  * @see Resumable
@@ -83,7 +83,7 @@ public class KNNBasicEvaluator implements Serializable, Callbackable, Resumable,
     /**
      * Number of misclassified time series for each neighbor count from {@code 1} to {@code k}.
      */
-    private int[] misclassfied;
+    private int[] misclassified;
 
     /**
      * Indicates whether evaluating has completed.
@@ -125,7 +125,7 @@ public class KNNBasicEvaluator implements Serializable, Callbackable, Resumable,
     
     // initialization
     private void init(int size, int k) {
-        misclassfied = new int[k];
+        misclassified = new int[k];
         error = new double[k];
         progress = -1;
         steps = 0;
@@ -190,7 +190,7 @@ public class KNNBasicEvaluator implements Serializable, Callbackable, Resumable,
         
         // finalize
         for (int i = 0; i < k; i++)
-            error[i] = (double) misclassfied[i] / tsize;
+            error[i] = (double) misclassified[i] / tsize;
         insideLoop = false;
         done = true;
         if (callback != null) {
@@ -236,7 +236,7 @@ public class KNNBasicEvaluator implements Serializable, Callbackable, Resumable,
             final double tsLabel = ts.getLabel();
             for (int n = 0; n < k; n++)
                 if (tsLabel != klabels[n])
-                    misclassfied[n]++;
+                    misclassified[n]++;
 
             labels[i] = klabels;
 
@@ -246,7 +246,7 @@ public class KNNBasicEvaluator implements Serializable, Callbackable, Resumable,
                 if (progress >= steps) {
                     steps++;
                     for (int n = 0; n < k; n++)
-                        error[n] = (double) misclassfied[n] / counter;
+                        error[n] = (double) misclassified[n] / counter;
                     callback.callback(this);
                 }
             }
@@ -309,7 +309,7 @@ public class KNNBasicEvaluator implements Serializable, Callbackable, Resumable,
                 final double tsLabel = ts.getLabel();
                 for (int i = 0; i < k; i ++)
                     if (tsLabel != klabels[i])
-                        misclassfied[i]++;
+                        misclassified[i]++;
                 
                 // call back
                 if (callback != null) {
@@ -317,7 +317,7 @@ public class KNNBasicEvaluator implements Serializable, Callbackable, Resumable,
                     if (progress >= steps) {
                         steps++;
                         for (int i = 0; i < k; i++)
-                            error[i] = (double) misclassfied[i] / counter;
+                            error[i] = (double) misclassified[i] / counter;
                         try {
                             callback.callback(KNNBasicEvaluator.this);
                         } catch (Exception e) {
@@ -415,7 +415,7 @@ public class KNNBasicEvaluator implements Serializable, Callbackable, Resumable,
      *         neighbor count from {@code 1} to {@code k}
      */
     public int[] getMisclassified() {
-        return misclassfied;
+        return misclassified;
     }
 
     /**

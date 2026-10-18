@@ -281,7 +281,7 @@ public class KNNClassifier extends AbstractNNClassifier {
      *                 of {@code trainset} should be found
      * @param trainset the training set
      * @return the distances between {@code series} and the elements of {@code trainset}
-     * @throws InterruptedException if the thread has been interrupted
+     * @throws InterruptedException if the current thread has been interrupted
      */
     protected double[] findDistances(TimeSeries series, Dataset trainset)
                                              throws InterruptedException {
@@ -332,8 +332,8 @@ public class KNNClassifier extends AbstractNNClassifier {
      * @throws EmptyDatasetException           if the training set is empty
      * @throws IncomparableTimeSeriesException if {@code series} is incompatible
      *                                         with a series in the training set
-     * @throws InterruptedException            if the current thread is interrupted
-     *                                         during execution
+     * @throws InterruptedException            if the current thread has been
+     *                                         interrupted
      */
     @Override
     public double classify(TimeSeries series) throws Exception {
@@ -384,8 +384,8 @@ public class KNNClassifier extends AbstractNNClassifier {
      * @throws EmptyDatasetException           if the training set is empty
      * @throws IncomparableTimeSeriesException if {@code series} is incompatible
      *                                         with a series in the training set
-     * @throws InterruptedException            if the current thread is interrupted
-     *                                         during execution
+     * @throws InterruptedException            if the current thread has been
+     *                                         interrupted
      * @throws Exception                       if an error occurs during
      *                                         classification
      */
@@ -435,11 +435,11 @@ public class KNNClassifier extends AbstractNNClassifier {
      * 
      * @param series   the time series to be classified
      * @param trainset the training set
-     * @param k        number of nearest neighbors
+     * @param k        the number of nearest neighbors
      * @return the sorted list of up to {@code k} nearest neighbors (and their
      *         distances) for the specified time series ({@code series}) from the
      *         training set ({@code trainset})
-     * @throws InterruptedException if the thread has been interrupted
+     * @throws InterruptedException if the current thread has been interrupted
      * @throws Exception            if an error occurs
      */
     protected SortedList<TimeSeries> findSortedDistances(TimeSeries series, Dataset trainset, int k) throws Exception {
@@ -478,12 +478,12 @@ public class KNNClassifier extends AbstractNNClassifier {
      * 
      * @param series   the time series to be classified
      * @param trainset the training set
-     * @param k        number of nearest neighbors
-     * @param tnumber  number of threads
+     * @param k        the number of nearest neighbors
+     * @param tnumber  the number of threads
      * @return the sorted list of up to {@code k} nearest neighbors (and their
      *         distances) for the specified time series ({@code series}) from the
      *         training set ({@code trainset})
-     * @throws InterruptedException if the thread has been interrupted
+     * @throws InterruptedException if the current thread has been interrupted
      * @throws Exception            if an error occurs
      */
     protected SortedList<TimeSeries> findSortedDistancesMultithreaded(TimeSeries series, Dataset trainset, int k, int tnumber) throws Exception {

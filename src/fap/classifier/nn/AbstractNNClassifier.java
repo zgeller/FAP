@@ -366,7 +366,7 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
      *                calculated
      * @param tnumber number of threads
      * @return the distances between {@code series} and the elements if {@code trainset}
-     * @throws InterruptedException if the thread has been interrupted
+     * @throws InterruptedException if the current thread has been interrupted
      * @throws Exception            if an error occurs
      */
     protected double[] findDistances(TimeSeries series, Dataset dataset, int tnumber) throws Exception {

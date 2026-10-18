@@ -84,7 +84,7 @@ public class NNClassifier extends AbstractNNClassifier {
      * @param trainset the training set
      * @return the index of the nearest neighbor of {@code series} in
      *         {@code trainset}
-     * @throws InterruptedException if the thread has been interrupted
+     * @throws InterruptedException if the current thread has been interrupted
      * @throws Exception            if an error occurs
      */
     protected int findNearestNeighbour(TimeSeries series, Dataset trainset) throws Exception {
@@ -145,7 +145,8 @@ public class NNClassifier extends AbstractNNClassifier {
      * @throws EmptyDatasetException           if the training set is empty
      * @throws IncomparableTimeSeriesException if the series is incomparable with a
      *                                         series from the training set
-     * @throws InterruptedException            if the thread has been interrupted
+     * @throws InterruptedException            if the current thread has been
+     *                                         interrupted
      */
     @Override
     public double classify(TimeSeries series) throws Exception {

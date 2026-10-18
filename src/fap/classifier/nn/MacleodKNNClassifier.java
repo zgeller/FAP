@@ -351,7 +351,8 @@ public class MacleodKNNClassifier extends KNNClassifier {
      * @throws EmptyDatasetException           if the training set is empty
      * @throws IncomparableTimeSeriesException if the series is incomparable with a
      *                                         series from the training set
-     * @throws InterruptedException            if the thread has been interrupted
+     * @throws InterruptedException            if the current thread has been
+     *                                         interrupted
      */
     @Override
     public double classify(TimeSeries series) throws Exception {

@@ -261,7 +261,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
         public void run() {
             
             // the time series to be tested
-            TimeSeries testSeries = dataset.get(index);
+            TimeSeries ts = dataset.get(index);
             
             // the training set
             Dataset trainset = new Dataset(dataset);
@@ -294,7 +294,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
             // classify
             double label;
             try {
-                label = classifier.classify(testSeries);
+                label = classifier.classify(ts);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -314,7 +314,7 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
                 
                 // update the results
                 counter++;
-                if (testSeries.getLabel() != label)
+                if (ts.getLabel() != label)
                     misclassified++;
                 
                 // call back

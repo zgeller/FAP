@@ -28,7 +28,6 @@ public interface Copyable {
      * Makes a new instance of the given class and initializes it with the
      * parameters of this object. It implies a deep copy.
      * 
-     * @param deep indicates whether a deep copy should be made
      * @return a new instance of the given class initialized with the parameters of
      *         this object
      */

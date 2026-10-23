@@ -46,7 +46,7 @@ import fap.util.ThreadUtils;
  *            the {@link Comparable} interface
  * 
  * @author Zoltán Gellér
- * @version 2026.10.18.
+ * @version 2026.10.23.
  * @see AbstractTuner
  * @see ParameterTuner
  * @see Callbackable
@@ -668,12 +668,12 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
         /**
          * The dataset.
          */
-        static Dataset dataset;
+        Dataset dataset;
 
         /**
          * The value of the parameter.
          */
-        private T value;
+        T value;
         
         /**
          * The index of the value.
@@ -686,9 +686,10 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
          * @param value the value of the parameter to be evaluated
          * @param index the index of the value
          */
-        public TuneTask(T value, int index) {
+        public TuneTask(T value, int index, Dataset dataset) {
             this.value = value;
             this.index = index;
+            this.dataset = dataset;
         }
         
         @SuppressWarnings("unchecked")
@@ -705,19 +706,19 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
 
             // setting the value of the parameter
             modifier.set(classifierCopy, value);
-
+            
             double error = Double.POSITIVE_INFINITY;
 
             if (subtuner != null) {
 
-                error = subtuner.tune(classifierCopy, TuneTask.dataset);
+                error = subtuner.tune(classifierCopy, dataset);
 
                 if (subtuner instanceof Resumable rst)
                     rst.reset();
 
             } else {
 
-                error = evaluator.evaluate(null, classifierCopy, TuneTask.dataset);
+                error = evaluator.evaluate(null, classifierCopy, dataset);
 
                 if (evaluator instanceof Resumable re)
                     re.reset();
@@ -776,14 +777,12 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
         
         this.initExecutor(tnumber);
         
-        TuneTask.dataset = dataset;
-        
         // initializing tasks
         List<TuneTask> tasks = new ArrayList<>();
         
         for (int index = 0; index < tuned.length; index++)
             if (!tuned[index])
-                tasks.add(new TuneTask(values.get(index), index));
+                tasks.add(new TuneTask(values.get(index), index, dataset));
         
         if (Thread.interrupted())
             throw new InterruptedException();
@@ -924,6 +923,8 @@ public abstract class AbstractParameterTuner<T extends Comparable<T>> extends Ab
     protected void init(AbstractParameterTuner<T> copy, boolean deep) {
         
         super.init(copy, deep);
+        
+        copy.setNumberOfThreads(this.getNumberOfThreads());
         
         ParameterTuner<?> subtunerCopy = subtuner;
         Evaluator evaluatorCopy = evaluator;

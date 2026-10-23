@@ -36,7 +36,7 @@ import fap.util.ThreadUtils;
  * Defines common methods and fields for (multithreaded) NN classifiers.
  * 
  * @author Zoltán Gellér
- * @version 2026.10.17.4
+ * @version 2026.10.21
  * @see AbstractDistanceBasedClassifier
  * @see Multithreaded
  * @see Copyable
@@ -474,7 +474,8 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
 
         super.init(copy, deep);
         
-        copy.setUseCommonPool(useCommonPool);
+        copy.setUseCommonPool(this.isUseCommonPool());
+        copy.setNumberOfThreads(this.getNumberOfThreads());
 
         if (!deep) {
             copy.setDistances(this.getDistances());            

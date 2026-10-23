@@ -53,7 +53,7 @@ import fap.util.ThreadUtils.RunnableWrapper;
  * call) and restored once the evaluation is complete.
  * 
  * @author Zoltán Gellér
- * @version 2026.10.18
+ * @version 2026.10.23.
  * @see AbstractExtendedEvaluator
  * @see Evaluator
  */
@@ -428,19 +428,19 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
     protected class TuneTask implements Runnable {
 
         /**
-         * The dataset.
-         */
-        static Dataset dataset;
-        
-        /**
          * The tuner.
          */
-        static Tuner tuner;
+        Tuner tuner;
         
         /**
          * The classifier.
          */
-        static Classifier classifier;
+        Classifier classifier;
+
+        /**
+         * The dataset.
+         */
+        Dataset dataset;
         
         /**
          * The sequence number of the iteration.
@@ -462,8 +462,11 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
          * 
          * @param index the index of this task
          */
-        public TuneTask(int iteration) {
+        public TuneTask(int iteration, Tuner tuner, Classifier classifier, Dataset dataset) {
             this.iteration = iteration;
+            this.tuner = tuner;
+            this.classifier = classifier;
+            this.dataset = dataset;
         }
 
         @Override
@@ -472,7 +475,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
             // create a new result object
             FoldResult result = new FoldResult();
             
-            List<Dataset> list = splitDataset(TuneTask.dataset, iteration);
+            List<Dataset> list = splitDataset(dataset, iteration);
             
             result.trainset = list.get(0);
             result.testset = list.get(1);
@@ -481,7 +484,7 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
             
             // if there is no need for tuning
             if (tuner == null) {
-                
+
                 classifierCopy = (Classifier) ((Copyable)classifier).makeACopy(false);
                 
                 try {
@@ -795,16 +798,12 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
         if (tuner != null)
             Copier.makeCopies(tuner, tuners, tnumber);
         
-        TuneTask.dataset = dataset;
-        TuneTask.tuner = tuner;
-        TuneTask.classifier = classifier;
-        
         // create tune tasks and executing them
         List<TuneTask> tuneTasks = new ArrayList<>();
         
         for (int iteration = 0; iteration < iterations; iteration++ )
             if (results[iteration] == null)
-                tuneTasks.add(new TuneTask(iteration));
+                tuneTasks.add(new TuneTask(iteration, tuner, classifier, dataset));
         
         newFutures = new ConcurrentLinkedQueue<>();
         
@@ -855,8 +854,9 @@ public abstract class AbstractSeedsEvaluator extends AbstractExtendedEvaluator {
      * @param deep indicates whether a deep copy should be made
      */
     protected void init(AbstractSeedsEvaluator copy, boolean deep) {
+        super.init(copy, deep);
         copy.setStratified(this.isStratified());
-        copy.setSeeds(this.seeds);
+        copy.setSeeds(this.getSeeds());
     }
     
 }

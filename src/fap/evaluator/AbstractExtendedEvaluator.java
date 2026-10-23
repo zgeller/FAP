@@ -29,7 +29,7 @@ import fap.util.ThreadUtils;
  * classifier evaluators.
  * 
  * @author Zoltán Gellér
- * @version 2026.08.17.
+ * @version 2026.10.21.
  * @see AbstractEvaluator
  * @see Evaluator
  * @see Callbackable
@@ -133,4 +133,15 @@ public abstract class AbstractExtendedEvaluator extends AbstractEvaluator implem
         return this.insideLoop;
     }
 
+    /**
+     * Initializes the parameters of the specified evaluator ({@code copy}) to match
+     * those of this evaluator.
+     * 
+     * @param copy the evaluator whose parameters are to be initialized
+     * @param deep indicates whether a deep copy should be made
+     */
+    protected void init(AbstractExtendedEvaluator copy, boolean deep) {
+        copy.setNumberOfThreads(this.getNumberOfThreads());
+    }
+    
 }

@@ -47,7 +47,7 @@ import fap.util.ThreadUtils;
  * evaluation is complete.
  * 
  * @author Zoltán Gellér
- * @version 2026.10.18.
+ * @version 2026.10.23.
  * @see Serializable
  * @see Callbackable
  * @see Resumable
@@ -270,25 +270,22 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
         /**
          * The classifier to be evaluated.
          */
-        public static Classifier classifier;
+        public Classifier classifier;
         
         /**
          * The test set.
          */
-        public static Dataset testset;
+        public Dataset testset;
 
         /**
          * The index of the time series to be classified.
          */
         private int index;
         
-        /**
-         * The auxiliary object used for synchronizing threads.
-         */
-        private static Object semaphore = new Object();
-        
-        public EvaluatorTask(int index) {
+        public EvaluatorTask(int index, Classifier classifier, Dataset testset) {
             this.index = index;
+            this.classifier = classifier;
+            this.testset = testset;
         }
 
         @Override
@@ -311,7 +308,7 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
             if (classifier instanceof Resumable rc)
                 rc.reset();
             
-            synchronized(semaphore) {
+            synchronized(BasicEvaluator.this) {
                 
                 // update the results
                 counter++;
@@ -355,14 +352,11 @@ public class BasicEvaluator implements Serializable, Callbackable, Resumable, Mu
 
         this.initExecutor(tnumber);
         
-        EvaluatorTask.testset = testset;
-        EvaluatorTask.classifier = classifier;
-        
         List<EvaluatorTask> tasks = new ArrayList<>();
         
         for (int i = 0; i < tsize; i++ )
             if (labels[i] == null)
-                tasks.add(new EvaluatorTask(i));
+                tasks.add(new EvaluatorTask(i, classifier, testset));
 
         // only single-threaded classifiers are supported
         // - if the same classifier is used in multiple threads, the same executor will

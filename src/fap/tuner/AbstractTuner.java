@@ -20,7 +20,7 @@ package fap.tuner;
  * Defines common methods and fields for classifier hyperparameter tuners.
  * 
  * @author Zoltán Gellér
- * @version 2026.08.17.
+ * @version 2026.10.21.
  * @see Tuner
  */
 public abstract class AbstractTuner implements Tuner {
@@ -75,7 +75,7 @@ public abstract class AbstractTuner implements Tuner {
      * @param deep indicates whether a deep copy should be made
      */
     protected void init(AbstractTuner copy, boolean deep) {
-        copy.setAffectsDistance(this.affectsDistance);
+        copy.setAffectsDistance(this.affectsDistance());
     }
 
     @Override

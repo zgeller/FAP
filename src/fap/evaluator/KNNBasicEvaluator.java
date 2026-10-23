@@ -50,7 +50,7 @@ import fap.util.ThreadUtils;
  * individually for each number of nearest neighbors is not supported.
  * 
  * @author Zoltán Gellér
- * @version 2026.10.18.2
+ * @version 2026.10.23
  * @see Serializable
  * @see Callbackable
  * @see Resumable
@@ -267,25 +267,22 @@ public class KNNBasicEvaluator implements Serializable, Callbackable, Resumable,
         /**
          * The classifier to be evaluated.
          */
-        public static KNNClassifier classifier;
+        public KNNClassifier classifier;
         
         /**
          * The test set.
          */
-        public static Dataset testset;
+        public Dataset testset;
 
         /**
          * The index of the time series to be classified.
          */
         private int index;
         
-        /**
-         * The auxiliary object used for synchronizing threads.
-         */
-        private static Object semaphore = new Object();
-        
-        public EvaluatorTask(int index) {
+        public EvaluatorTask(int index, KNNClassifier classifier, Dataset testset) {
             this.index = index;
+            this.classifier = classifier;
+            this.testset = testset;
         }
 
         @Override
@@ -310,7 +307,7 @@ public class KNNBasicEvaluator implements Serializable, Callbackable, Resumable,
             if (classifier instanceof Resumable rc)
                 rc.reset();
             
-            synchronized(semaphore) {
+            synchronized(KNNBasicEvaluator.this) {
                 
                 // update the results
                 counter++;
@@ -357,14 +354,11 @@ public class KNNBasicEvaluator implements Serializable, Callbackable, Resumable,
 
         this.initExecutor(tnumber);
         
-        EvaluatorTask.testset = testset;
-        EvaluatorTask.classifier = classifier;
-        
         List<EvaluatorTask> tasks = new ArrayList<>();
         
         for (int i = 0; i < tsize; i++ )
             if (labels[i] == null)
-                tasks.add(new EvaluatorTask(i));
+                tasks.add(new EvaluatorTask(i, classifier, testset));
 
         // only single-threaded classifiers are supported
         // - if the same classifier is used in multiple threads, the same executor will

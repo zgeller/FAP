@@ -31,7 +31,7 @@ import fap.util.ThreadUtils;
  * {@code k}, where {@code k} denotes the number of nearest neighbors.
  * 
  * @author Zoltán Gellér
- * @version 2026.10.13.
+ * @version 2026.10.21.
  * @see AbstractKNNEvaluator
  * @see KNNEvaluator
  * @see Callbackable
@@ -133,6 +133,17 @@ public abstract class AbstractKNNExtendedEvaluator extends AbstractKNNEvaluator 
     @Override
     public boolean isInProgress() {
         return this.insideLoop;
+    }
+    
+    /**
+     * Initializes the parameters of the specified evaluator ({@code copy}) to match
+     * those of this evaluator.
+     * 
+     * @param copy the evaluator whose parameters are to be initialized
+     * @param deep indicates whether a deep copy should be made
+     */
+    protected void init(AbstractKNNExtendedEvaluator copy, boolean deep) {
+        copy.setNumberOfThreads(this.getNumberOfThreads());
     }
 
 }

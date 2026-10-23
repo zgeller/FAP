@@ -53,7 +53,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.10.18.
+ * @version 2026.10.23.
  * @see AbstractExtendedEvaluator
  * @see Copyable
  */
@@ -247,15 +247,16 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
         /**
          * The whole dataset.
          */
-        public static Dataset dataset;
+        public Dataset dataset;
         
         /**
          * The index of the time series that is to be classified.
          */
         private int index;
         
-        public EvaluatorTask(int index) {
+        public EvaluatorTask(int index, Dataset dataset) {
             this.index = index;
+            this.dataset = dataset;
         }
         
         @Override
@@ -371,13 +372,11 @@ public class LeaveOneOutEvaluator extends AbstractExtendedEvaluator implements C
 
         this.initExecutor(tnumber);
 
-        EvaluatorTask.dataset = dataset;
-
         List<EvaluatorTask> tasks = new ArrayList<>();
         
         for (int i = 0; i < dsize; i++ )
             if (labels[i] == null)
-                tasks.add(new EvaluatorTask(i));
+                tasks.add(new EvaluatorTask(i, dataset));
         
         ThreadUtils.startRunnables(executor, tasks);
 

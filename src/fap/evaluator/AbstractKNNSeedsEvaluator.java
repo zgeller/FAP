@@ -50,7 +50,7 @@ import fap.util.ThreadUtils;
  * call) and restored once the evaluation is complete.
  * 
  * @author Zoltán Gellér
- * @version 2026.10.18
+ * @version 2026.10.23.
  * @see AbstractKNNExtendedEvaluator
  * @see KNNEvaluator
  */
@@ -414,32 +414,29 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
     protected class TrainTask implements Runnable {
 
         /**
-         * The dataset.
-         */
-        static Dataset dataset;
-        
-        /**
          * The classifier.
          */
-        static KNNClassifier classifier;
-        
+        KNNClassifier classifier;
+
+        /**
+         * The dataset.
+         */
+        Dataset dataset;
+
         /**
          * The sequence number of the iteration.
          */
         int iteration;
         
         /**
-         * A copy of the classifier that is to be tuned.
-         */
-        KNNClassifier classifierCopy;
-        
-        /**
          * Constructs a new tuning task for the specified {@code index}.
          * 
          * @param index the index of this task
          */
-        public TrainTask(int iteration) {
+        public TrainTask(int iteration, KNNClassifier classifier, Dataset dataset) {
             this.iteration = iteration;
+            this.classifier = classifier;
+            this.dataset = dataset;
         }
 
         @Override
@@ -452,14 +449,14 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
             result.error = new double[k];
             result.misclassified = new int[k];
             
-            List<Dataset> list = splitDataset(TrainTask.dataset, iteration);
+            List<Dataset> list = splitDataset(dataset, iteration);
             
             result.trainset = list.get(0);
             result.testset = list.get(1);
             
             classified[iteration] = new boolean[result.testset.size()];
                 
-            classifierCopy = (KNNClassifier) ((Copyable)classifier).makeACopy(false);
+            KNNClassifier classifierCopy = (KNNClassifier) ((Copyable)classifier).makeACopy(false);
             
             try {
                 classifierCopy.fit(result.trainset);
@@ -695,15 +692,12 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
 
         this.initExecutor(tnumber);
         
-        TrainTask.dataset = dataset;
-        TrainTask.classifier = classifier;
-        
         // create tune tasks and executing them
         List<TrainTask> trainTasks = new ArrayList<>();
         
         for (int iteration = 0; iteration < iterations; iteration++ )
             if (results[iteration] == null)
-                trainTasks.add(new TrainTask(iteration));
+                trainTasks.add(new TrainTask(iteration, classifier, dataset));
         
         ThreadUtils.startRunnables(executor, trainTasks);
         
@@ -745,8 +739,9 @@ public abstract class AbstractKNNSeedsEvaluator extends AbstractKNNExtendedEvalu
      * @param deep indicates whether a deep copy should be made
      */
     protected void init(AbstractKNNSeedsEvaluator copy, boolean deep) {
+        super.init(copy, deep);
         copy.setStratified(this.isStratified());
-        copy.setSeeds(this.seeds);
+        copy.setSeeds(this.getSeeds());
     }
     
 }

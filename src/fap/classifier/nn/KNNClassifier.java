@@ -18,6 +18,7 @@ package fap.classifier.nn;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import fap.classifier.nn.util.LinkedDistanceNode;
@@ -212,7 +213,7 @@ public class KNNClassifier extends AbstractNNClassifier {
         final int k = this.getK();          // the number of nearest neighbors that should be considered
         final int count = list.getCount();  // the actual number of nearest neighbors
 
-        ArrayList<Map<Double, Integer>> neighbors = new ArrayList<>(k);
+        List<Map<Double, Integer>> neighbors = new ArrayList<>(k);
         
         double[] bestLabels = new double[k];
         int[] bestWeights = new int[k];

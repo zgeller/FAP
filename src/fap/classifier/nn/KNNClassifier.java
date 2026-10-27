@@ -56,7 +56,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.10.17.4
+ * @version 2026.10.27.
  * @see AbstractNNClassifier
  */
 public class KNNClassifier extends AbstractNNClassifier {
@@ -239,9 +239,7 @@ public class KNNClassifier extends AbstractNNClassifier {
 
             for (int i = index; i < count; i++) {
                 
-                int weight = 1;
-                
-                weight = neighbors.get(i).merge(label, 1, Integer::sum);
+                int weight = neighbors.get(i).merge(label, 1, Integer::sum);
                
                 if (weight > bestWeights[i]) {
                     bestLabels[i] = label;

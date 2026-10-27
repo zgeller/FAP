@@ -199,7 +199,7 @@ public class KNNClassifier extends AbstractNNClassifier {
     /**
      * Returns the best labels evaluated across the first {@code i} nearest
      * neighbors in {@code list}, for each {@code i} in the range
-     * {@code [1, list.getCount()]}, using unweighted voting.
+     * {@code [1, k]}, using unweighted voting.
      *
      * @param list the sorted list of nearest neighbors
      * @return an array of best labels evaluated over the first {@code i} nearest

@@ -51,7 +51,7 @@ import fap.distance.Distance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.08.14.
+ * @version 2026.10.27.
  * @see KNNClassifier
  */
 public class DudaniKNNClassifier extends KNNClassifier {
@@ -142,34 +142,8 @@ public class DudaniKNNClassifier extends KNNClassifier {
 
 		double bestLabel;
 
-		if (diff == 0) {
-
-			LinkedDistanceNode<TimeSeries> node = firstNode;
-
-			Map<Double, Integer> neighbors = new HashMap<>();
-
-			bestLabel = node.obj.getLabel();
-			int bestWeight = 1;
-
-			neighbors.put(bestLabel, bestWeight);
-			node = node.next;
-
-			while (node != null) {
-
-				double label = node.obj.getLabel();
-
-                int weight = neighbors.merge(label, 1, Integer::sum);
-				
-				if (weight > bestWeight) {
-					bestLabel = label;
-					bestWeight = weight;
-				}
-
-				node = node.next;
-				
-			}
-
-		}
+		if (diff == 0)
+		    bestLabel = super.getBestLabel(list);
 
 		else {
 

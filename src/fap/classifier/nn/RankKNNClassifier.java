@@ -16,7 +16,9 @@
 
 package fap.classifier.nn;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import fap.classifier.nn.util.LinkedDistanceNode;
@@ -50,7 +52,7 @@ import fap.distance.Distance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.08.14.
+ * @version 2026.10.27.
  * @see KNNClassifier
  */
 public class RankKNNClassifier extends KNNClassifier {
@@ -164,6 +166,79 @@ public class RankKNNClassifier extends KNNClassifier {
         return bestLabel;
     }
 
+    /**
+     * Returns the best labels evaluated across the first {@code i} nearest
+     * neighbors in {@code list}, for each {@code i} in the range
+     * {@code [1, k]}.
+     *
+     * @param list the sorted list of nearest neighbors
+     * @return an array of best labels evaluated over the first {@code i} nearest
+     *         neighbors, for each {@code i} in {@code [1, k]}
+     */
+    protected double[] getBestLabels(SortedList<TimeSeries> list) {
+
+        LinkedDistanceNode<TimeSeries> node = list.getFirst();
+        
+        final int k = this.getK();          // the number of nearest neighbors that should be considered
+        final int count = list.getCount();  // the actual number of nearest neighbors
+
+        List<Map<Double, Integer>> neighbors = new ArrayList<>(k);
+        
+        double[] bestLabels = new double[k];
+        int[] bestWeights = new int[k];
+
+        double label = node.obj.getLabel();
+        
+        for (int i = 0; i < k; i++) {
+            
+            int rank = Math.min(i + 1, count);
+            
+            Map<Double, Integer> hmap = new HashMap<>();
+            hmap.put(label, rank);
+            neighbors.add(hmap);
+            
+            bestLabels[i] = label;
+            bestWeights[i] = rank;
+            
+        }
+
+        node = node.next;
+        int index = 1;
+
+        while (node != null) {
+
+            label = node.obj.getLabel();
+            
+            for (int i = index; i < count; i++) {
+
+                int rank = Math.min(i + 1, count) - index;
+                
+                int weightSum = neighbors.get(i).merge(label, rank, Integer::sum);
+               
+                if (weightSum > bestWeights[i]) {
+                    bestLabels[i] = label;
+                    bestWeights[i] = weightSum;
+                }
+                
+            }
+
+            node = node.next;
+            index++;
+            
+        }
+
+        // if there is less than k nearest neighbors
+        // the best label is determined based on the available number of nearest neighbors
+        if (count < k) {
+            double bestLabel = bestLabels[count - 1];
+            for (int i = count; i < k; i++)
+                bestLabels[i] = bestLabel;
+        }
+        
+        return bestLabels;
+        
+    }
+    
     @Override
     public Object makeACopy(boolean deep) {
         RankKNNClassifier copy = new RankKNNClassifier();

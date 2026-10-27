@@ -203,7 +203,7 @@ public class KNNClassifier extends AbstractNNClassifier {
      *
      * @param list the sorted list of nearest neighbors
      * @return an array of best labels evaluated over the first {@code i} nearest
-     *         neighbors, for each {@code i} in {@code [1, list.getCount()]}
+     *         neighbors, for each {@code i} in {@code [1, k]}
      */
     protected double[] getBestLabels(SortedList<TimeSeries> list) {
 

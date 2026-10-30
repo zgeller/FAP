@@ -96,7 +96,7 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing inverse
+     * Constructs a new single-threaded weighted kNN classifier that uses inverse
      * distances, with the default number of nearest neighbors
      * ({@link KNNClassifier#k k}) and the default
      * {@link AbstractInverseKNNClassifier#epsilon epsilon} value.
@@ -105,74 +105,74 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
     }
 
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing inverse
+     * Constructs a new single-threaded weighted kNN classifier that uses inverse
      * distances, with the given number of nearest neighbors ({@code k}) and the
      * default {@link AbstractInverseKNNClassifier#epsilon epsilon} value.
      * 
-     * @param k number of nearest neighbors, must be {@code >= 1}
+     * @param k the number of nearest neighbors, must be {@code >= 1}
      */
     public InverseKNNClassifier(int k) {
         super(k);
     }
     
     /**
-     * Constructs a new weighted kNN classifier utilizing inverse distances, with
+     * Constructs a new weighted kNN classifier that uses inverse distances, with
      * the given number of nearest neighbors ({@code k}) and number of threads
      * ({@code tnumber}), and the default
      * {@link AbstractInverseKNNClassifier#epsilon epsilon} value.
      * 
-     * @param k       number of nearest neighbors, must be {@code >= 1}
-     * @param tnumber number of threads
+     * @param k       the number of nearest neighbors, must be {@code >= 1}
+     * @param tnumber the number of threads
      */
     public InverseKNNClassifier(int k, int tnumber) {
         super(k, tnumber);
     }
 
     /**
-     * Constructs a new single-threaded weighted kNN classifier inverse distances,
-     * with the given distance measure ({@code distance}) and with the default
-     * number of nearest neighbors ({@link KNNClassifier#k k}).
+     * Constructs a new single-threaded weighted kNN classifier that uses inverse
+     * distances, with the given distance measure ({@code distance}) and with the
+     * default number of nearest neighbors ({@link KNNClassifier#k k}).
      * 
-     * @param distance distance measure
+     * @param distance the distance measure
      */
     public InverseKNNClassifier(Distance distance) {
         super(distance);
     }
     
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing inverse
+     * Constructs a new single-threaded weighted kNN classifier that uses inverse
      * distances, with the given distance measure ({@code distance}), number of
      * nearest neighbors ({@code k}), and the default
      * {@link AbstractInverseKNNClassifier#epsilon epsilon} value.
      * 
-     * @param distance distance measure
-     * @param k        number of nearest neighbors, must be {@code >= 1}
+     * @param distance the distance measure
+     * @param k        the number of nearest neighbors, must be {@code >= 1}
      */
     public InverseKNNClassifier(Distance distance, int k) {
         super(distance, k);
     }
     
     /**
-     * Constructs a new weighted kNN classifier utilizing inverse distances, with
+     * Constructs a new weighted kNN classifier that uses inverse distances, with
      * the given distance measure ({@code distance}), number of nearest neighbors
      * ({@code k}), and number of threads ({@code tnumber}), and the default
      * {@link AbstractInverseKNNClassifier#epsilon epsilon} value.
      * 
-     * @param distance distance measure
-     * @param k        number of nearest neighbors, must be {@code >= 1}
-     * @param tnumber  number of threads
+     * @param distance the distance measure
+     * @param k        the number of nearest neighbors, must be {@code >= 1}
+     * @param tnumber  the number of threads
      */
     public InverseKNNClassifier(Distance distance, int k, int tnumber) {
        super(distance, k, tnumber); 
     }
 
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing inverse
+     * Constructs a new single-threaded weighted kNN classifier that uses inverse
      * distances, with the given number of nearest neighbors ({@code k}) and a
      * small constant ({@code epsilon}) that is to be added to the denominator to
      * avoid division by zero.
      * 
-     * @param k       number of nearest neighbors, must be {@code >= 1}
+     * @param k       the number of nearest neighbors, must be {@code >= 1}
      * @param epsilon a small constant that is to be added to the denominator to
      *                avoid division by zero, must be {@code > 0}
      */
@@ -181,28 +181,28 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
     }
     
     /**
-     * Constructs a new weighted kNN classifier utilizing inverse distances, with
+     * Constructs a new weighted kNN classifier that uses inverse distances, with
      * the given number of nearest neighbors ({@code k}), a small constant
      * ({@code epsilon}) that is to be added to the denominator to avoid division
      * by zero, and number of threads ({@code tnumber}).
      * 
-     * @param k       number of nearest neighbors, must be {@code >= 1}
+     * @param k       the number of nearest neighbors, must be {@code >= 1}
      * @param epsilon a small constant that is to be added to the denominator to
      *                avoid division by zero, must be {@code > 0}
-     * @param tnumber number of threads
+     * @param tnumber the number of threads
      */
     public InverseKNNClassifier(int k, double epsilon, int tnumber) {
         super(k, epsilon, tnumber);
     }
 
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing inverse
+     * Constructs a new single-threaded weighted kNN classifier that uses inverse
      * distances, with the given distance measure ({@code distance}), number of
      * nearest neighbors ({@code k}), and a small constant ({@code epsilon}) that
      * is to be added to the denominator to avoid division by zero.
      * 
-     * @param distance distance measure
-     * @param k        number of nearest neighbors, must be {@code >= 1}
+     * @param distance the distance measure
+     * @param k        the number of nearest neighbors, must be {@code >= 1}
      * @param epsilon  a small constant that is to be added to the denominator to
      *                 avoid division by zero, must be {@code > 0}
      */
@@ -211,17 +211,17 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
     }
     
     /**
-     * Constructs a new weighted kNN classifier utilizing inverse distances, with
+     * Constructs a new weighted kNN classifier that uses inverse distances, with
      * the given distance measure ({@code distance}), number of nearest neighbors
      * ({@code k}), a small constant ({@code epsilon}) that is to be added to the
      * denominator to avoid division by zero, and number of threads
      * ({@code tnumber}).
      * 
-     * @param distance distance measure
-     * @param k        number of nearest neighbors, must be {@code >= 1}
+     * @param distance the distance measure
+     * @param k        the number of nearest neighbors, must be {@code >= 1}
      * @param epsilon  a small constant that is to be added to the denominator to
      *                 avoid division by zero, must be {@code > 0}
-     * @param tnumber  number of threads
+     * @param tnumber  the number of threads
      */
     public InverseKNNClassifier(Distance distance, int k, double epsilon, int tnumber) {
         super(distance, k, epsilon, tnumber);
@@ -231,7 +231,7 @@ public class InverseKNNClassifier extends AbstractInverseKNNClassifier {
      * Finds the best label among the nearest neighbors. Weights are calculated
      * using inverse distances.
      * 
-     * @param list sorted list of the nearest neighbors
+     * @param list the sorted list of the nearest neighbors
      * @return the best label
      */
     @Override

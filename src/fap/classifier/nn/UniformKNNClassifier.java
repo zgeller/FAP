@@ -52,7 +52,7 @@ public class UniformKNNClassifier extends KNNClassifier {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing the
+     * Constructs a new single-threaded weighted kNN classifier that uses the
      * uniform weighting function, with the default number of nearest neighbors
      * ({@link KNNClassifier#k k}).
      */
@@ -60,30 +60,30 @@ public class UniformKNNClassifier extends KNNClassifier {
     }
 
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing the
+     * Constructs a new single-threaded weighted kNN classifier that uses the
      * uniform weighting function, with the given number of nearest neighbors
      * ({@code k}).
      * 
-     * @param k number of nearest neighbors, must be {@code >= 1}
+     * @param k the number of nearest neighbors, must be {@code >= 1}
      */
     public UniformKNNClassifier(int k) {
         super(k);
     }
     
     /**
-     * Constructs a new weighted kNN classifier utilizing the uniform weighting
+     * Constructs a new weighted kNN classifier that uses the uniform weighting
      * function, with the given number of nearest neighbors ({@code k}), and number
      * of threads ({@code tnumber}).
      * 
-     * @param k       number of nearest neighbors, must be {@code >= 1}
-     * @param tnumber number of threads
+     * @param k       the number of nearest neighbors, must be {@code >= 1}
+     * @param tnumber the number of threads
      */
     public UniformKNNClassifier(int k, int tnumber) {
         super(k, tnumber);
     }
 
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing the
+     * Constructs a new single-threaded weighted kNN classifier that uses the
      * uniform weighting function, with the given distance measure
      * ({@code distance}) and with the default number of nearest neighbors
      * ({@link KNNClassifier#k k}).
@@ -95,25 +95,25 @@ public class UniformKNNClassifier extends KNNClassifier {
     }
     
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing the
+     * Constructs a new single-threaded weighted kNN classifier that uses the
      * uniform weighting function, with the given distance measure
      * ({@code distance}) and number of nearest neighbors ({@code k}).
      * 
-     * @param distance distance measure
-     * @param k        number of nearest neighbors, must be {@code >= 1}
+     * @param distance the distance measure
+     * @param k        the number of nearest neighbors, must be {@code >= 1}
      */
     public UniformKNNClassifier(Distance distance, int k) {
         super(distance, k);
     }
     
     /**
-     * Constructs a new weighted kNN classifier utilizing the uniform weighting
+     * Constructs a new weighted kNN classifier that uses the uniform weighting
      * function, with the given distance measure ({@code distance}), number of
      * nearest neighbors ({@code k}), and number of threads ({@code tnumber}).
      * 
-     * @param distance distance measure
-     * @param k        number of nearest neighbors, must be {@code >= 1}
-     * @param tnumber  number of threads
+     * @param distance the distance measure
+     * @param k        the number of nearest neighbors, must be {@code >= 1}
+     * @param tnumber  the number of threads
      */
     public UniformKNNClassifier(Distance distance, int k, int tnumber) {
         super(distance, k, tnumber);
@@ -123,7 +123,7 @@ public class UniformKNNClassifier extends KNNClassifier {
      * Finds the best label among the nearest neighbors. Weights are calculated
      * using inverse ranks of the neighbors.
      * 
-     * @param list sorted list of the nearest neighbors
+     * @param list the sorted list of the nearest neighbors
      * @return the best label
      */
     @Override

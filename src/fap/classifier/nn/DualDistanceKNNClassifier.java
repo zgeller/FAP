@@ -51,7 +51,7 @@ public class DualDistanceKNNClassifier extends KNNClassifier {
 	private static final long serialVersionUID = 1L;
 
 	/**
-     * Constructs a new single-threaded weighted kNN classifier utilizing the dual
+     * Constructs a new single-threaded weighted kNN classifier that uses the dual
      * distance-weighted function, with the default number of nearest neighbors
      * ({@link KNNClassifier#k k}).
      */
@@ -59,60 +59,60 @@ public class DualDistanceKNNClassifier extends KNNClassifier {
 	}
 	
 	/**
-     * Constructs a new single-threaded weighted kNN classifier utilizing the dual
+     * Constructs a new single-threaded weighted kNN classifier that uses the dual
      * distance-weighted function, with the given number of nearest neighbors
      * ({@code k}).
      * 
-     * @param k number of nearest neighbors, must be {@code >= 1}
+     * @param k the number of nearest neighbors, must be {@code >= 1}
      */
 	public DualDistanceKNNClassifier(int k) {
 		super(k);
 	}
 	
 	/**
-     * Constructs a new weighted kNN classifier utilizing the dual distance-weighted
+     * Constructs a new weighted kNN classifier that uses the dual distance-weighted
      * function, with the given number of nearest neighbors ({@code k}), and number
      * of threads ({@code tnumber}).
      * 
-     * @param k       number of nearest neighbors, must be {@code >= 1}
-     * @param tnumber number of threads
+     * @param k       the number of nearest neighbors, must be {@code >= 1}
+     * @param tnumber the number of threads
      */
 	public DualDistanceKNNClassifier(int k, int tnumber) {
 	    super(k, tnumber);
 	}
 
 	/**
-     * Constructs a new single-threaded weighted kNN classifier utilizing the dual
+     * Constructs a new single-threaded weighted kNN classifier that uses the dual
      * distance-weighted function, with the given distance measure
      * ({@code distance}) and with the default number of nearest neighbors
      * ({@link KNNClassifier#k k}).
      * 
-     * @param distance distance measure
+     * @param distance the distance measure
      */
 	public DualDistanceKNNClassifier(Distance distance) {
 	    super(distance);
 	}
 	
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing the dual
+     * Constructs a new single-threaded weighted kNN classifier that uses the dual
      * distance-weighted function, with the given distance measure
      * ({@code distance}) and number of nearest neighbors ({@code k}).
      * 
-     * @param distance distance measure
-     * @param k        number of nearest neighbors, must be {@code >= 1}
+     * @param distance the distance measure
+     * @param k        the number of nearest neighbors, must be {@code >= 1}
      */
 	public DualDistanceKNNClassifier(Distance distance, int k) {
 		super(distance, k);
 	}
 	
 	/**
-     * Constructs a new weighted kNN classifier utilizing the dual distance-weighted
+     * Constructs a new weighted kNN classifier that uses the dual distance-weighted
      * function, with the given distance measure ({@code distance}), number of
      * nearest neighbors ({@code k}), and number of threads ({@code tnumber}).
 	 * 
-	 * @param distance distance measure
-	 * @param k        number of nearest neighbors, must be {@code >= 1}
-	 * @param tnumber  number of threads
+	 * @param distance the distance measure
+	 * @param k        the number of nearest neighbors, must be {@code >= 1}
+	 * @param tnumber  the number of threads
 	 */
 	public DualDistanceKNNClassifier(Distance distance, int k, int tnumber) {
 	    super(distance, k, tnumber);
@@ -122,7 +122,7 @@ public class DualDistanceKNNClassifier extends KNNClassifier {
 	 * Finds the best label among the nearest neighbors. Weights are calculated
 	 * using the dual distance-weighted function.
 	 * 
-	 * @param list sorted list of the nearest neighbors
+	 * @param list the sorted list of the nearest neighbors
 	 * @return the best label
 	 */
 	@Override

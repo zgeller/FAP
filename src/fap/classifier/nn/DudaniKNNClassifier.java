@@ -61,7 +61,7 @@ public class DudaniKNNClassifier extends KNNClassifier {
 	private static final long serialVersionUID = 1L;
 
 	/**
-     * Constructs a new single-threaded weighted kNN classifier utilizing Dudani's
+     * Constructs a new single-threaded weighted kNN classifier that uses Dudani's
      * weighting function, with the default number of nearest neighbors
      * ({@link KNNClassifier#k k}).
      */
@@ -69,29 +69,29 @@ public class DudaniKNNClassifier extends KNNClassifier {
 	}
 
 	/**
-     * Constructs a new single-threaded weighted kNN classifier utilizing Dudani's
+     * Constructs a new single-threaded weighted kNN classifier that uses Dudani's
      * weighting function, with the given number of nearest neighbors ({@code k}).
      * 
-     * @param k number of nearest neighbors, must be {@code >= 1}
+     * @param k the number of nearest neighbors, must be {@code >= 1}
      */
 	public DudaniKNNClassifier(int k) {
 		super(k);
 	}
 	
 	/**
-     * Constructs a new weighted kNN classifier utilizing Dudani's weighting
+     * Constructs a new weighted kNN classifier that uses Dudani's weighting
      * function, with the given number of nearest neighbors ({@code k}), and number
      * of threads ({@code tnumber}).
      * 
-     * @param k       number of nearest neighbors, must be {@code >= 1}
-     * @param tnumber number of threads
+     * @param k       the number of nearest neighbors, must be {@code >= 1}
+     * @param tnumber the number of threads
      */
 	public DudaniKNNClassifier(int k, int tnumber) {
 	   super(k, tnumber); 
 	}
 
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing Dudani's
+     * Constructs a new single-threaded weighted kNN classifier that uses Dudani's
      * weighting function, with the given distance measure ({@code distance}) and
      * with the default number of nearest neighbors ({@link KNNClassifier#k k}).
      * 
@@ -102,25 +102,25 @@ public class DudaniKNNClassifier extends KNNClassifier {
     }
 	
 	/**
-     * Constructs a new single-threaded weighted kNN classifier utilizing Dudani's
+     * Constructs a new single-threaded weighted kNN classifier that uses Dudani's
      * weighting function, with the given distance measure ({@code distance}) and
      * number of nearest neighbors ({@code k}).
      * 
-     * @param distance distance measure
-     * @param k        number of nearest neighbors, must be {@code >= 1}
+     * @param distance the distance measure
+     * @param k        the number of nearest neighbors, must be {@code >= 1}
      */
 	public DudaniKNNClassifier(Distance distance, int k) {
 		super(distance, k);
 	}
 	
     /**
-     * Constructs a new weighted kNN classifier utilizing Dudani's weighting
+     * Constructs a new weighted kNN classifier that uses Dudani's weighting
      * function, with the given distance measure ({@code distance}), number of
      * nearest neighbors ({@code k}), and number of threads ({@code tnumber}).
      * 
-     * @param distance distance measure
-     * @param k        number of nearest neighbors, must be {@code >= 1}
-     * @param tnumber  number of threads
+     * @param distance the distance measure
+     * @param k        the number of nearest neighbors, must be {@code >= 1}
+     * @param tnumber  the number of threads
      */
 	public DudaniKNNClassifier(Distance distance, int k, int tnumber) {
 	    super(distance, k, tnumber);
@@ -130,7 +130,7 @@ public class DudaniKNNClassifier extends KNNClassifier {
 	 * Finds the best label among the nearest neighbors. Weights are calculated as
 	 * defined by Dudani.
 	 * 
-	 * @param list sorted list of the nearest neighbors
+	 * @param list the sorted list of the nearest neighbors
 	 * @return the best label
 	 */
 	@Override

@@ -61,17 +61,17 @@ public class ZavrelKNNClassifier extends KNNClassifier {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The slope of the exponential decay function. Default value is {@code 1}.
+     * The slope of the exponential decay function. The default value is {@code 1}.
      */
     private double alpha = 1;
 
     /**
-     * The power of the exponential decay function. Default value is {@code 1}.
+     * The power of the exponential decay function. The default value is {@code 1}.
      */
     private double beta = 1;
 
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing Zavrel's
+     * Constructs a new single-threaded weighted kNN classifier that uses Zavrel's
      * weighting function, with the default number of nearest neighbors
      * ({@link KNNClassifier#k k}) and the default values of the parameters
      * {@link #alpha} and {@link #beta}.
@@ -80,39 +80,39 @@ public class ZavrelKNNClassifier extends KNNClassifier {
     }
     
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing Zavrel's
+     * Constructs a new single-threaded weighted kNN classifier that uses Zavrel's
      * weighting function, with the specified number of nearest neighbors
      * ({@code k}), and the default values of the parameters {@link #alpha} and
      * {@link #beta}.
      * 
-     * @param k number of nearest neighbors, must be {@code >= 1}
+     * @param k the number of nearest neighbors, must be {@code >= 1}
      */
     public ZavrelKNNClassifier(int k) {
         super(k);
     }
     
     /**
-     * Constructs a new weighted kNN classifier utilizing Zavrel's weighting
+     * Constructs a new weighted kNN classifier that uses Zavrel's weighting
      * function, with the specified number of nearest neighbors ({@code k}), number
      * of threads ({@code tnumber}), and the default values of the parameters
      * {@link #alpha} and {@link #beta}.
      * 
-     * @param k       number of nearest neighbors, must be {@code >= 1}
-     * @param tnumber number of threads
+     * @param k       the number of nearest neighbors, must be {@code >= 1}
+     * @param tnumber the number of threads
      */
     public ZavrelKNNClassifier(int k, int tnumber) {
         super(k, tnumber);
     }
 
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing Zavrel's
+     * Constructs a new single-threaded weighted kNN classifier that uses Zavrel's
      * weighting function, with the given number of nearest neighbors ({@code k}),
      * and slope ({@code alpha}) and power ({@code beta}) of the exponential decay
      * function.
      * 
-     * @param k     number of nearest neighbors, must be {@code >= 1}
-     * @param alpha slope of the exponential decay function
-     * @param beta  power of the exponential decay function
+     * @param k     the number of nearest neighbors, must be {@code >= 1}
+     * @param alpha the slope of the exponential decay function
+     * @param beta  the power of the exponential decay function
      */
     public ZavrelKNNClassifier(int k, double alpha, double beta) {
         super(k);
@@ -121,15 +121,15 @@ public class ZavrelKNNClassifier extends KNNClassifier {
     }
     
     /**
-     * Constructs a new weighted kNN classifier utilizing Zavrel's weighting
+     * Constructs a new weighted kNN classifier that uses Zavrel's weighting
      * function, with the specified number of nearest neighbors ({@code k}), slope
      * ({@code alpha}) and power ({@code beta}) of the exponential decay function,
      * and number of threads ({@code tnumber}).
      * 
-     * @param k       number of nearest neighbors, must be {@code >= 1}
-     * @param alpha   slope of the exponential decay function
-     * @param beta    power of the exponential decay function
-     * @param tnumber number of threads
+     * @param k       the number of nearest neighbors, must be {@code >= 1}
+     * @param alpha   the slope of the exponential decay function
+     * @param beta    the power of the exponential decay function
+     * @param tnumber the number of threads
      */
     public ZavrelKNNClassifier(int k, double alpha, double beta, int tnumber) {
         super(k, tnumber);
@@ -138,53 +138,53 @@ public class ZavrelKNNClassifier extends KNNClassifier {
     }
     
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing Zavrel's
+     * Constructs a new single-threaded weighted kNN classifier that uses Zavrel's
      * weighting function, with the given distance measure ({@code distance}) and
      * with the default number of nearest neighbors ({@link KNNClassifier#k k}).
      * 
-     * @param distance distance measure
+     * @param distance the distance measure
      */
     public ZavrelKNNClassifier(Distance distance) {
         super(distance);
     }
     
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing Zavrel's
+     * Constructs a new single-threaded weighted kNN classifier that uses Zavrel's
      * weighting function, with the given distance measure ({@code distance}),
      * number of nearest neighbors ({@code k}), and the default values of the
      * parameters {@link #alpha} and {@link #beta}.
      * 
-     * @param distance distance measure
-     * @param k        number of nearest neighbors, must be {@code >= 1}
+     * @param distance the distance measure
+     * @param k        the number of nearest neighbors, must be {@code >= 1}
      */
     public ZavrelKNNClassifier(Distance distance, int k) {
         super(distance, k);
     }
     
     /**
-     * Constructs a new weighted kNN classifier utilizing Zavrel's weighting
+     * Constructs a new weighted kNN classifier that uses Zavrel's weighting
      * function, with the specified distance measure ({@code distance}), number of
      * nearest neighbors ({@code k}), number of threads ({@code tnumber}), and the
      * default values of the parameters {@link #alpha} and {@link #beta}.
      * 
-     * @param distance distance measure
-     * @param k        number of nearest neighbors, must be {@code >= 1}
-     * @param tnumber  number of threads
+     * @param distance the distance measure
+     * @param k        the number of nearest neighbors, must be {@code >= 1}
+     * @param tnumber  the number of threads
      */
     public ZavrelKNNClassifier(Distance distance, int k, int tnumber) {
         super(distance, k, tnumber);
     }
 
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing Zavrel's
+     * Constructs a new single-threaded weighted kNN classifier that uses Zavrel's
      * weighting function, with the given distance measure ({@code distance}),
      * number of nearest neighbors ({@code k}), and slope ({@code alpha}) and power
      * ({@code beta}) of the exponential decay function.
      * 
-     * @param distance distance measure
-     * @param k        number of nearest neighbors, must be {@code >= 1}
-     * @param alpha    slope of the exponential decay function
-     * @param beta     power of the exponential decay function
+     * @param distance the distance measure
+     * @param k        the number of nearest neighbors, must be {@code >= 1}
+     * @param alpha    the slope of the exponential decay function
+     * @param beta     the power of the exponential decay function
      */
     public ZavrelKNNClassifier(Distance distance, int k, double alpha, double beta) {
         super(distance, k);
@@ -193,17 +193,17 @@ public class ZavrelKNNClassifier extends KNNClassifier {
     }
 
     /**
-     * Constructs a new weighted kNN classifier utilizing Zavrel's weighting
+     * Constructs a new weighted kNN classifier that uses Zavrel's weighting
      * function, with the given distance measure ({@code distance}), number of
      * nearest neighbors ({@code k}), slope ({@code alpha}) and power
      * ({@code beta}) of the exponential decay function, and number of threads
      * ({@code tnumber}).
      * 
-     * @param distance distance measure
-     * @param k        number of nearest neighbors, must be {@code >= 1}
-     * @param alpha    slope of the exponential decay function
-     * @param beta     power of the exponential decay function
-     * @param tnumber  number of threads
+     * @param distance the distance measure
+     * @param k        the number of nearest neighbors, must be {@code >= 1}
+     * @param alpha    the slope of the exponential decay function
+     * @param beta     the power of the exponential decay function
+     * @param tnumber  the number of threads
      */
     public ZavrelKNNClassifier(Distance distance, int k, double alpha, double beta, int tnumber) {
         super(distance, k, tnumber);
@@ -251,7 +251,7 @@ public class ZavrelKNNClassifier extends KNNClassifier {
      * Finds the best label among the nearest neighbors. Weights are calculated as
      * defined by Zavrel.
      * 
-     * @param list sorted list of the nearest neighbors
+     * @param list the sorted list of the nearest neighbors
      * @return the best label
      */
     @Override

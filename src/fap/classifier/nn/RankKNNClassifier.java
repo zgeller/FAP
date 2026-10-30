@@ -60,7 +60,7 @@ public class RankKNNClassifier extends KNNClassifier {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing the
+     * Constructs a new single-threaded weighted kNN classifier that uses the
      * neighbors' ranks, with the default number of nearest neighbors
      * ({@link KNNClassifier#k k}).
      */
@@ -68,58 +68,58 @@ public class RankKNNClassifier extends KNNClassifier {
     }
 
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing the
+     * Constructs a new single-threaded weighted kNN classifier that uses the
      * neighbors' ranks, with the given number of nearest neighbors ({@code k}).
      * 
-     * @param k number of nearest neighbors, must be {@code >= 1}
+     * @param k the number of nearest neighbors, must be {@code >= 1}
      */
     public RankKNNClassifier(int k) {
         super(k);
     }
     
     /**
-     * Constructs a new weighted kNN classifier utilizing the neighbors' ranks,
+     * Constructs a new weighted kNN classifier that uses the neighbors' ranks,
      * with the given number of nearest neighbors ({@code k}), and number of
      * threads ({@code tnumber}).
      * 
-     * @param k       number of nearest neighbors, must be {@code >= 1}
-     * @param tnumber number of threads
+     * @param k       the number of nearest neighbors, must be {@code >= 1}
+     * @param tnumber the number of threads
      */
     public RankKNNClassifier(int k, int tnumber) {
         super(k, tnumber);
     }
 
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing the
+     * Constructs a new single-threaded weighted kNN classifier that uses the
      * neighbors' ranks, with the given distance measure ({@code distance}) and
      * with the default number of nearest neighbors ({@link KNNClassifier#k k}).
      * 
-     * @param distance distance measure
+     * @param distance the distance measure
      */
     public RankKNNClassifier(Distance distance) {
         super(distance);
     }
     
     /**
-     * Constructs a new single-threaded weighted kNN classifier utilizing the
+     * Constructs a new single-threaded weighted kNN classifier that uses the
      * neighbors' ranks, with the given distance measure ({@code distance}) and
      * number of nearest neighbors ({@code k}).
      * 
-     * @param distance distance measure
-     * @param k        number of nearest neighbors, must be {@code k>=1}
+     * @param distance the distance measure
+     * @param k        the number of nearest neighbors, must be {@code k>=1}
      */
     public RankKNNClassifier(Distance distance, int k) {
         super(distance, k);
     }
 
     /**
-     * Constructs a new weighted kNN classifier utilizing the neighbors' ranks,
+     * Constructs a new weighted kNN classifier that uses the neighbors' ranks,
      * with the given distance measure ({@code distance}), number of nearest
      * neighbors ({@code k}), and number of threads ({@code tnumber}).
      * 
-     * @param distance distance measure
-     * @param k        number of nearest neighbors, must be {@code >= 1}
-     * @param tnumber  number of threads
+     * @param distance the distance measure
+     * @param k        the number of nearest neighbors, must be {@code >= 1}
+     * @param tnumber  the number of threads
      */
     public RankKNNClassifier(Distance distance, int k, int tnumber) {
         super(distance, k, tnumber);
@@ -129,7 +129,7 @@ public class RankKNNClassifier extends KNNClassifier {
      * Finds the best label among the nearest neighbors using closeness ranks as
      * weights.
      * 
-     * @param list sorted list of the nearest neighbors
+     * @param list the sorted list of the nearest neighbors
      * @return the best label
      */
     @Override

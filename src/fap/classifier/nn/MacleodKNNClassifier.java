@@ -41,7 +41,8 @@ import fap.util.ThreadUtils;
  * <ul>
  *  <li> when {@code s = k} and {@code α = 0}, it reverts to Dudani's weighting
  *       function
- *  <li> default values: {@code s = k}, {@code α = 1}
+ *  <li> {@code s} is lower bounded by {@code k}
+ *  <li> the default value of {@code α} is {@code 0} 
  * </ul>
  * 
  * <p>
@@ -66,8 +67,15 @@ public class MacleodKNNClassifier extends KNNClassifier {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The value of {@code s} is lower bounded by the number of nearest neighbors
+     * ({@code k}). The default value is {@code -1}.
+     */
     private int s = -1;
 
+    /**
+     * The default value is {@code 1}.
+     */
     private double alpha = 1;
 
     /**
@@ -217,9 +225,10 @@ public class MacleodKNNClassifier extends KNNClassifier {
     }
 
     /**
-     * Sets the value of parameter {@code s}.
+     * Sets the value of parameter {@code s}, lower bounded by the number of nearest
+     * neighbors ({@code k}).
      * 
-     * @param s the new value, it should not be greater than the number of nearest neighbors
+     * @param s the new value
      */
     public void setS(int s) {
         this.s = s;

@@ -65,7 +65,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.10.30.
+ * @version 2026.10.30.1
  * @see KNNClassifier
  */
 public class MacleodKNNClassifier extends KNNClassifier {
@@ -450,7 +450,7 @@ public class MacleodKNNClassifier extends KNNClassifier {
     public Object makeACopy(boolean deep) {
         MacleodKNNClassifier copy = new MacleodKNNClassifier();
         init(copy, deep);
-        return null;
+        return copy;
     }
     
     @Override

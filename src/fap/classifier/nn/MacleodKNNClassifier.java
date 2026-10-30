@@ -16,7 +16,9 @@
 
 package fap.classifier.nn;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import fap.classifier.nn.util.LinkedDistanceNode;
@@ -65,7 +67,7 @@ import fap.util.ThreadUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.10.30.1
+ * @version 2026.10.30.2
  * @see KNNClassifier
  */
 public class MacleodKNNClassifier extends KNNClassifier {
@@ -362,6 +364,100 @@ public class MacleodKNNClassifier extends KNNClassifier {
         }
 
         return bestLabel;
+        
+    }
+    
+    /**
+     * Returns the best labels evaluated across the first {@code i} nearest
+     * neighbors in {@code list}, for each {@code i} in the range
+     * {@code [1, k]}.
+     *
+     * @param list the sorted list of nearest neighbors
+     * @return an array of best labels evaluated over the first {@code i} nearest
+     *         neighbors, for each {@code i} in {@code [1, k]}
+     */
+    protected double[] getBestLabels(SortedList<TimeSeries> list) {
+        
+        LinkedDistanceNode<TimeSeries> node = list.getFirst();
+        
+        final int k = this.getK();          // the number of nearest neighbors that should be considered
+        final int count = list.getCount();  // the actual number of nearest neighbors (up to s)
+
+        final int s = this.getS();
+        final int sdiff = s <= 0 ? - s : Math.max(k, s) - k;
+        
+        final double alpha = this.getAlpha();
+        
+        List<Map<Double, Double>> neighbors = new ArrayList<>(k);
+        
+        double[] bestLabels = new double[k];
+        double[] bestWeights = new double[k];
+
+        double label = node.obj.getLabel();
+        
+        for (int i = 0; i < k; i++) {
+            
+            Map<Double, Double> hmap = new HashMap<>();
+            hmap.put(label, 1d);
+            neighbors.add(hmap);
+            
+            bestLabels[i] = label;
+            bestWeights[i] = 1;
+            
+        }
+
+        double d1 = node.distance;
+        
+        node = node.next;
+        int index = 1;
+
+        while (node != null) {
+
+            label = node.obj.getLabel();
+            
+            double di = node.distance;
+            
+            LinkedDistanceNode<TimeSeries> noden = node;
+            
+            for (int n = index; n < count; n++) {
+                
+                LinkedDistanceNode<TimeSeries> nodes = noden;
+                int i = 1;
+                while (i <= sdiff && n + i < count) {
+                    nodes = nodes.next;
+                    i++;
+                }
+                
+                double ds = nodes.distance;
+                double diff = ds - d1;
+                
+                double weight = diff == 0 ? 1 : ((ds - di) + alpha * diff) / ((1 + alpha) * diff);
+                
+                double weightSum = neighbors.get(n).merge(label, weight, Double::sum);
+               
+                if (weightSum > bestWeights[n]) {
+                    bestLabels[n] = label;
+                    bestWeights[n] = weightSum;
+                }
+                
+                noden = noden.next;
+                
+            }
+
+            node = node.next;
+            index++;
+            
+        }
+
+        // if there is less than k nearest neighbors
+        // the best label is determined based on the available number of nearest neighbors
+        if (count < k) {
+            double bestLabel = bestLabels[count - 1];
+            for (int i = count; i < k; i++)
+                bestLabels[i] = bestLabel;
+        }
+        
+        return bestLabels;
         
     }
     

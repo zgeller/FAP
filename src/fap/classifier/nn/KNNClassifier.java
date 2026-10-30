@@ -31,12 +31,17 @@ import fap.exception.IncomparableTimeSeriesException;
 import fap.util.ThreadUtils;
 
 /**
- * Majority-voting kNN classifier. The class of a time series {@code Q} is determined by a
- * majority vote of its k-nearest neighbors in the training set:
+ * Majority-voting kNN classifier. The class of a time series {@code Q} is
+ * determined by a majority vote of its k-nearest neighbors in the training set:
  *
  * <blockquote> <img src="doc-files/KNNClassifier-1.png"> </blockquote>
  * 
- * where E(∙) is the indicator function, and T<sub>i</sub><sup>c</sup> is the i-th nearest neighbor's class.
+ * where E(∙) is the indicator function, and T<sub>i</sub><sup>c</sup> is the
+ * i-th nearest neighbor's class.
+ * 
+ * <p>
+ * The number of nearest neighbor to consider ({@code k}) is upper bounded by
+ * the actual number of available nearest neighbors.
  * 
  * <p>
  * References:
@@ -65,7 +70,8 @@ public class KNNClassifier extends AbstractNNClassifier {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The number of nearest neighbors to consider. Default value is {@code 10}.
+     * The number of nearest neighbors to consider. The default value is {@code 10}.
+     * It is upper bounded by the actual number of available nearest neighbors.
      */
     protected int k = 10;
     

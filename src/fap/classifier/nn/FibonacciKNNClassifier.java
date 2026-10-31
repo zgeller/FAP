@@ -44,7 +44,7 @@ import fap.distance.Distance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.08.14.
+ * @version 2026.10.31.
  * @see KNNClassifier
  */
 public class FibonacciKNNClassifier extends KNNClassifier {
@@ -160,7 +160,7 @@ public class FibonacciKNNClassifier extends KNNClassifier {
         Map<Double, Integer> neighbors = new HashMap<>();
 
         int len = list.getCount();
-        if (len != fibonacci.length)
+        if ((fibonacci == null) || (len != fibonacci.length))
             initFibonacci(len);
 
         double bestLabel = node.obj.getLabel();

@@ -241,7 +241,7 @@ public class FibonacciKNNClassifier extends KNNClassifier {
         
         for (int i = 0; i < k; i++) {
             
-            final long weight = i < count ? fibonacci[lastIndex - i] : fibonacci[lastIndex];
+            long weight = i < count ? fibonacci[lastIndex - i] : fibonacci[lastIndex];
             
             Map<Double, Long> hmap = new HashMap<>();
             hmap.put(label, weight);

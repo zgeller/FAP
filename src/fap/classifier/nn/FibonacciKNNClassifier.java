@@ -34,6 +34,9 @@ import fap.distance.Distance;
  * <blockquote> <img src="doc-files/FibonacciKNNClassifier-1.png"> </blockquote>
  * 
  * <p>
+ * To prevent {@code long} overflow, {@code k} cannot be greater than 90.
+ * 
+ * <p>
  * References:
  * <ol>
  *  <li> T.-L. Pao, Y.-T. Chen, J.-H. Yeh, Y.-M. Cheng, Y.-Y. Lin, A Comparative
@@ -46,7 +49,7 @@ import fap.distance.Distance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.10.31.3
+ * @version 2026.10.31.4
  * @see KNNClassifier
  */
 public class FibonacciKNNClassifier extends KNNClassifier {
@@ -71,7 +74,8 @@ public class FibonacciKNNClassifier extends KNNClassifier {
      * Fibonacci weighting function, with the given number of nearest neighbors
      * ({@code k}).
      * 
-     * @param k the number of nearest neighbors, must be {@code >= 1}
+     * @param k        the number of nearest neighbors, must be {@code >= 1} and
+     *                 {@code k <= 90}
      */
     public FibonacciKNNClassifier(int k) {
         super(k);
@@ -82,7 +86,8 @@ public class FibonacciKNNClassifier extends KNNClassifier {
      * function, with the given number of nearest neighbors ({@code k}), and number
      * of threads ({@code tnumber}).
      * 
-     * @param k       the number of nearest neighbors, must be {@code >= 1}
+     * @param k        the number of nearest neighbors, must be {@code >= 1} and
+     *                 {@code k <= 90}
      * @param tnumber the number of threads
      */
     public FibonacciKNNClassifier(int k, int tnumber) {
@@ -100,7 +105,6 @@ public class FibonacciKNNClassifier extends KNNClassifier {
     public FibonacciKNNClassifier(Distance distance) {
         super(distance);
     }
-    
 
     /**
      * Constructs a new single-threaded weighted kNN classifier that uses the
@@ -108,7 +112,8 @@ public class FibonacciKNNClassifier extends KNNClassifier {
      * ({@code distance}) and number of nearest neighbors ({@code k}).
      * 
      * @param distance the distance measure
-     * @param k        the number of nearest neighbors, must be {@code >= 1}
+     * @param k        the number of nearest neighbors, must be {@code >= 1} and
+     *                 {@code k <= 90}
      */
     public FibonacciKNNClassifier(Distance distance, int k) {
         super(distance, k);
@@ -120,15 +125,27 @@ public class FibonacciKNNClassifier extends KNNClassifier {
      * nearest neighbors ({@code k}), and number of threads ({@code tnumber}).
      * 
      * @param distance the distance measure
-     * @param k        the number of nearest neighbors, must be {@code >= 1}
+     * @param k        the number of nearest neighbors, must be {@code >= 1} and
+     *                 {@code k <= 90}
      * @param tnumber  the number of threads
      */
     public FibonacciKNNClassifier(Distance distance, int k, int tnumber) {
         super(distance, k, tnumber);
     }
 
+    /**
+     * Sets the number of nearest neighbors ({@code k}) to consider.
+     * 
+     * <p>
+     * To prevent {@code long} overflow, {@code k} cannot be greater than 90.
+     *
+     * @param k the number of nearest neighbors
+     * @throws IllegalArgumentException if {@code k < 1} or {@code k > 90}
+     */
     @Override
     public void setK(int k) {
+        if (k > 90)
+            throw new IllegalArgumentException("Invalid k: " + k + " (must be <= 90)");
         super.setK(k);
         initFibonacci(k);
     }
@@ -271,7 +288,6 @@ public class FibonacciKNNClassifier extends KNNClassifier {
         return bestLabels;
         
     }
-    
 
     @Override
     public Object makeACopy(boolean deep) {

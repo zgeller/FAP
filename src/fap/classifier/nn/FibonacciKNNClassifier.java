@@ -46,7 +46,7 @@ import fap.distance.Distance;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2026.10.31.2
+ * @version 2026.10.31.3
  * @see KNNClassifier
  */
 public class FibonacciKNNClassifier extends KNNClassifier {
@@ -56,7 +56,7 @@ public class FibonacciKNNClassifier extends KNNClassifier {
     /**
      * The Fibonacci sequence.
      */
-    private int[] fibonacci;
+    private long[] fibonacci;
 
     /**
      * Constructs a new single-threaded weighted kNN classifier that uses the
@@ -139,7 +139,7 @@ public class FibonacciKNNClassifier extends KNNClassifier {
      * @param k the length of the sequence
      */
     private void initFibonacci(int k) {
-        fibonacci = new int[k];
+        fibonacci = new long[k];
         fibonacci[--k] = 1;
         if (k > 0) {
             fibonacci[--k] = 1;
@@ -159,7 +159,7 @@ public class FibonacciKNNClassifier extends KNNClassifier {
     protected double getBestLabel(SortedList<TimeSeries> list) {
 
         LinkedDistanceNode<TimeSeries> node = list.getFirst();
-        Map<Double, Integer> neighbors = new HashMap<>();
+        Map<Double, Long> neighbors = new HashMap<>();
 
         int len = list.getCount();
         if ((fibonacci == null) || (len != fibonacci.length))
@@ -167,7 +167,7 @@ public class FibonacciKNNClassifier extends KNNClassifier {
 
         double bestLabel = node.obj.getLabel();
         int index = 0;
-        int bestWeight = fibonacci[0];
+        long bestWeight = fibonacci[0];
 
         neighbors.put(bestLabel, bestWeight);
         node = node.next;
@@ -176,9 +176,9 @@ public class FibonacciKNNClassifier extends KNNClassifier {
         while (node != null) {
 
             double label = node.obj.getLabel();
-            int weight = fibonacci[index];
+            long weight = fibonacci[index];
 
-            weight = neighbors.merge(label, weight, Integer::sum);
+            weight = neighbors.merge(label, weight, Long::sum);
 
             if (weight > bestWeight) {
                 bestLabel = label;
@@ -210,13 +210,13 @@ public class FibonacciKNNClassifier extends KNNClassifier {
         final int k = this.getK();          // the number of nearest neighbors that should be considered
         final int count = list.getCount();  // the actual number of nearest neighbors
 
-        List<Map<Double, Integer>> neighbors = new ArrayList<>(k);
+        List<Map<Double, Long>> neighbors = new ArrayList<>(k);
         
         if ((fibonacci == null) || (count != fibonacci.length))
             initFibonacci(count);
         
         double[] bestLabels = new double[k];
-        int[] bestWeights = new int[k];
+        long[] bestWeights = new long[k];
 
         double label = node.obj.getLabel();
         
@@ -224,9 +224,9 @@ public class FibonacciKNNClassifier extends KNNClassifier {
         
         for (int i = 0; i < k; i++) {
             
-            final int weight = i < count ? fibonacci[lastIndex - i] : fibonacci[lastIndex];
+            final long weight = i < count ? fibonacci[lastIndex - i] : fibonacci[lastIndex];
             
-            Map<Double, Integer> hmap = new HashMap<>();
+            Map<Double, Long> hmap = new HashMap<>();
             hmap.put(label, weight);
             neighbors.add(hmap);
             
@@ -246,7 +246,7 @@ public class FibonacciKNNClassifier extends KNNClassifier {
             
             for (int i = index; i < count; i++) {
 
-                int weightSum = neighbors.get(i).merge(label, fibonacci[findex--], Integer::sum);
+                long weightSum = neighbors.get(i).merge(label, fibonacci[findex--], Long::sum);
                 
                 if (weightSum > bestWeights[i]) {
                     bestLabels[i] = label;

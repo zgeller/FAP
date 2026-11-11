@@ -236,13 +236,4 @@ public class ConstraintUtils {
         
     }
 
-//    public static void main(String[] args) {
-//
-//        int[][] para = getItakuraParallelogram(12, 6);
-//
-//        for (int i = 1; i < para[0].length; i++)
-//            System.out.println(para[0][i] + "," + para[1][i]);
-//
-//    }
-
 }

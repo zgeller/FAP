@@ -93,6 +93,7 @@ public class ItakuraParallelogram implements Serializable {
         }
 
         return sei;
+        
     }
 
 }

@@ -207,8 +207,8 @@ public abstract class AbstractNNClassifier extends AbstractDistanceBasedClassifi
 
                 // appending is possible because the elements of neighbors[index] are sorted by
                 // distance in ascending order
-                // i.e. Neighbors[index][nIndex] is at a smaller distance than
-                // Neighbors[index][nIndex + i], i>0
+                // i.e. neighbors[index][nIndex] is at a smaller distance than
+                // neighbors[index][nIndex + i], i>0
                 kNeighbors.get(index).add(list[neighbor], distance);
 
             } else

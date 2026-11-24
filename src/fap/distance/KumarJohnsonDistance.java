@@ -51,7 +51,7 @@ import fap.util.MathUtils;
  * </ol>
  * 
  * @author Zoltán Gellér
- * @version 2025.09.01.
+ * @version 2026.11.24.
  * @see AbstractCopyableDistance
  */
 public class KumarJohnsonDistance extends AbstractCopyableDistance {
@@ -96,14 +96,16 @@ public class KumarJohnsonDistance extends AbstractCopyableDistance {
             double y1 = series1.getY(i);
             double y2 = series2.getY(i);
 
-            double tmp = y1 * y1 - y2 * y2;
+            double diff = y1 * y1 - y2 * y2;
 
             // 0/0 is treated as 0 (see [2]) 
-            if (tmp != 0)
+            if (diff != 0)
                 if (y1 == 0 || y2 == 0)
-                    distance += tmp * tmp / MathUtils.getZeroDenominator();
-                else
-                    distance += tmp * tmp / Math.pow(y1 * y2, 3/2);
+                    distance += diff * diff / MathUtils.getZeroDenominator();
+                else {
+                    double tmp = y1 * y2;
+                    distance += diff * diff / (tmp * Math.sqrt(tmp));
+                }
             
         }
         

@@ -110,10 +110,10 @@ public class JensenDifferenceDistance extends AbstractCopyableDistance {
             
             tmp /= 2;
 
-            double sum = (y1 + y2) / 2;
+            double mean = (y1 + y2) / 2;
             
-            if (sum != 0)
-                tmp -= sum * Math.log(sum);
+            if (mean != 0)
+                tmp -= mean * Math.log(mean);
             
             distance += tmp;
 
